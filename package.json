@@ -1,0 +1,20 @@
+{
+  "name": "qaframework",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "workspaces": [
+    "packages/qa-framework"
+  ],
+  "scripts": {
+    "build": "npx lerna run build && npm i"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.22.0",
+    "lerna": "^4.0.0",
+    "qa-framework": "./packages/qa-framework"
+  }
+}
