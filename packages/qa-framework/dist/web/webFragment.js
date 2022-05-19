@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkActionable = exports.WebFragment = void 0;
-const test_1 = require("@playwright/test");
 const fixtureHooks_1 = require("../utils/fixtureHooks");
 const uiActions_1 = require("../utils/uiActions");
 const locatorFragment_1 = require("./locatorFragment");
@@ -48,22 +47,22 @@ exports.WebFragment = WebFragment;
 const checkActionable = (locator, actionable) => __awaiter(void 0, void 0, void 0, function* () {
     switch (actionable) {
         case uiActions_1.Actionable.ToBeChecked:
-            (0, test_1.expect)(yield fixtureHooks_1.playwrightPage.page.isChecked(locator)).toBeTruthy();
+            fixtureHooks_1.playwrightExpect.expect(yield fixtureHooks_1.playwrightPage.page.isChecked(locator)).toBeTruthy();
             break;
         case uiActions_1.Actionable.ToBeDisabled:
-            (0, test_1.expect)(yield fixtureHooks_1.playwrightPage.page.isDisabled(locator)).toBeTruthy();
+            fixtureHooks_1.playwrightExpect.expect(yield fixtureHooks_1.playwrightPage.page.isDisabled(locator)).toBeTruthy();
             break;
         case uiActions_1.Actionable.ToBeEditable:
-            (0, test_1.expect)(yield fixtureHooks_1.playwrightPage.page.isEditable(locator)).toBeTruthy();
+            fixtureHooks_1.playwrightExpect.expect(yield fixtureHooks_1.playwrightPage.page.isEditable(locator)).toBeTruthy();
             break;
         case uiActions_1.Actionable.ToBeEnabled:
-            (0, test_1.expect)(yield fixtureHooks_1.playwrightPage.page.isEnabled(locator)).toBeTruthy();
+            fixtureHooks_1.playwrightExpect.expect(yield fixtureHooks_1.playwrightPage.page.isEnabled(locator)).toBeTruthy();
             break;
         case uiActions_1.Actionable.ToBeHidden:
-            (0, test_1.expect)(yield fixtureHooks_1.playwrightPage.page.isHidden(locator)).toBeTruthy();
+            fixtureHooks_1.playwrightExpect.expect(yield fixtureHooks_1.playwrightPage.page.isHidden(locator)).toBeTruthy();
             break;
         case uiActions_1.Actionable.ToBeVisible:
-            (0, test_1.expect)(yield fixtureHooks_1.playwrightPage.page.isVisible(locator)).toBeTruthy();
+            fixtureHooks_1.playwrightExpect.expect(yield fixtureHooks_1.playwrightPage.page.isVisible(locator)).toBeTruthy();
             break;
         default:
             console.log('HardPass');

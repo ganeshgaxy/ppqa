@@ -1,13 +1,14 @@
 import { WebElement } from "./web/webElement";
 import { WebFragment } from "./web/webFragment";
 import { Actionable } from './utils/uiActions';
-export { playwrightPage, registerPlaywrightPage } from "./utils/fixtureHooks";
+export { playwrightPage, registerPlaywrightPage, registerPlaywrightExpect } from "./utils/fixtureHooks";
 export { WebFragment } from './web/webFragment';
 export { TypeWebElement, WebElement, useWebElement } from './web/webElement';
 export { Actionable, LocatorOptions, createFragment } from './utils/uiActions';
 export default abstract class QAFramework {
     static playwrightPage: import("./utils/uiActions").PlaywrightPage;
-    static registerPlaywrightPage: (page: import("playwright-core").Page) => void;
+    static registerPlaywrightPage: (page: import("@playwright/test").Page) => void;
+    static registerPlaywrightExpect: (expect: import("@playwright/test").Expect) => void;
     static WebFragment: typeof WebFragment;
     static WebElement: typeof WebElement;
     static useWebElement: (webElementProps: import("./web/webElement").TypeWebElementProps) => import("./web/webElement").WebElementProps;

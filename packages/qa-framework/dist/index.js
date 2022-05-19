@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createFragment = exports.Actionable = exports.useWebElement = exports.WebElement = exports.WebFragment = exports.registerPlaywrightPage = exports.playwrightPage = void 0;
+exports.createFragment = exports.Actionable = exports.useWebElement = exports.WebElement = exports.WebFragment = exports.registerPlaywrightExpect = exports.registerPlaywrightPage = exports.playwrightPage = void 0;
 const fixtureHooks_1 = require("./utils/fixtureHooks");
 const webElement_1 = require("./web/webElement");
 const webFragment_1 = require("./web/webFragment");
@@ -8,6 +8,7 @@ const uiActions_1 = require("./utils/uiActions");
 var fixtureHooks_2 = require("./utils/fixtureHooks");
 Object.defineProperty(exports, "playwrightPage", { enumerable: true, get: function () { return fixtureHooks_2.playwrightPage; } });
 Object.defineProperty(exports, "registerPlaywrightPage", { enumerable: true, get: function () { return fixtureHooks_2.registerPlaywrightPage; } });
+Object.defineProperty(exports, "registerPlaywrightExpect", { enumerable: true, get: function () { return fixtureHooks_2.registerPlaywrightExpect; } });
 var webFragment_2 = require("./web/webFragment");
 Object.defineProperty(exports, "WebFragment", { enumerable: true, get: function () { return webFragment_2.WebFragment; } });
 var webElement_2 = require("./web/webElement");
@@ -21,6 +22,7 @@ class QAFramework {
 exports.default = QAFramework;
 QAFramework.playwrightPage = fixtureHooks_1.playwrightPage;
 QAFramework.registerPlaywrightPage = fixtureHooks_1.registerPlaywrightPage;
+QAFramework.registerPlaywrightExpect = fixtureHooks_1.registerPlaywrightExpect;
 QAFramework.WebFragment = webFragment_1.WebFragment;
 QAFramework.WebElement = webElement_1.WebElement;
 QAFramework.useWebElement = webElement_1.useWebElement;

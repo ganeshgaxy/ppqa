@@ -1,5 +1,5 @@
-import { expect } from "@playwright/test";
-import { playwrightPage } from "../utils/fixtureHooks";
+
+import { playwrightExpect, playwrightPage } from "../utils/fixtureHooks";
 import { Actionable } from "../utils/uiActions";
 import { LocatorFragmentProps, LocatorFragment } from "./locatorFragment";
 
@@ -40,22 +40,22 @@ export class WebFragment implements WebFragmentProps{
 export const checkActionable = async(locator: string, actionable: Actionable) => {
     switch(actionable){
         case Actionable.ToBeChecked:
-            expect(await playwrightPage.page.isChecked(locator)).toBeTruthy();
+            playwrightExpect.expect(await playwrightPage.page.isChecked(locator)).toBeTruthy();
             break;
         case Actionable.ToBeDisabled:
-            expect(await playwrightPage.page.isDisabled(locator)).toBeTruthy();
+            playwrightExpect.expect(await playwrightPage.page.isDisabled(locator)).toBeTruthy();
             break;
         case Actionable.ToBeEditable:
-            expect(await playwrightPage.page.isEditable(locator)).toBeTruthy();
+            playwrightExpect.expect(await playwrightPage.page.isEditable(locator)).toBeTruthy();
             break;
         case Actionable.ToBeEnabled:
-            expect(await playwrightPage.page.isEnabled(locator)).toBeTruthy();
+            playwrightExpect.expect(await playwrightPage.page.isEnabled(locator)).toBeTruthy();
             break;
         case Actionable.ToBeHidden:
-            expect(await playwrightPage.page.isHidden(locator)).toBeTruthy();
+            playwrightExpect.expect(await playwrightPage.page.isHidden(locator)).toBeTruthy();
             break;
         case Actionable.ToBeVisible:
-            expect(await playwrightPage.page.isVisible(locator)).toBeTruthy();
+            playwrightExpect.expect(await playwrightPage.page.isVisible(locator)).toBeTruthy();
             break;
         default:
             console.log('HardPass')

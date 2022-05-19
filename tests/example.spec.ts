@@ -6,6 +6,7 @@ let webPage: TodoMvcPage;
 
 test.beforeEach(async ({ page }) => {
   QAFramework.registerPlaywrightPage(page);
+  QAFramework.registerPlaywrightExpect(expect);
   webPage = createFragment(TodoMvcPage, 'https://demo.playwright.dev/todomvc');
   await webPage.open();
   //await page.goto('https://demo.playwright.dev/todomvc');
