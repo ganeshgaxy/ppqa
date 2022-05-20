@@ -2,13 +2,9 @@ import { test, expect, Page } from '@playwright/test';
 import QAFramework, { createFragment } from 'qa-framework';
 import { TodoMvcPage } from '../project/ui/pages/TodoMvc/TodoMvcPage';
 
-let webPage: TodoMvcPage;
-
 test.beforeEach(async ({ page }) => {
   QAFramework.registerPlaywrightPage(page);
   QAFramework.registerPlaywrightExpect(expect);
-  webPage = createFragment(TodoMvcPage, 'https://demo.playwright.dev/todomvc');
-  await webPage.open();
   //await page.goto('https://demo.playwright.dev/todomvc');
 });
 
@@ -20,19 +16,15 @@ const TODO_ITEMS = [
 
 test.describe('New Todo', () => {
   test('should allow me to add todo items', async ({ page }) => {
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, 'https://demo.playwright.dev/todomvc');
+    await todoMvcPage.open();
     // Create 1st todo.
-    await webPage.addNewTodo('.new-todo',TODO_ITEMS[0]);
-    
-    // Make sure the list only has one todo item.
-    await expect(page.locator('.view label')).toHaveText([
-      TODO_ITEMS[0]
-    ]);
+    await todoMvcPage.addNewTodo('.new-todo',TODO_ITEMS[0]);
+    await todoMvcPage.verifyTodo('.view label',TODO_ITEMS[0]);
 
     // Create 2nd todo.
-    await webPage.addNewTodo('.new-todo',TODO_ITEMS[1]);
-
-    // Make sure the list now has two todo items.
-    await expect(page.locator('.view label')).toHaveText([
+    await todoMvcPage.addNewTodo('.new-todo',TODO_ITEMS[1]);
+    await todoMvcPage.verifyTodo('.view label',[
       TODO_ITEMS[0],
       TODO_ITEMS[1]
     ]);

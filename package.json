@@ -7,7 +7,7 @@
     "packages/qa-framework"
   ],
   "scripts": {
-    "build": "npx lerna run build"
+    "build": "npx lerna run build && npm i && npm i"
   },
   "keywords": [],
   "author": "",

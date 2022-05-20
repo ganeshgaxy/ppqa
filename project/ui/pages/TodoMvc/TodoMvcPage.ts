@@ -10,5 +10,11 @@ export class TodoMvcPage extends WebFragment{
         let newTodoTextBox: WebElement = TodoMvcPageVars.newTodoTextBox(locator, todo);
         await newTodoTextBox.typeIn();
         await this.waitForWebElement(locator, Actionable.ToBeEnabled).pressKey('Enter');
+        console.log("Add")
+    }
+
+    async verifyTodo(locator: string, todo: string | string[]){
+        console.log("Verify")
+        await this.waitForWebElement(locator, Actionable.ToBeEnabled).toHaveText(todo);
     }
 }

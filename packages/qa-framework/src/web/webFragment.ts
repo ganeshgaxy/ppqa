@@ -4,7 +4,7 @@ import { Actionable } from "../utils/uiActions";
 import { LocatorFragmentProps, LocatorFragment } from "./locatorFragment";
 
 export interface WebFragmentProps{
-    open(url?: string): Promise<void>;
+    open(url?: string): Promise<WebFragmentProps>;
 }
 
 export class WebFragment implements WebFragmentProps{
@@ -12,8 +12,9 @@ export class WebFragment implements WebFragmentProps{
     constructor(defaultUrl?: string) {
         this.defaultURl = defaultUrl && defaultUrl
     }
-    public async open(url?: string): Promise<void> {
+    public async open(url?: string): Promise<WebFragmentProps> {
         await playwrightPage.goto(url? url : this.defaultURl? this.defaultURl : 'ha ha ha');
+        return this;
     }
     protected webElement(locator: string): LocatorFragmentProps {
         playwrightPage.find(locator);
