@@ -5,6 +5,17 @@ import { PlaywrightExpect, usePlaywrightExpect } from "./uiAssertions";
 export let playwrightPage: PlaywrightPage;
 export let playwrightExpect: PlaywrightExpect;
 export let playwrightPageLocator: PlaywrightPageLocator;
+export let appInfo: AppInfo;
+
+export interface AppInfo {
+    baseURL: string,
+    version?: string,
+    extra?: unknown,
+}
+
+export const registerAppUrl = (url: string) => {
+    appInfo = {baseURL: url};
+}
 
 export const registerPlaywrightPage = (page: Page) => {
     playwrightPage = usePlaywrightPage(page);

@@ -1,11 +1,12 @@
 import { test, expect, Page } from '@playwright/test';
 import QAFramework, { createFragment } from 'qa-framework';
 import { TodoMvcPage } from '../project/ui/pages/TodoMvc/TodoMvcPage';
+import { TodoMvcPageProps } from '../project/ui/pages/TodoMvc/TodoMvcPage.vars';
 
 test.beforeEach(async ({ page }) => {
+  QAFramework.registerAppUrl('https://demo.playwright.dev/');
   QAFramework.registerPlaywrightPage(page);
   QAFramework.registerPlaywrightExpect(expect);
-  //await page.goto('https://demo.playwright.dev/todomvc');
 });
 
 const TODO_ITEMS = [
@@ -16,15 +17,15 @@ const TODO_ITEMS = [
 
 test.describe('New Todo', () => {
   test('should allow me to add todo items', async ({ page }) => {
-    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, 'https://demo.playwright.dev/todomvc');
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
     await todoMvcPage.open();
     // Create 1st todo.
-    await todoMvcPage.addNewTodo('.new-todo',TODO_ITEMS[0]);
-    await todoMvcPage.verifyTodo('.view label',TODO_ITEMS[0]);
+    await todoMvcPage.addNewTodo(TODO_ITEMS[0]);
+    await todoMvcPage.verifyTodoLabel(TODO_ITEMS[0]);
 
     // Create 2nd todo.
-    await todoMvcPage.addNewTodo('.new-todo',TODO_ITEMS[1]);
-    await todoMvcPage.verifyTodo('.view label',[
+    await todoMvcPage.addNewTodo(TODO_ITEMS[1]);
+    await todoMvcPage.verifyTodoLabel([
       TODO_ITEMS[0],
       TODO_ITEMS[1]
     ]);
@@ -33,42 +34,50 @@ test.describe('New Todo', () => {
   });
 
   test('should clear text input field when an item is added', async ({ page }) => {
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.open();
     // Create one todo item.
-    await page.locator('.new-todo').fill(TODO_ITEMS[0]);
-    await page.locator('.new-todo').press('Enter');
+    await todoMvcPage.addNewTodo(TODO_ITEMS[0]);
+    await todoMvcPage.verifyTodoLabel(TODO_ITEMS[0]);
 
     // Check that input is empty.
-    await expect(page.locator('.new-todo')).toBeEmpty();
+    await todoMvcPage.verifyEmptyTodoTextBox();
     await checkNumberOfTodosInLocalStorage(page, 1);
   });
 
   test('should append new items to the bottom of the list', async ({ page }) => {
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.open();
     // Create 3 items.
-    await createDefaultTodos(page);
+    await createDefaultTodos(todoMvcPage);
 
     // Check test using different methods.
-    await expect(page.locator('.todo-count')).toHaveText('3 items left');
-    await expect(page.locator('.todo-count')).toContainText('3');
-    await expect(page.locator('.todo-count')).toHaveText(/3/);
+    await todoMvcPage.verifyTodoCountLabel('3 items left');
+    await todoMvcPage.verifyTodoCountLabelContains('3');
+    await todoMvcPage.verifyTodoCountLabel(/3/);
 
     // Check all items in one call.
-    await expect(page.locator('.view label')).toHaveText(TODO_ITEMS);
+    await todoMvcPage.verifyTodoLabel(TODO_ITEMS);
     await checkNumberOfTodosInLocalStorage(page, 3);
   });
 
   test('should show #main and #footer when items added', async ({ page }) => {
-    await page.locator('.new-todo').fill(TODO_ITEMS[0]);
-    await page.locator('.new-todo').press('Enter');
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.open();
+    // Create one todo item.
+    await todoMvcPage.addNewTodo(TODO_ITEMS[0]);
 
-    await expect(page.locator('.main')).toBeVisible();
-    await expect(page.locator('.footer')).toBeVisible();
+    await todoMvcPage.verifyIfMainElementVisible();
+    await todoMvcPage.verifyIfFooterElementVisible();
     await checkNumberOfTodosInLocalStorage(page, 1);
   });
 });
 
 test.describe('Mark all as completed', () => {
   test.beforeEach(async ({ page }) => {
-    await createDefaultTodos(page);
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.open();
+    await createDefaultTodos(todoMvcPage);
     await checkNumberOfTodosInLocalStorage(page, 3);
   });
 
@@ -77,100 +86,100 @@ test.describe('Mark all as completed', () => {
   });
 
   test('should allow me to mark all items as completed', async ({ page }) => {
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
     // Complete all todos.
-    await page.locator('.toggle-all').check();
+    await todoMvcPage.toggleAllTodosCheck();
 
     // Ensure all todos have 'completed' class.
-    await expect(page.locator('.todo-list li')).toHaveClass(['completed', 'completed', 'completed']);
+    await todoMvcPage.verifyTodoItemsClass(['completed', 'completed', 'completed']);
     await checkNumberOfCompletedTodosInLocalStorage(page, 3);
   });
 
   test('should allow me to clear the complete state of all items', async ({ page }) => {
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
     // Check and then immediately uncheck.
-    await page.locator('.toggle-all').check();
-    await page.locator('.toggle-all').uncheck();
+    await todoMvcPage.toggleAllTodosCheck();
+    await todoMvcPage.toggleAllTodosUncheck();
 
     // Should be no completed classes.
-    await expect(page.locator('.todo-list li')).toHaveClass(['', '', '']);
+    await todoMvcPage.verifyTodoItemsClass(['', '', '']);
   });
 
   test('complete all checkbox should update state when items are completed / cleared', async ({ page }) => {
-    const toggleAll = page.locator('.toggle-all');
-    await toggleAll.check();
-    await expect(toggleAll).toBeChecked();
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+
+    await todoMvcPage.toggleAllTodosCheck();
+    await todoMvcPage.verifyIfToggleAllIsChecked();
     await checkNumberOfCompletedTodosInLocalStorage(page, 3);
 
     // Uncheck first todo.
-    const firstTodo = page.locator('.todo-list li').nth(0);
-    await firstTodo.locator('.toggle').uncheck();
+    await todoMvcPage.toggleATodoUncheck(0);
 
     // Reuse toggleAll locator and make sure its not checked.
-    await expect(toggleAll).not.toBeChecked();
+    await todoMvcPage.verifyIfToggleAllIsNotChecked();
 
-    await firstTodo.locator('.toggle').check();
+    await todoMvcPage.toggleATodoCheck(0);
     await checkNumberOfCompletedTodosInLocalStorage(page, 3);
 
     // Assert the toggle all is checked again.
-    await expect(toggleAll).toBeChecked();
+    await todoMvcPage.verifyIfToggleAllIsChecked();
   });
 });
 
 test.describe('Item', () => {
 
   test('should allow me to mark items as complete', async ({ page }) => {
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.open();
     // Create two items.
     for (const item of TODO_ITEMS.slice(0, 2)) {
-      await page.locator('.new-todo').fill(item);
-      await page.locator('.new-todo').press('Enter');
+      await todoMvcPage.addNewTodo(item);
     }
 
     // Check first item.
-    const firstTodo = page.locator('.todo-list li').nth(0);
-    await firstTodo.locator('.toggle').check();
-    await expect(firstTodo).toHaveClass('completed');
+    await todoMvcPage.toggleATodoCheck(0);
+    await todoMvcPage.verifyATodoItemClass(0, 'completed');
 
     // Check second item.
-    const secondTodo = page.locator('.todo-list li').nth(1);
-    await expect(secondTodo).not.toHaveClass('completed');
-    await secondTodo.locator('.toggle').check();
+    await todoMvcPage.verifyATodoItemWithoutClass(1, 'completed')
+    await todoMvcPage.toggleATodoCheck(1);
 
     // Assert completed class.
-    await expect(firstTodo).toHaveClass('completed');
-    await expect(secondTodo).toHaveClass('completed');
+    await todoMvcPage.verifyATodoItemClass(0, 'completed');
+    await todoMvcPage.verifyATodoItemClass(1, 'completed');
   });
 
   test('should allow me to un-mark items as complete', async ({ page }) => {
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.open();
     // Create two items.
     for (const item of TODO_ITEMS.slice(0, 2)) {
-      await page.locator('.new-todo').fill(item);
-      await page.locator('.new-todo').press('Enter');
+      await todoMvcPage.addNewTodo(item);
     }
 
-    const firstTodo = page.locator('.todo-list li').nth(0);
-    const secondTodo = page.locator('.todo-list li').nth(1);
-    await firstTodo.locator('.toggle').check();
-    await expect(firstTodo).toHaveClass('completed');
-    await expect(secondTodo).not.toHaveClass('completed');
-    await checkNumberOfCompletedTodosInLocalStorage(page, 1);
+    await todoMvcPage.toggleATodoCheck(0);
+    await todoMvcPage.verifyATodoItemClass(0, 'completed');
 
-    await firstTodo.locator('.toggle').uncheck();
-    await expect(firstTodo).not.toHaveClass('completed');
-    await expect(secondTodo).not.toHaveClass('completed');
+    await todoMvcPage.verifyATodoItemWithoutClass(1, 'completed')
+    await checkNumberOfCompletedTodosInLocalStorage(page, 1);
+    await todoMvcPage.toggleATodoUncheck(0);
+
+    await todoMvcPage.verifyATodoItemWithoutClass(0, 'completed')
+    await todoMvcPage.verifyATodoItemWithoutClass(1, 'completed')
     await checkNumberOfCompletedTodosInLocalStorage(page, 0);
   });
 
   test('should allow me to edit an item', async ({ page }) => {
-    await createDefaultTodos(page);
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.open();
+    await createDefaultTodos(todoMvcPage);
 
-    const todoItems = page.locator('.todo-list li');
-    const secondTodo = todoItems.nth(1);
-    await secondTodo.dblclick();
-    await expect(secondTodo.locator('.edit')).toHaveValue(TODO_ITEMS[1]);
-    await secondTodo.locator('.edit').fill('buy some sausages');
-    await secondTodo.locator('.edit').press('Enter');
+    await todoMvcPage.dblClickATodo(1);
+    await todoMvcPage.verifyAEditedTodoItemValue(1, TODO_ITEMS[1])
+    await todoMvcPage.editATodoText(1, 'buy some sausages');
 
     // Explicitly assert the new text value.
-    await expect(todoItems).toHaveText([
+    await todoMvcPage.verifyTodosText([
       TODO_ITEMS[0],
       'buy some sausages',
       TODO_ITEMS[2]
@@ -181,75 +190,75 @@ test.describe('Item', () => {
 
 test.describe('Editing', () => {
   test.beforeEach(async ({ page }) => {
-    await createDefaultTodos(page);
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.open();
+    await createDefaultTodos(todoMvcPage);
     await checkNumberOfTodosInLocalStorage(page, 3);
   });
 
   test('should hide other controls when editing', async ({ page }) => {
-    const todoItem = page.locator('.todo-list li').nth(1);
-    await todoItem.dblclick();
-    await expect(todoItem.locator('.toggle')).not.toBeVisible();
-    await expect(todoItem.locator('label')).not.toBeVisible();
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.dblClickATodo(1);
+    await todoMvcPage.verifyATodoToggleNotVisible(1);
+    await todoMvcPage.verifyATodoLabelNotVisible(1);
     await checkNumberOfTodosInLocalStorage(page, 3);
   });
 
   test('should save edits on blur', async ({ page }) => {
-    const todoItems = page.locator('.todo-list li');
-    await todoItems.nth(1).dblclick();
-    await todoItems.nth(1).locator('.edit').fill('buy some sausages');
-    await todoItems.nth(1).locator('.edit').dispatchEvent('blur');
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.dblClickATodo(1);
+    await todoMvcPage.editATodoTextWithDispatch(1, 'buy some sausages');
 
-    await expect(todoItems).toHaveText([
+    await todoMvcPage.verifyTodosText([
       TODO_ITEMS[0],
       'buy some sausages',
-      TODO_ITEMS[2],
+      TODO_ITEMS[2]
     ]);
     await checkTodosInLocalStorage(page, 'buy some sausages');
   });
 
   test('should trim entered text', async ({ page }) => {
-    const todoItems = page.locator('.todo-list li');
-    await todoItems.nth(1).dblclick();
-    await todoItems.nth(1).locator('.edit').fill('    buy some sausages    ');
-    await todoItems.nth(1).locator('.edit').press('Enter');
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.dblClickATodo(1);
+    await todoMvcPage.editATodoText(1, '    buy some sausages    ');
 
-    await expect(todoItems).toHaveText([
+    await todoMvcPage.verifyTodosText([
       TODO_ITEMS[0],
       'buy some sausages',
-      TODO_ITEMS[2],
+      TODO_ITEMS[2]
     ]);
     await checkTodosInLocalStorage(page, 'buy some sausages');
   });
 
   test('should remove the item if an empty text string was entered', async ({ page }) => {
-    const todoItems = page.locator('.todo-list li');
-    await todoItems.nth(1).dblclick();
-    await todoItems.nth(1).locator('.edit').fill('');
-    await todoItems.nth(1).locator('.edit').press('Enter');
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.dblClickATodo(1);
+    await todoMvcPage.editATodoText(1, '');
 
-    await expect(todoItems).toHaveText([
+    await todoMvcPage.verifyTodosText([
       TODO_ITEMS[0],
-      TODO_ITEMS[2],
+      TODO_ITEMS[2]
     ]);
   });
 
   test('should cancel edits on escape', async ({ page }) => {
-    const todoItems = page.locator('.todo-list li');
-    await todoItems.nth(1).dblclick();
-    await todoItems.nth(1).locator('.edit').press('Escape');
-    await expect(todoItems).toHaveText(TODO_ITEMS);
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.dblClickATodo(1);
+    await todoMvcPage.escapeATodoText(1);
+
+    await todoMvcPage.verifyTodosText(TODO_ITEMS);
   });
 });
 
 test.describe('Counter', () => {
   test('should display the current number of todo items', async ({ page }) => {
-    await page.locator('.new-todo').fill(TODO_ITEMS[0]);
-    await page.locator('.new-todo').press('Enter');
-    await expect(page.locator('.todo-count')).toContainText('1');
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.open();
+    await todoMvcPage.addNewTodo(TODO_ITEMS[0]);
+    await todoMvcPage.verifyTodoCountLabelContains('1');
 
-    await page.locator('.new-todo').fill(TODO_ITEMS[1]);
-    await page.locator('.new-todo').press('Enter');
-    await expect(page.locator('.todo-count')).toContainText('2');
+    await todoMvcPage.addNewTodo(TODO_ITEMS[1]);
+    await todoMvcPage.verifyTodoCountLabelContains('2');
 
     await checkNumberOfTodosInLocalStorage(page, 2);
   });
@@ -257,54 +266,60 @@ test.describe('Counter', () => {
 
 test.describe('Clear completed button', () => {
   test.beforeEach(async ({ page }) => {
-    await createDefaultTodos(page);
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.open();
+    await createDefaultTodos(todoMvcPage);
   });
 
   test('should display the correct text', async ({ page }) => {
-    await page.locator('.todo-list li .toggle').first().check();
-    await expect(page.locator('.clear-completed')).toHaveText('Clear completed');
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.firstTodoToggleCheck();
+    await todoMvcPage.verifyClearCompletedLabel('Clear completed');
   });
 
   test('should remove completed items when clicked', async ({ page }) => {
-    const todoItems = page.locator('.todo-list li');
-    await todoItems.nth(1).locator('.toggle').check();
-    await page.locator('.clear-completed').click();
-    await expect(todoItems).toHaveCount(2);
-    await expect(todoItems).toHaveText([TODO_ITEMS[0], TODO_ITEMS[2]]);
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.toggleATodoCheck(1);
+    await todoMvcPage.clickClearCompletedLabel();
+    await todoMvcPage.verifyTodosCount(2);
+    await todoMvcPage.verifyTodosText([TODO_ITEMS[0], TODO_ITEMS[2]]);
   });
 
   test('should be hidden when there are no items that are completed', async ({ page }) => {
-    await page.locator('.todo-list li .toggle').first().check();
-    await page.locator('.clear-completed').click();
-    await expect(page.locator('.clear-completed')).toBeHidden();
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.firstTodoToggleCheck();
+    await todoMvcPage.clickClearCompletedLabel();
+    await todoMvcPage.verifyClearCompletedIsHidden();
   });
 });
 
 test.describe('Persistence', () => {
   test('should persist its data', async ({ page }) => {
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.open();
     for (const item of TODO_ITEMS.slice(0, 2)) {
-      await page.locator('.new-todo').fill(item);
-      await page.locator('.new-todo').press('Enter');
+      await todoMvcPage.addNewTodo(item);
     }
 
-    const todoItems = page.locator('.todo-list li');
-    await todoItems.nth(0).locator('.toggle').check();
-    await expect(todoItems).toHaveText([TODO_ITEMS[0], TODO_ITEMS[1]]);
-    await expect(todoItems).toHaveClass(['completed', '']);
+    await todoMvcPage.toggleATodoCheck(0);
+    await todoMvcPage.verifyTodosText([TODO_ITEMS[0], TODO_ITEMS[1]]);
+    await todoMvcPage.verifyTodoItemsClass(['completed', '']);
 
     // Ensure there is 1 completed item.
     checkNumberOfCompletedTodosInLocalStorage(page, 1);
 
     // Now reload.
-    await page.reload();
-    await expect(todoItems).toHaveText([TODO_ITEMS[0], TODO_ITEMS[1]]);
-    await expect(todoItems).toHaveClass(['completed', '']);
+    await todoMvcPage.reload();
+    await todoMvcPage.verifyTodosText([TODO_ITEMS[0], TODO_ITEMS[1]]);
+    await todoMvcPage.verifyTodoItemsClass(['completed', '']);
   });
 });
 
 test.describe('Routing', () => {
   test.beforeEach(async ({ page }) => {
-    await createDefaultTodos(page);
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.open();
+    await createDefaultTodos(todoMvcPage);
     // make sure the app had a chance to save updated todos in storage
     // before navigating to a new view, otherwise the items can get lost :(
     // in some frameworks like Durandal
@@ -370,10 +385,9 @@ test.describe('Routing', () => {
   });
 });
 
-async function createDefaultTodos(page: Page) {
+async function createDefaultTodos(todoMvcPage: TodoMvcPage) {
   for (const item of TODO_ITEMS) {
-    await page.locator('.new-todo').fill(item);
-    await page.locator('.new-todo').press('Enter');
+    await todoMvcPage.addNewTodo(item);
   }
 }
 

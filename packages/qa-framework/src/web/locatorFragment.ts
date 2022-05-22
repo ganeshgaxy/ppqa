@@ -1,25 +1,23 @@
-import { playwrightPageLocator } from "../utils/fixtureHooks";
+import { playwrightPage, playwrightPageLocator } from "../utils/fixtureHooks";
+import { Actionable } from "../utils/uiActions";
+import { PageLocatorExpect } from "../utils/uiAssertions";
+import { ElementOrFragmentProps } from "./generic";
 
 
-export interface LocatorFragmentProps{
+export interface LocatorFragmentProps extends ElementOrFragmentProps<LocatorFragmentProps>{
+    pageLocatorExpect: PageLocatorExpect;
     search(text: string): Promise<LocatorFragmentProps>;
     typeIn(text: string): Promise<LocatorFragmentProps>;
-    click(): Promise<LocatorFragmentProps>;
-    pressKey(text: string): Promise<LocatorFragmentProps>;
-
-    toHaveText(expected: string|RegExp|Array<string|RegExp>): Promise<LocatorFragmentProps>;
-    toHaveValue(value: string|RegExp): Promise<LocatorFragmentProps>;
-    toHaveAttribute(name: string, value: string|RegExp): Promise<LocatorFragmentProps>;
-    toHaveCSS(name: string, value: string|RegExp): Promise<LocatorFragmentProps>;
-    toHaveClass(expected: string|RegExp|Array<string|RegExp>): Promise<LocatorFragmentProps>;
-    toHaveCount(count: number): Promise<LocatorFragmentProps>;
-    toHaveId(id: string|RegExp): Promise<LocatorFragmentProps>;
+    findInLocator(locator: string): LocatorFragmentProps;
+    findNth(nth: number, locator: string): LocatorFragmentProps;
+    findFirst(locator: string): LocatorFragmentProps;
+    assert(): PageLocatorExpect;
 }
 
 export class LocatorFragment implements LocatorFragmentProps{
-    public async click(): Promise<LocatorFragmentProps> {
-        await playwrightPageLocator.click();
-        return this;
+    public pageLocatorExpect: PageLocatorExpect;
+    constructor(){
+        this.pageLocatorExpect = new PageLocatorExpect()
     }
     public async search(text: string): Promise<LocatorFragmentProps> {
         await playwrightPageLocator.type(text);
@@ -29,37 +27,51 @@ export class LocatorFragment implements LocatorFragmentProps{
         await playwrightPageLocator.type(text);
         return this;
     }
+    public findInLocator(locator: string): LocatorFragmentProps {
+        playwrightPage.find(locator, playwrightPageLocator.locator);
+        return this;
+    }
+    public findNth(nth: number, locator: string): LocatorFragmentProps {
+        playwrightPage.findNth(nth, locator);
+        return this;
+    }
+    public findFirst(locator: string): LocatorFragmentProps {
+        playwrightPage.findFirst(locator);
+        return this;
+    }
+    public async click(): Promise<LocatorFragmentProps> {
+        await playwrightPageLocator.click();
+        return this;
+    }
+    public async dispatchEvent(type: string): Promise<LocatorFragmentProps> {
+        await playwrightPageLocator.dispatchEvent(type);
+        return this;
+    }
+    public async dblclick(): Promise<LocatorFragmentProps> {
+        await playwrightPageLocator.dblclick();
+        return this;
+    }
+    public async check(): Promise<LocatorFragmentProps> {
+        await playwrightPageLocator.check();
+        return this;
+    }
+    public async uncheck(): Promise<LocatorFragmentProps> {
+        await playwrightPageLocator.uncheck();
+        return this;
+    }
     public async pressKey(text: string): Promise<LocatorFragmentProps> {
         await playwrightPageLocator.press(text);
         return this;
     }
-    
-    public async toHaveText(expected: string | RegExp | (string | RegExp)[]): Promise<LocatorFragmentProps> {
-        await playwrightPageLocator.toHaveText(expected);
+    public async verifyActionable(actionable: Actionable): Promise<LocatorFragmentProps> {
+        await playwrightPageLocator.verifyActionable(actionable);
         return this;
     }
-    public async toHaveValue(value: string | RegExp): Promise<LocatorFragmentProps> {
-        await playwrightPageLocator.toHaveValue(value);
+    public async verifyNotActionable(actionable: Actionable): Promise<LocatorFragmentProps> {
+        await playwrightPageLocator.verifyNotActionable(actionable);
         return this;
     }
-    public async toHaveAttribute(name: string, value: string | RegExp): Promise<LocatorFragmentProps> {
-        await playwrightPageLocator.toHaveAttribute(name, value);
-        return this;
-    }
-    public async toHaveCSS(name: string, value: string | RegExp): Promise<LocatorFragmentProps> {
-        await playwrightPageLocator.toHaveCSS(name, value);
-        return this;
-    }
-    public async toHaveClass(expected: string | RegExp | (string | RegExp)[]): Promise<LocatorFragmentProps> {
-        await playwrightPageLocator.toHaveClass(expected);
-        return this;
-    }
-    public async toHaveCount(count: number): Promise<LocatorFragmentProps> {
-        await playwrightPageLocator.toHaveCount(count);
-        return this;
-    }
-    public async toHaveId(id: string | RegExp): Promise<LocatorFragmentProps> {
-        await playwrightPageLocator.toHaveId(id);
-        return this;
+    public assert(): PageLocatorExpect {
+        return this.pageLocatorExpect;
     }
 }

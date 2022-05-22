@@ -1,15 +1,16 @@
-import { playwrightPage, registerPlaywrightPage, registerPlaywrightExpect } from "./utils/fixtureHooks";
+import { playwrightPage, registerPlaywrightPage, registerPlaywrightExpect, registerAppUrl } from "./utils/fixtureHooks";
 import { WebElement, useWebElement } from "./web/webElement";
-import { WebFragment } from "./web/webFragment";
+import { WebFragment, URLBuilder } from "./web/webFragment";
 import { Actionable, createFragment } from './utils/uiActions';
 
-export { playwrightPage, registerPlaywrightPage, registerPlaywrightExpect } from "./utils/fixtureHooks";
-export { WebFragment } from './web/webFragment';
+export { playwrightPage, registerPlaywrightPage, registerPlaywrightExpect, registerAppUrl } from "./utils/fixtureHooks";
+export { WebFragment, URLBuilder, URLProps } from './web/webFragment';
 export { TypeWebElement, WebElement, useWebElement } from './web/webElement';
 export { Actionable, LocatorOptions, createFragment } from './utils/uiActions';
 
 export default abstract class QAFramework {
     static playwrightPage = playwrightPage;
+    static registerAppUrl = registerAppUrl;
     static registerPlaywrightPage = registerPlaywrightPage;
     static registerPlaywrightExpect = registerPlaywrightExpect;
     static WebFragment = WebFragment;
@@ -17,4 +18,5 @@ export default abstract class QAFramework {
     static useWebElement = useWebElement;
     static Actionable = Actionable;
     static createFragment = createFragment;
+    static URLBuilder = URLBuilder;
 }

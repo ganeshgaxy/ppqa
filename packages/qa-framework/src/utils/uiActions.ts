@@ -1,20 +1,24 @@
 import { Locator, Page } from "@playwright/test";
+import { LocatorExpectProps, PageExpectProps } from "../web/generic";
+import { URLProps } from "../web/webFragment";
 import { PageCoreCalls, LocatorCoreCalls } from "./coreCalls";
 
-export interface PlaywrightPageProps{
+export interface PlaywrightPageProps extends PageExpectProps<void>{
     page: Page;
-    goto(url: string): Promise<void>;
+    goto(urlProps: URLProps): Promise<void>;
+    reload(): Promise<void>;
     click(selector: string): Promise<void>;
+    dispatchEvent(selector: string, type: string): Promise<void>;
+    dblclick(selector: string): Promise<void>;
+    check(selector: string): Promise<void>;
+    uncheck(selector: string): Promise<void>;
     type(selector: string, text: string): Promise<void>;
-    find(locator: string): PlaywrightPageLocator;
-
-    toHaveText(locator: string, expected: string|RegExp|Array<string|RegExp>): Promise<void>;
-    toHaveValue(locator: string, value: string|RegExp): Promise<void>;
-    toHaveAttribute(locator: string, name: string, value: string|RegExp): Promise<void>;
-    toHaveCSS(locator: string, name: string, value: string|RegExp): Promise<void>;
-    toHaveClass(locator: string, expected: string|RegExp|Array<string|RegExp>): Promise<void>;
-    toHaveCount(locator: string, count: number): Promise<void>;
-    toHaveId(locator: string, id: string|RegExp): Promise<void>;
+    find(locator: string, baseLocator?: Locator): PlaywrightPageLocator;
+    findFirst(locator: string): PlaywrightPageLocator;
+    findNth(nth: number, locator: string): PlaywrightPageLocator;
+    verifyActionable(locator: string, actionable: Actionable): Promise<void>;
+    verifyNotActionable(locator: string, actionable: Actionable): Promise<void>
+    not(): void;
 }
 
 export enum Actionable {
@@ -47,19 +51,52 @@ export class PlaywrightPage implements PlaywrightPageProps{
     constructor(page: Page){
         this.page=page;
     }
-    public async goto(url: string): Promise<void> {
-        await PageCoreCalls.goto(url)
+    public async goto(urlProps: URLProps): Promise<void> {
+        await PageCoreCalls.goto(urlProps)
     }
-    public async click(selector: string, options?: LocatorOptions): Promise<void> {
-        await PageCoreCalls.click(selector, options && options);
+    public async reload(): Promise<void> {
+        await PageCoreCalls.reload();
     }
-    public async type(selector: string, text: string, options?: LocatorOptions): Promise<void> {
-        await PageCoreCalls.type(selector, text, options && options);
+    public async click(locator: string, options?: LocatorOptions): Promise<void> {
+        await PageCoreCalls.click(locator, options && options);
     }
-    public find(locator: string): PlaywrightPageLocator {
-        return PageCoreCalls.find(locator)
+    public async dispatchEvent(locator: string, type: string, options?: LocatorOptions): Promise<void> {
+        await PageCoreCalls.dispatchEvent(locator, type, options && options);
+    }
+    public async dblclick(locator: string, options?: LocatorOptions): Promise<void> {
+        await PageCoreCalls.dblclick(locator, options && options);
+    }
+    public async check(locator: string, options?: LocatorOptions): Promise<void> {
+        await PageCoreCalls.check(locator, options && options);
+    }
+    public async uncheck(locator: string, options?: LocatorOptions): Promise<void> {
+        await PageCoreCalls.uncheck(locator, options && options);
+    }
+    public async type(locator: string, text: string, options?: LocatorOptions): Promise<void> {
+        await PageCoreCalls.type(locator, text, options && options);
+    }
+    public find(locator: string, baseLocator?: Locator): PlaywrightPageLocator {
+        return PageCoreCalls.find(locator, baseLocator && baseLocator)
+    }
+    public findFirst(locator: string): PlaywrightPageLocator {
+        return PageCoreCalls.findFirst(locator)
+    }
+    public findNth(nth: number, locator: string): PlaywrightPageLocator {
+        return PageCoreCalls.findNth(nth, locator)
+    }
+    public async verifyActionable(locator: string, actionable: Actionable): Promise<void> {
+        await PageCoreCalls.verifyActionable(locator, actionable);
+    }
+    public async verifyNotActionable(locator: string, actionable: Actionable): Promise<void> {
+        await PageCoreCalls.verifyNotActionable(locator, actionable);
     }
 
+    public not(): void {
+        PageCoreCalls.negativeAssertion = true;
+    }
+    public async toBeEmpty(locator: string): Promise<void> {
+        await PageCoreCalls.toBeEmpty(locator);
+    }
     public async toHaveText(locator: string, expected: string | RegExp | (string | RegExp)[]): Promise<void> {
         await PageCoreCalls.toHaveText(locator, expected);
     }
@@ -78,6 +115,9 @@ export class PlaywrightPage implements PlaywrightPageProps{
     public async toHaveCount(locator: string, count: number): Promise<void> {
         await PageCoreCalls.toHaveCount(locator, count);
     }
+    public async toContainText(locator: string, expected: string | RegExp | (string | RegExp)[]): Promise<void> {
+        await PageCoreCalls.toContainText(locator, expected);
+    }
     public async toHaveId(locator: string, id: string | RegExp): Promise<void> {
         await PageCoreCalls.toHaveId(locator, id);
     }
@@ -90,20 +130,22 @@ export const usePlaywrightPage = (page: Page) : PlaywrightPageProps => {
     return new Proxy(returnObject, handler) as PlaywrightPageProps;
 }
 
-export interface PlaywrightPageLocatorProps{
+export interface PlaywrightPageLocatorProps extends LocatorExpectProps<void>{
     locator: Locator;
     options: LocatorOptions | undefined;
     click(): Promise<void>;
+    dispatchEvent(type: string): Promise<void>;
+    dblclick(): Promise<void>;
+    check(): Promise<void>;
+    uncheck(): Promise<void>;
     type(text: string): Promise<void>;
     press(text: string): Promise<void>;
-
-    toHaveText(expected: string|RegExp|Array<string|RegExp>): Promise<void>;
-    toHaveValue(value: string|RegExp): Promise<void>;
-    toHaveAttribute(name: string, value: string|RegExp): Promise<void>;
-    toHaveCSS(name: string, value: string|RegExp): Promise<void>;
-    toHaveClass(expected: string|RegExp|Array<string|RegExp>): Promise<void>;
-    toHaveCount(count: number): Promise<void>;
-    toHaveId(id: string|RegExp): Promise<void>;
+    find(locator: string): PlaywrightPageLocator;
+    findFirst(): PlaywrightPageLocator;
+    findNth(nth: number): PlaywrightPageLocator;
+    verifyActionable(actionable: Actionable): Promise<void>
+    verifyNotActionable(actionable: Actionable): Promise<void>
+    not(): void;
 }
 
 export class PlaywrightPageLocator implements PlaywrightPageLocatorProps{
@@ -116,13 +158,46 @@ export class PlaywrightPageLocator implements PlaywrightPageLocatorProps{
     public async click(): Promise<void> {
         await LocatorCoreCalls.click(this.locator, this.options && this.options);
     }
+    public async dispatchEvent(type: string): Promise<void> {
+        await LocatorCoreCalls.dispatchEvent(this.locator, type, this.options && this.options);
+    }
+    public async dblclick(): Promise<void> {
+        await LocatorCoreCalls.dblclick(this.locator, this.options && this.options);
+    }
+    public async check(options?: LocatorOptions): Promise<void> {
+        await LocatorCoreCalls.check(this.locator, options && options);
+    }
+    public async uncheck(options?: LocatorOptions): Promise<void> {
+        await LocatorCoreCalls.uncheck(this.locator, options && options);
+    }
     public async press(text: string): Promise<void> {
         await LocatorCoreCalls.press(this.locator, text, this.options && this.options);
     }
     public async type(text: string): Promise<void> {
         await LocatorCoreCalls.type(this.locator, text, this.options && this.options);
     }
+    public find(locator: string): PlaywrightPageLocator {
+        return LocatorCoreCalls.find(locator, this.locator)
+    }
+    public findFirst(): PlaywrightPageLocator {
+        return LocatorCoreCalls.findFirst(this.locator)
+    }
+    public findNth(nth: number): PlaywrightPageLocator {
+        return LocatorCoreCalls.findNth(nth, this.locator)
+    }
+    public async verifyActionable(actionable: Actionable): Promise<void> {
+        await LocatorCoreCalls.verifyActionable(this.locator, actionable);
+    }
+    public async verifyNotActionable(actionable: Actionable): Promise<void> {
+        await LocatorCoreCalls.verifyNotActionable(this.locator, actionable);
+    }
 
+    public not(): void {
+        LocatorCoreCalls.negativeAssertion = !LocatorCoreCalls.negativeAssertion;
+    }
+    public async toBeEmpty(): Promise<void> {
+        await LocatorCoreCalls.toBeEmpty(this.locator);
+    }
     public async toHaveText(expected: string | RegExp | (string | RegExp)[]): Promise<void> {
         await LocatorCoreCalls.toHaveText(this.locator, expected);
     }
@@ -141,6 +216,9 @@ export class PlaywrightPageLocator implements PlaywrightPageLocatorProps{
     public async toHaveCount(count: number): Promise<void> {
         await LocatorCoreCalls.toHaveCount(this.locator, count);
     }
+    public async toContainText(expected: string | RegExp | (string | RegExp)[]): Promise<void> {
+        await LocatorCoreCalls.toContainText(this.locator, expected);
+    }
     public async toHaveId(id: string | RegExp): Promise<void> {
         await LocatorCoreCalls.toHaveId(this.locator, id);
     }
@@ -153,8 +231,8 @@ export const usePlaywrightPageLocator = (locator: Locator, options?: LocatorOpti
     return new Proxy(returnObject, handler) as PlaywrightPageLocatorProps;
 }
 
-export const createFragment = <T extends object>(ClassObject: {new (url?: string): T}, url?: string) => {
-    const returnObject : T = new ClassObject(url && url);
+export const createFragment = <T extends object>(ClassObject: {new (urlProps?: URLProps): T}, urlProps?: URLProps) => {
+    const returnObject : T = new ClassObject(urlProps && urlProps);
     
     const handler = {}
     return new Proxy(returnObject, handler) as T;

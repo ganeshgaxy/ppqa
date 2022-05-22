@@ -1,19 +1,69 @@
 
-import { playwrightExpect, playwrightPage } from "../utils/fixtureHooks";
+import { Locator } from "playwright";
+import { appInfo, playwrightExpect, playwrightPage, playwrightPageLocator } from "../utils/fixtureHooks";
 import { Actionable } from "../utils/uiActions";
 import { LocatorFragmentProps, LocatorFragment } from "./locatorFragment";
 
 export interface WebFragmentProps{
-    open(url?: string): Promise<WebFragmentProps>;
+    open(urlProps?: URLProps): Promise<WebFragmentProps>;
+    reload(): Promise<WebFragmentProps>;
+}
+
+export class URLBuilder{
+    private _url: URLProps;
+
+    /**
+     * A Simple constructor to initialize the _page value
+     * without this, above data member will become undefined
+     */
+    constructor(){
+        this._url={
+            url:""
+        };
+    }
+    culture(culture: string): URLBuilder{
+        this._url.culture= culture;
+        return this;
+    }
+    suffix(suffix: string): URLBuilder{
+        this._url.suffix=suffix;
+        return this;
+    }
+    extra(extra: string): URLBuilder{
+        this._url.extra=extra;
+        return this;
+    }
+    expectedTitle(expectedTitle: string): URLBuilder{
+        this._url.expectedTitle=expectedTitle;
+        return this;
+    }
+
+    build(): URLProps {
+        this._url.url=`${appInfo.baseURL}${this._url.suffix}`;
+        return this._url;
+    }
+}
+
+export interface URLProps{
+    culture?: string,
+    suffix?: string,
+    extra?: string,
+    expectedTitle?: string,
+    url: string
 }
 
 export class WebFragment implements WebFragmentProps{
-    protected defaultURl: string | undefined;
-    constructor(defaultUrl?: string) {
-        this.defaultURl = defaultUrl && defaultUrl
+    protected defaultURL: URLProps | undefined;
+    constructor(urlProps?: URLProps) {
+        this.defaultURL = urlProps && urlProps
     }
-    public async open(url?: string): Promise<WebFragmentProps> {
-        await playwrightPage.goto(url? url : this.defaultURl? this.defaultURl : 'ha ha ha');
+    public async open(urlProps?: URLProps): Promise<WebFragmentProps> {
+        urlProps && await playwrightPage.goto(urlProps);
+        !urlProps && this.defaultURL && await playwrightPage.goto(this.defaultURL);
+        return this;
+    }
+    public async reload(): Promise<WebFragmentProps> {
+        await playwrightPage.reload();
         return this;
     }
     protected webElement(locator: string): LocatorFragmentProps {
@@ -25,38 +75,79 @@ export class WebFragment implements WebFragmentProps{
         if(actionable && Array.isArray(actionable)){
             for(let actionableCheck of actionable){
                 new Promise((resolve, _)=>{
-                    resolve(checkActionable(locator, actionableCheck))
+                    resolve(checkPageActionable(locator, actionableCheck))
                 });
             }
         }
         else if(actionable){
             new Promise((resolve, _)=>{
-                resolve(checkActionable(locator, actionable))
+                resolve(checkPageActionable(locator, actionable))
+            });
+        }
+        return new LocatorFragment();
+    }
+    protected waitForNthWebElement(locator: string, nth: number, actionable?: Actionable | Actionable[]): LocatorFragmentProps {
+        playwrightPage.findNth(nth, locator);
+        if(actionable && Array.isArray(actionable)){
+            for(let actionableCheck of actionable){
+                new Promise((resolve, _)=>{
+                    resolve(checkPageActionable(locator, actionableCheck))
+                });
+            }
+        }
+        else if(actionable){
+            new Promise((resolve, _)=>{
+                resolve(checkPageActionable(locator, actionable))
             });
         }
         return new LocatorFragment();
     }
 }
 
-export const checkActionable = async(locator: string, actionable: Actionable) => {
+export const checkPageActionable = async(locator: string, actionable: Actionable, negative: boolean= false) => {
     switch(actionable){
         case Actionable.ToBeChecked:
-            playwrightExpect.expect(await playwrightPage.page.isChecked(locator)).toBeTruthy();
+            negative ? playwrightExpect.expect(await playwrightPage.page.isChecked(locator)).toBeFalsy() : playwrightExpect.expect(await playwrightPage.page.isChecked(locator)).toBeTruthy();
             break;
         case Actionable.ToBeDisabled:
-            playwrightExpect.expect(await playwrightPage.page.isDisabled(locator)).toBeTruthy();
+            negative ? playwrightExpect.expect(await playwrightPage.page.isDisabled(locator)).toBeFalsy() : playwrightExpect.expect(await playwrightPage.page.isDisabled(locator)).toBeTruthy();
             break;
         case Actionable.ToBeEditable:
-            playwrightExpect.expect(await playwrightPage.page.isEditable(locator)).toBeTruthy();
+            negative ? playwrightExpect.expect(await playwrightPage.page.isEditable(locator)).toBeFalsy() : playwrightExpect.expect(await playwrightPage.page.isEditable(locator)).toBeTruthy();
             break;
         case Actionable.ToBeEnabled:
-            playwrightExpect.expect(await playwrightPage.page.isEnabled(locator)).toBeTruthy();
+            negative ? playwrightExpect.expect(await playwrightPage.page.isEnabled(locator)).toBeFalsy() : playwrightExpect.expect(await playwrightPage.page.isEnabled(locator)).toBeTruthy();
             break;
         case Actionable.ToBeHidden:
-            playwrightExpect.expect(await playwrightPage.page.isHidden(locator)).toBeTruthy();
+            negative ? playwrightExpect.expect(await playwrightPage.page.isHidden(locator)).toBeFalsy() : playwrightExpect.expect(await playwrightPage.page.isHidden(locator)).toBeTruthy();
             break;
         case Actionable.ToBeVisible:
-            playwrightExpect.expect(await playwrightPage.page.isVisible(locator)).toBeTruthy();
+            negative ? playwrightExpect.expect(await playwrightPage.page.isVisible(locator)).toBeFalsy() : playwrightExpect.expect(await playwrightPage.page.isVisible(locator)).toBeTruthy();
+            break;
+        default:
+            console.log('HardPass')
+    }
+}
+
+export const checkLocatorActionable = async(locator: Locator, actionable: Actionable, negative: boolean= false) => {
+    switch(actionable){
+        case Actionable.ToBeChecked:
+            negative ? playwrightExpect.expect(await locator.isChecked()).toBeFalsy() : playwrightExpect.expect(await locator.isChecked()).toBeTruthy();
+            break;
+        case Actionable.ToBeDisabled:
+            negative ? playwrightExpect.expect(await locator.isDisabled()).toBeFalsy() : playwrightExpect.expect(await locator.isDisabled()).toBeTruthy();
+            break;
+        case Actionable.ToBeEditable:
+            negative ? playwrightExpect.expect(await locator.isEditable()).toBeFalsy() : playwrightExpect.expect(await locator.isEditable()).toBeTruthy();
+            break;
+        case Actionable.ToBeEnabled:
+            negative ? playwrightExpect.expect(await locator.isEnabled()).toBeFalsy() : playwrightExpect.expect(await locator.isEnabled()).toBeTruthy();
+            break;
+        case Actionable.ToBeHidden:
+            negative ? playwrightExpect.expect(await locator.isHidden()).toBeFalsy() : playwrightExpect.expect(await locator.isHidden()).toBeTruthy();
+            break;
+        case Actionable.ToBeVisible:
+            negative ? playwrightExpect.expect(await locator.isVisible()).toBeFalsy() : playwrightExpect.expect(await locator.isVisible()).toBeTruthy();
             break;
         default:
             console.log('HardPass')
