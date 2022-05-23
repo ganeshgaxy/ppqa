@@ -6,6 +6,6 @@ dist/
 project/*
 !project/todomvc
 !project/todomvc/*
-test/*
-!test/todomvc
-!test/todomvc/*
+tests/*
+!tests/todomvc
+!tests/todomvc/*
