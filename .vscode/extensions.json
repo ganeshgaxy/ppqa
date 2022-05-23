@@ -1,0 +1,16 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=827846
+  // for the documentation about the extensions.json format
+  "recommendations": [
+    "aaron-bond.better-comments",
+    "pkief.material-icon-theme",
+    "sdras.night-owl",
+    "christian-kohler.path-intellisense",
+    "esbenp.prettier-vscode",
+    "rebornix.project-snippets",
+    "firsttris.vscode-jest-runner",
+    "mintlify.document",
+    "dbaeumer.vscode-eslint",
+    "streetsidesoftware.code-spell-checker"
+  ]
+}
