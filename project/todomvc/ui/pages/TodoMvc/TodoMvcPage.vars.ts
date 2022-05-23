@@ -1,4 +1,4 @@
-import { Actionable, URLBuilder, URLProps, useWebElement, WebElement } from "qa-framework";
+import { URLBuilder, URLProps, useWebElement, WebElement } from "qa-framework";
 
 export const TodoMvcPageProps = (): URLProps => new URLBuilder().suffix("todomvc").build();
 
@@ -12,6 +12,7 @@ export abstract class TodoMvcPageLocators{
     static todoItemsLocator = '.todo-list li';
     static todoToggleItemsLocator = '.todo-list li .toggle';
     static clearCompletedLabelLocator = '.clear-completed';
+    static filterTodoWithTextLocator = (filterText: string) => `.filters >> text=${filterText}`;
 }
 
 export abstract class TodoMvcPageVars{
@@ -25,4 +26,5 @@ export abstract class TodoMvcPageVars{
     static todoToggleItems = (): WebElement => useWebElement({locator: TodoMvcPageLocators.todoToggleItemsLocator})
     static nthTodoItem = (nth: number) => useWebElement({locator: TodoMvcPageLocators.todoItemsLocator, nth})
     static clearCompletedLabel = (): WebElement => useWebElement({locator: TodoMvcPageLocators.clearCompletedLabelLocator})
+    static filterTodoWithText = (filterText: string): WebElement => useWebElement({locator: TodoMvcPageLocators.filterTodoWithTextLocator(filterText)})
 }

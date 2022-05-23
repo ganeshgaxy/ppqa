@@ -41,6 +41,16 @@ export class TodoMvcPage extends WebFragment{
         await toggleATodoBtn.findFirst().check();
     }
 
+    async clickOnFilterTodosWithText(filterText: string){
+        let filterTodoWithText = TodoMvcPageVars.filterTodoWithText(filterText);
+        await filterTodoWithText.click();
+    }
+
+    async nthTodoToggleCheck(nth: number){
+        let toggleATodoBtn: WebElement = TodoMvcPageVars.todoToggleItems();
+        await toggleATodoBtn.findNth(nth).check();
+    }
+
     async dblClickATodo(nth: number){
         let toggleATodoBtn: WebElement = TodoMvcPageVars.nthTodoItem(nth);
         await toggleATodoBtn.dblclick();
@@ -58,6 +68,11 @@ export class TodoMvcPage extends WebFragment{
 
     async clickClearCompletedLabel(){
         await this.waitForWebElement(TodoMvcPageLocators.clearCompletedLabelLocator, Actionable.ToBeEnabled).click();
+    }
+
+    async verifyFilterTodosClassWithText(filterText: string, filterClass: string | string[]){
+        let filterTodoWithText = TodoMvcPageVars.filterTodoWithText(filterText);
+        await filterTodoWithText.assert().toHaveClass(filterClass);
     }
 
     async verifyClearCompletedIsHidden(){

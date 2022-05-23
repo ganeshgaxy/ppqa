@@ -3,3 +3,9 @@ node_modules/
 /playwright-report/
 /playwright/.cache/
 dist/
+project/*
+!project/todomvc
+!project/todomvc/*
+test/*
+!test/todomvc
+!test/todomvc/*

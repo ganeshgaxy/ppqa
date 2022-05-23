@@ -1,7 +1,7 @@
 import { test, expect, Page } from '@playwright/test';
 import QAFramework, { createFragment } from 'qa-framework';
-import { TodoMvcPage } from '../project/ui/pages/TodoMvc/TodoMvcPage';
-import { TodoMvcPageProps } from '../project/ui/pages/TodoMvc/TodoMvcPage.vars';
+import { TodoMvcPage } from '../../project/todomvc/ui/pages/TodoMvc/TodoMvcPage';
+import { TodoMvcPageProps } from '../../project/todomvc/ui/pages/TodoMvc/TodoMvcPage.vars';
 
 test.beforeEach(async ({ page }) => {
   QAFramework.registerAppUrl('https://demo.playwright.dev/');
@@ -327,61 +327,67 @@ test.describe('Routing', () => {
   });
 
   test('should allow me to display active items', async ({ page }) => {
-    await page.locator('.todo-list li .toggle').nth(1).check();
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.nthTodoToggleCheck(1);
+
     await checkNumberOfCompletedTodosInLocalStorage(page, 1);
-    await page.locator('.filters >> text=Active').click();
-    await expect(page.locator('.todo-list li')).toHaveCount(2);
-    await expect(page.locator('.todo-list li')).toHaveText([TODO_ITEMS[0], TODO_ITEMS[2]]);
+    await todoMvcPage.clickOnFilterTodosWithText('Active');
+    await todoMvcPage.verifyTodosCount(2);
+    await todoMvcPage.verifyTodosText([TODO_ITEMS[0], TODO_ITEMS[2]]);
   });
 
   test('should respect the back button', async ({ page }) => {
-    await page.locator('.todo-list li .toggle').nth(1).check();
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.nthTodoToggleCheck(1);
     await checkNumberOfCompletedTodosInLocalStorage(page, 1);
 
     await test.step('Showing all items', async () => {
-      await page.locator('.filters >> text=All').click();
-      await expect(page.locator('.todo-list li')).toHaveCount(3);
+      await todoMvcPage.clickOnFilterTodosWithText('All');
+      await todoMvcPage.verifyTodosCount(3);
     });
 
     await test.step('Showing active items', async () => {
-      await page.locator('.filters >> text=Active').click();
+      await todoMvcPage.clickOnFilterTodosWithText('Active');
     });
 
     await test.step('Showing completed items', async () => {
-      await page.locator('.filters >> text=Completed').click();
+      await todoMvcPage.clickOnFilterTodosWithText('Completed');
     });
 
-    await expect(page.locator('.todo-list li')).toHaveCount(1);
-    await page.goBack();
-    await expect(page.locator('.todo-list li')).toHaveCount(2);
-    await page.goBack();
-    await expect(page.locator('.todo-list li')).toHaveCount(3);
+    await todoMvcPage.verifyTodosCount(1);
+    await todoMvcPage.goBack();
+    await todoMvcPage.verifyTodosCount(2);
+    await todoMvcPage.goBack();
+    await todoMvcPage.verifyTodosCount(3);
   });
 
   test('should allow me to display completed items', async ({ page }) => {
-    await page.locator('.todo-list li .toggle').nth(1).check();
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.nthTodoToggleCheck(1);
     await checkNumberOfCompletedTodosInLocalStorage(page, 1);
-    await page.locator('.filters >> text=Completed').click();
-    await expect(page.locator('.todo-list li')).toHaveCount(1);
+    await todoMvcPage.clickOnFilterTodosWithText('Completed');
+    await todoMvcPage.verifyTodosCount(1);
   });
 
   test('should allow me to display all items', async ({ page }) => {
-    await page.locator('.todo-list li .toggle').nth(1).check();
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.nthTodoToggleCheck(1);
     await checkNumberOfCompletedTodosInLocalStorage(page, 1);
-    await page.locator('.filters >> text=Active').click();
-    await page.locator('.filters >> text=Completed').click();
-    await page.locator('.filters >> text=All').click();
-    await expect(page.locator('.todo-list li')).toHaveCount(3);
+    await todoMvcPage.clickOnFilterTodosWithText('Active');
+    await todoMvcPage.clickOnFilterTodosWithText('Completed');
+    await todoMvcPage.clickOnFilterTodosWithText('All');
+    await todoMvcPage.verifyTodosCount(3);
   });
 
   test('should highlight the currently applied filter', async ({ page }) => {
-    await expect(page.locator('.filters >> text=All')).toHaveClass('selected');
-    await page.locator('.filters >> text=Active').click();
+    let todoMvcPage: TodoMvcPage = createFragment(TodoMvcPage, TodoMvcPageProps());
+    await todoMvcPage.verifyFilterTodosClassWithText('All', 'selected')
+    await todoMvcPage.clickOnFilterTodosWithText('Active');
     // Page change - active items.
-    await expect(page.locator('.filters >> text=Active')).toHaveClass('selected');
-    await page.locator('.filters >> text=Completed').click();
+    await todoMvcPage.verifyFilterTodosClassWithText('Active', 'selected')
+    await todoMvcPage.clickOnFilterTodosWithText('Completed');
     // Page change - completed items.
-    await expect(page.locator('.filters >> text=Completed')).toHaveClass('selected');
+    await todoMvcPage.verifyFilterTodosClassWithText('Completed', 'selected')
   });
 });
 

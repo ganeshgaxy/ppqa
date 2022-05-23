@@ -66,6 +66,10 @@ export class WebFragment implements WebFragmentProps{
         await playwrightPage.reload();
         return this;
     }
+    public async goBack(): Promise<WebFragmentProps> {
+        await playwrightPage.goBack();
+        return this;
+    }
     protected webElement(locator: string): LocatorFragmentProps {
         playwrightPage.find(locator);
         return new LocatorFragment();

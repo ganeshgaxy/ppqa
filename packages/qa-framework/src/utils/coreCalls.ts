@@ -12,6 +12,9 @@ export abstract class PageCoreCalls{
     public static reload = async (): Promise<void> => {
         await playwrightPage.page.reload();
     }
+    public static goBack = async (): Promise<void> => {
+        await playwrightPage.page.goBack();
+    }
     public static click = async (locator: string, options?: LocatorOptions): Promise<void> => {
         await playwrightPage.page.click(locator);
     }

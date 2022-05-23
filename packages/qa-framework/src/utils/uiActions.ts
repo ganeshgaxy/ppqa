@@ -7,6 +7,7 @@ export interface PlaywrightPageProps extends PageExpectProps<void>{
     page: Page;
     goto(urlProps: URLProps): Promise<void>;
     reload(): Promise<void>;
+    goBack(): Promise<void>;
     click(selector: string): Promise<void>;
     dispatchEvent(selector: string, type: string): Promise<void>;
     dblclick(selector: string): Promise<void>;
@@ -56,6 +57,9 @@ export class PlaywrightPage implements PlaywrightPageProps{
     }
     public async reload(): Promise<void> {
         await PageCoreCalls.reload();
+    }
+    public async goBack(): Promise<void> {
+        await PageCoreCalls.goBack();
     }
     public async click(locator: string, options?: LocatorOptions): Promise<void> {
         await PageCoreCalls.click(locator, options && options);
