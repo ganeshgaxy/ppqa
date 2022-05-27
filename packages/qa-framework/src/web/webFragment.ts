@@ -5,7 +5,7 @@ import {
   playwrightPage,
   playwrightPageLocator,
 } from '../utils/fixtureHooks';
-import { Actionable } from '../utils/uiActions';
+import { Actionable, FindOptions, LocatorOptions } from '../utils/uiActions';
 import { GenericExpect, PageLocatorExpect } from '../utils/uiAssertions';
 import { LocatorFragmentProps, LocatorFragment } from './locatorFragment';
 
@@ -210,61 +210,62 @@ export class WebFragmentActions implements WebFragmentActionsProps {
 export const checkPageActionable = async (
   locator: string,
   actionable: Actionable,
-  negative: boolean = false
+  negative: boolean = false,
+  options?: LocatorOptions
 ) => {
   switch (actionable) {
     case Actionable.ToBeChecked:
       negative
         ? playwrightExpect
-            .expect(await playwrightPage.page.isChecked(locator))
+            .expect(await playwrightPage.page.isChecked(locator, options))
             .toBeFalsy()
         : playwrightExpect
-            .expect(await playwrightPage.page.isChecked(locator))
+            .expect(await playwrightPage.page.isChecked(locator, options))
             .toBeTruthy();
       break;
     case Actionable.ToBeDisabled:
       negative
         ? playwrightExpect
-            .expect(await playwrightPage.page.isDisabled(locator))
+            .expect(await playwrightPage.page.isDisabled(locator, options))
             .toBeFalsy()
         : playwrightExpect
-            .expect(await playwrightPage.page.isDisabled(locator))
+            .expect(await playwrightPage.page.isDisabled(locator, options))
             .toBeTruthy();
       break;
     case Actionable.ToBeEditable:
       negative
         ? playwrightExpect
-            .expect(await playwrightPage.page.isEditable(locator))
+            .expect(await playwrightPage.page.isEditable(locator, options))
             .toBeFalsy()
         : playwrightExpect
-            .expect(await playwrightPage.page.isEditable(locator))
+            .expect(await playwrightPage.page.isEditable(locator, options))
             .toBeTruthy();
       break;
     case Actionable.ToBeEnabled:
       negative
         ? playwrightExpect
-            .expect(await playwrightPage.page.isEnabled(locator))
+            .expect(await playwrightPage.page.isEnabled(locator, options))
             .toBeFalsy()
         : playwrightExpect
-            .expect(await playwrightPage.page.isEnabled(locator))
+            .expect(await playwrightPage.page.isEnabled(locator, options))
             .toBeTruthy();
       break;
     case Actionable.ToBeHidden:
       negative
         ? playwrightExpect
-            .expect(await playwrightPage.page.isHidden(locator))
+            .expect(await playwrightPage.page.isHidden(locator, options))
             .toBeFalsy()
         : playwrightExpect
-            .expect(await playwrightPage.page.isHidden(locator))
+            .expect(await playwrightPage.page.isHidden(locator, options))
             .toBeTruthy();
       break;
     case Actionable.ToBeVisible:
       negative
         ? playwrightExpect
-            .expect(await playwrightPage.page.isVisible(locator))
+            .expect(await playwrightPage.page.isVisible(locator, options))
             .toBeFalsy()
         : playwrightExpect
-            .expect(await playwrightPage.page.isVisible(locator))
+            .expect(await playwrightPage.page.isVisible(locator, options))
             .toBeTruthy();
       break;
     default:
@@ -275,38 +276,49 @@ export const checkPageActionable = async (
 export const checkLocatorActionable = async (
   locator: Locator,
   actionable: Actionable,
-  negative: boolean = false
+  negative: boolean = false,
+  options?: LocatorOptions
 ) => {
   switch (actionable) {
     case Actionable.ToBeChecked:
       negative
-        ? playwrightExpect.expect(await locator.isChecked()).toBeFalsy()
-        : playwrightExpect.expect(await locator.isChecked()).toBeTruthy();
+        ? playwrightExpect.expect(await locator.isChecked(options)).toBeFalsy()
+        : playwrightExpect
+            .expect(await locator.isChecked(options))
+            .toBeTruthy();
       break;
     case Actionable.ToBeDisabled:
       negative
-        ? playwrightExpect.expect(await locator.isDisabled()).toBeFalsy()
-        : playwrightExpect.expect(await locator.isDisabled()).toBeTruthy();
+        ? playwrightExpect.expect(await locator.isDisabled(options)).toBeFalsy()
+        : playwrightExpect
+            .expect(await locator.isDisabled(options))
+            .toBeTruthy();
       break;
     case Actionable.ToBeEditable:
       negative
-        ? playwrightExpect.expect(await locator.isEditable()).toBeFalsy()
-        : playwrightExpect.expect(await locator.isEditable()).toBeTruthy();
+        ? playwrightExpect.expect(await locator.isEditable(options)).toBeFalsy()
+        : playwrightExpect
+            .expect(await locator.isEditable(options))
+            .toBeTruthy();
       break;
     case Actionable.ToBeEnabled:
       negative
-        ? playwrightExpect.expect(await locator.isEnabled()).toBeFalsy()
-        : playwrightExpect.expect(await locator.isEnabled()).toBeTruthy();
+        ? playwrightExpect.expect(await locator.isEnabled(options)).toBeFalsy()
+        : playwrightExpect
+            .expect(await locator.isEnabled(options))
+            .toBeTruthy();
       break;
     case Actionable.ToBeHidden:
       negative
-        ? playwrightExpect.expect(await locator.isHidden()).toBeFalsy()
-        : playwrightExpect.expect(await locator.isHidden()).toBeTruthy();
+        ? playwrightExpect.expect(await locator.isHidden(options)).toBeFalsy()
+        : playwrightExpect.expect(await locator.isHidden(options)).toBeTruthy();
       break;
     case Actionable.ToBeVisible:
       negative
-        ? playwrightExpect.expect(await locator.isVisible()).toBeFalsy()
-        : playwrightExpect.expect(await locator.isVisible()).toBeTruthy();
+        ? playwrightExpect.expect(await locator.isVisible(options)).toBeFalsy()
+        : playwrightExpect
+            .expect(await locator.isVisible(options))
+            .toBeTruthy();
       break;
     default:
       console.log('HardPass');

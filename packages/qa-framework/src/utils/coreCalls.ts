@@ -10,7 +10,13 @@ import {
   playwrightPageLocator,
   registerPlaywrightPageLocator,
 } from './fixtureHooks';
-import { Actionable, LocatorOptions, PlaywrightPageLocator } from './uiActions';
+import {
+  Actionable,
+  FindOptions,
+  LocatorOptions,
+  PageOptions,
+  PlaywrightPageLocator,
+} from './uiActions';
 import {
   NetworkResponseProps,
   waitForPageNetworkResponse,
@@ -42,11 +48,11 @@ export abstract class PageCoreCalls {
       timeout: timeout,
     });
   };
-  public static reload = async (): Promise<void> => {
-    await playwrightPage.page.reload();
+  public static reload = async (options?: PageOptions): Promise<void> => {
+    await playwrightPage.page.reload(options);
   };
-  public static goBack = async (): Promise<void> => {
-    await playwrightPage.page.goBack();
+  public static goBack = async (options?: PageOptions): Promise<void> => {
+    await playwrightPage.page.goBack(options);
   };
   public static getTitle = async (): Promise<string> => {
     return await playwrightPage.page.title();
@@ -67,7 +73,7 @@ export abstract class PageCoreCalls {
   ): Promise<void> => {
     await Promise.all([
       this.WAIT_FOR_NETWORK_RESPONSE && waitForPageNetworkResponse(),
-      playwrightPage.page.click(locator),
+      playwrightPage.page.click(locator, options),
     ]);
   };
   public static dispatchEvent = async (
@@ -77,7 +83,7 @@ export abstract class PageCoreCalls {
   ): Promise<void> => {
     await Promise.all([
       this.WAIT_FOR_NETWORK_RESPONSE && waitForPageNetworkResponse(),
-      playwrightPage.page.dispatchEvent(locator, type),
+      playwrightPage.page.dispatchEvent(locator, type, options),
     ]);
   };
   public static dblclick = async (
@@ -86,7 +92,7 @@ export abstract class PageCoreCalls {
   ): Promise<void> => {
     await Promise.all([
       this.WAIT_FOR_NETWORK_RESPONSE && waitForPageNetworkResponse(),
-      playwrightPage.page.dblclick(locator),
+      playwrightPage.page.dblclick(locator, options),
     ]);
   };
   public static check = async (
@@ -95,7 +101,7 @@ export abstract class PageCoreCalls {
   ): Promise<void> => {
     await Promise.all([
       this.WAIT_FOR_NETWORK_RESPONSE && waitForPageNetworkResponse(),
-      playwrightPage.page.check(locator),
+      playwrightPage.page.check(locator, options),
     ]);
   };
   public static uncheck = async (
@@ -104,7 +110,7 @@ export abstract class PageCoreCalls {
   ): Promise<void> => {
     await Promise.all([
       this.WAIT_FOR_NETWORK_RESPONSE && waitForPageNetworkResponse(),
-      playwrightPage.page.uncheck(locator),
+      playwrightPage.page.uncheck(locator, options),
     ]);
   };
   public static type = async (
@@ -114,7 +120,7 @@ export abstract class PageCoreCalls {
   ): Promise<void> => {
     await Promise.all([
       this.WAIT_FOR_NETWORK_RESPONSE && waitForPageNetworkResponse(),
-      playwrightPage.page.fill(locator, text),
+      playwrightPage.page.fill(locator, text, options),
     ]);
   };
   public static press = async (
@@ -124,160 +130,187 @@ export abstract class PageCoreCalls {
   ): Promise<void> => {
     await Promise.all([
       this.WAIT_FOR_NETWORK_RESPONSE && waitForPageNetworkResponse(),
-      playwrightPage.page.press(locator, text),
+      playwrightPage.page.press(locator, text, options),
     ]);
   };
   public static find = (
     selector: string,
-    baseLocator?: Locator
+    baseLocator?: Locator,
+    options?: FindOptions
   ): PlaywrightPageLocator => {
     let locator = baseLocator
-      ? baseLocator.locator(selector)
-      : playwrightPage.page.locator(selector);
+      ? baseLocator.locator(selector, options)
+      : playwrightPage.page.locator(selector, options);
     registerPlaywrightPageLocator(locator);
     return playwrightPageLocator;
   };
-  public static findFirst = (selector: string): PlaywrightPageLocator => {
+  public static findFirst = (
+    selector: string,
+    options?: FindOptions
+  ): PlaywrightPageLocator => {
     registerPlaywrightPageLocator(
-      playwrightPage.page.locator(selector).first()
+      playwrightPage.page.locator(selector, options).first()
     );
     return playwrightPageLocator;
   };
   public static findNth = (
     nth: number,
-    selector: string
+    selector: string,
+    options?: FindOptions
   ): PlaywrightPageLocator => {
     registerPlaywrightPageLocator(
-      playwrightPage.page.locator(selector).nth(nth)
+      playwrightPage.page.locator(selector, options).nth(nth)
     );
     return playwrightPageLocator;
   };
   public static verifyActionable = async (
     locator: string,
-    actionable: Actionable
+    actionable: Actionable,
+    options?: LocatorOptions
   ): Promise<void> => {
-    await checkPageActionable(locator, actionable);
+    await checkPageActionable(locator, actionable, false, options);
   };
   public static verifyNotActionable = async (
     locator: string,
-    actionable: Actionable
+    actionable: Actionable,
+    options?: LocatorOptions
   ): Promise<void> => {
-    await checkPageActionable(locator, actionable, true);
+    await checkPageActionable(locator, actionable, true, options);
   };
 
-  public static toBeEmpty = async (locator: string): Promise<void> => {
+  public static toBeEmpty = async (
+    locator: string,
+    message?: string | undefined,
+    options?: FindOptions
+  ): Promise<void> => {
     PageCoreCalls.negativeAssertion
       ? await playwrightExpect
-          .expect(playwrightPage.page.locator(locator))
+          .expect(playwrightPage.page.locator(locator, options))
           .not.toBeEmpty()
       : await playwrightExpect
-          .expect(playwrightPage.page.locator(locator))
+          .expect(playwrightPage.page.locator(locator, options))
           .toBeEmpty();
     PageCoreCalls.negativeAssertion = false;
   };
   public static toHaveText = async (
     locator: string,
-    expected: string | RegExp | Array<string | RegExp>
+    expected: string | RegExp | Array<string | RegExp>,
+    message?: string | undefined,
+    options?: FindOptions
   ): Promise<void> => {
     PageCoreCalls.negativeAssertion
       ? await playwrightExpect
-          .expect(playwrightPage.page.locator(locator))
+          .expect(playwrightPage.page.locator(locator, options))
           .not.toHaveText(expected)
       : await playwrightExpect
-          .expect(playwrightPage.page.locator(locator))
+          .expect(playwrightPage.page.locator(locator, options))
           .toHaveText(expected);
     PageCoreCalls.negativeAssertion = false;
   };
   public static toHaveValue = async (
     locator: string,
-    value: string | RegExp
+    value: string | RegExp,
+    message?: string | undefined,
+    options?: FindOptions
   ): Promise<void> => {
     PageCoreCalls.negativeAssertion
       ? await playwrightExpect
-          .expect(playwrightPage.page.locator(locator))
+          .expect(playwrightPage.page.locator(locator, options))
           .not.toHaveValue(value)
       : await playwrightExpect
-          .expect(playwrightPage.page.locator(locator))
+          .expect(playwrightPage.page.locator(locator, options))
           .toHaveValue(value);
     PageCoreCalls.negativeAssertion = false;
   };
   public static toHaveAttribute = async (
     locator: string,
     name: string,
-    value: string | RegExp
+    value: string | RegExp,
+    message?: string | undefined,
+    options?: FindOptions
   ): Promise<void> => {
     PageCoreCalls.negativeAssertion
       ? await playwrightExpect
-          .expect(playwrightPage.page.locator(locator))
+          .expect(playwrightPage.page.locator(locator, options))
           .not.toHaveAttribute(name, value)
       : await playwrightExpect
-          .expect(playwrightPage.page.locator(locator))
+          .expect(playwrightPage.page.locator(locator, options))
           .toHaveAttribute(name, value);
     PageCoreCalls.negativeAssertion = false;
   };
   public static toHaveCSS = async (
     locator: string,
     name: string,
-    value: string | RegExp
+    value: string | RegExp,
+    message?: string | undefined,
+    options?: FindOptions
   ): Promise<void> => {
     PageCoreCalls.negativeAssertion
       ? await playwrightExpect
-          .expect(playwrightPage.page.locator(locator))
+          .expect(playwrightPage.page.locator(locator, options))
           .not.toHaveCSS(name, value)
       : await playwrightExpect
-          .expect(playwrightPage.page.locator(locator))
+          .expect(playwrightPage.page.locator(locator, options))
           .toHaveCSS(name, value);
     PageCoreCalls.negativeAssertion = false;
   };
   public static toHaveClass = async (
     locator: string,
-    expected: string | RegExp | Array<string | RegExp>
+    expected: string | RegExp | Array<string | RegExp>,
+    message?: string | undefined,
+    options?: FindOptions
   ): Promise<void> => {
     PageCoreCalls.negativeAssertion
       ? await playwrightExpect
-          .expect(playwrightPage.page.locator(locator))
+          .expect(playwrightPage.page.locator(locator, options))
           .not.toHaveClass(expected)
       : await playwrightExpect
-          .expect(playwrightPage.page.locator(locator))
+          .expect(playwrightPage.page.locator(locator, options))
           .toHaveClass(expected);
     PageCoreCalls.negativeAssertion = false;
   };
   public static toHaveCount = async (
     locator: string,
-    count: number
+    count: number,
+    message?: string | undefined,
+    options?: FindOptions
   ): Promise<void> => {
     PageCoreCalls.negativeAssertion
       ? await playwrightExpect
-          .expect(playwrightPage.page.locator(locator))
+          .expect(playwrightPage.page.locator(locator, options))
           .not.toHaveCount(count)
       : await playwrightExpect
-          .expect(playwrightPage.page.locator(locator))
+          .expect(playwrightPage.page.locator(locator, options))
           .toHaveCount(count);
     PageCoreCalls.negativeAssertion = false;
   };
   public static toContainText = async (
     locator: string,
-    expected: string | RegExp | (string | RegExp)[]
+    expected: string | RegExp | (string | RegExp)[],
+    message?: string | undefined,
+    options?: FindOptions
   ): Promise<void> => {
     PageCoreCalls.negativeAssertion
       ? await playwrightExpect
-          .expect(playwrightPage.page.locator(locator))
+          .expect(playwrightPage.page.locator(locator, options))
           .not.toContainText(expected)
       : await playwrightExpect
-          .expect(playwrightPage.page.locator(locator))
+          .expect(playwrightPage.page.locator(locator, options))
           .toContainText(expected);
     PageCoreCalls.negativeAssertion = false;
   };
   public static toHaveId = async (
     locator: string,
-    id: string | RegExp
+    id: string | RegExp,
+    message?: string | undefined,
+    options?: FindOptions
   ): Promise<void> => {
     PageCoreCalls.negativeAssertion
       ? await playwrightExpect
-          .expect(playwrightPage.page.locator(locator))
+          .expect(playwrightPage.page.locator(locator, options))
           .not.toHaveId(id)
       : await playwrightExpect
-          .expect(playwrightPage.page.locator(locator))
+          .expect(playwrightPage.page.locator(locator, options))
           .toHaveId(id);
     PageCoreCalls.negativeAssertion = false;
   };
@@ -298,9 +331,10 @@ export abstract class LocatorCoreCalls {
   };
   public static find = (
     selector: string,
-    locator: Locator
+    locator: Locator,
+    options?: FindOptions
   ): PlaywrightPageLocator => {
-    registerPlaywrightPageLocator(locator.locator(selector));
+    registerPlaywrightPageLocator(locator.locator(selector, options));
     return playwrightPageLocator;
   };
   public static findFirst = (locator: Locator): PlaywrightPageLocator => {
@@ -320,7 +354,7 @@ export abstract class LocatorCoreCalls {
   ): Promise<void> => {
     await Promise.all([
       this.WAIT_FOR_NETWORK_RESPONSE && waitForPageNetworkResponse(),
-      locator.click(),
+      locator.click(options),
     ]);
   };
   public static dispatchEvent = async (
@@ -330,7 +364,7 @@ export abstract class LocatorCoreCalls {
   ): Promise<void> => {
     await Promise.all([
       this.WAIT_FOR_NETWORK_RESPONSE && waitForPageNetworkResponse(),
-      locator.dispatchEvent(type),
+      locator.dispatchEvent(type, options),
     ]);
   };
   public static dblclick = async (
@@ -339,7 +373,7 @@ export abstract class LocatorCoreCalls {
   ): Promise<void> => {
     await Promise.all([
       this.WAIT_FOR_NETWORK_RESPONSE && waitForPageNetworkResponse(),
-      locator.dblclick(),
+      locator.dblclick(options),
     ]);
   };
   public static check = async (
@@ -348,7 +382,7 @@ export abstract class LocatorCoreCalls {
   ): Promise<void> => {
     await Promise.all([
       this.WAIT_FOR_NETWORK_RESPONSE && waitForPageNetworkResponse(),
-      locator.check(),
+      locator.check(options),
     ]);
   };
   public static uncheck = async (
@@ -357,7 +391,7 @@ export abstract class LocatorCoreCalls {
   ): Promise<void> => {
     await Promise.all([
       this.WAIT_FOR_NETWORK_RESPONSE && waitForPageNetworkResponse(),
-      locator.uncheck(),
+      locator.uncheck(options),
     ]);
   };
   public static press = async (
@@ -367,7 +401,7 @@ export abstract class LocatorCoreCalls {
   ): Promise<void> => {
     await Promise.all([
       this.WAIT_FOR_NETWORK_RESPONSE && waitForPageNetworkResponse(),
-      locator.press(text),
+      locator.press(text, options),
     ]);
   };
   public static type = async (
@@ -377,187 +411,255 @@ export abstract class LocatorCoreCalls {
   ): Promise<void> => {
     await Promise.all([
       this.WAIT_FOR_NETWORK_RESPONSE && waitForPageNetworkResponse(),
-      locator.fill(text),
+      locator.fill(text, options),
     ]);
   };
   public static verifyActionable = async (
     locator: Locator,
-    actionable: Actionable
+    actionable: Actionable,
+    options?: LocatorOptions
   ): Promise<void> => {
-    await checkLocatorActionable(locator, actionable);
+    await checkLocatorActionable(locator, actionable, false, options);
   };
   public static verifyNotActionable = async (
     locator: Locator,
-    actionable: Actionable
+    actionable: Actionable,
+    options?: LocatorOptions
   ): Promise<void> => {
-    await checkLocatorActionable(locator, actionable, true);
+    await checkLocatorActionable(locator, actionable, true, options);
   };
 
-  public static toBeEmpty = async (locator: Locator): Promise<void> => {
+  public static toBeEmpty = async (
+    locator: Locator,
+    message?: string | undefined
+  ): Promise<void> => {
     LocatorCoreCalls.negativeAssertion
-      ? await playwrightExpect.expect(locator).not.toBeEmpty()
-      : await playwrightExpect.expect(locator).toBeEmpty();
+      ? await playwrightExpect.expect(locator, message).not.toBeEmpty()
+      : await playwrightExpect.expect(locator, message).toBeEmpty();
     LocatorCoreCalls.negativeAssertion = false;
   };
   public static toHaveText = async (
     locator: Locator,
-    expected: string | RegExp | Array<string | RegExp>
+    expected: string | RegExp | Array<string | RegExp>,
+    message?: string | undefined
   ): Promise<void> => {
     LocatorCoreCalls.negativeAssertion
-      ? await playwrightExpect.expect(locator).not.toHaveText(expected)
-      : await playwrightExpect.expect(locator).toHaveText(expected);
+      ? await playwrightExpect.expect(locator, message).not.toHaveText(expected)
+      : await playwrightExpect.expect(locator, message).toHaveText(expected);
     LocatorCoreCalls.negativeAssertion = false;
   };
   public static toHaveValue = async (
     locator: Locator,
-    value: string | RegExp
+    value: string | RegExp,
+    message?: string | undefined
   ): Promise<void> => {
     LocatorCoreCalls.negativeAssertion
-      ? await playwrightExpect.expect(locator).not.toHaveValue(value)
-      : await playwrightExpect.expect(locator).toHaveValue(value);
+      ? await playwrightExpect.expect(locator, message).not.toHaveValue(value)
+      : await playwrightExpect.expect(locator, message).toHaveValue(value);
     LocatorCoreCalls.negativeAssertion = false;
   };
   public static toHaveAttribute = async (
     locator: Locator,
     name: string,
-    value: string | RegExp
+    value: string | RegExp,
+    message?: string | undefined
   ): Promise<void> => {
     LocatorCoreCalls.negativeAssertion
-      ? await playwrightExpect.expect(locator).not.toHaveAttribute(name, value)
-      : await playwrightExpect.expect(locator).toHaveAttribute(name, value);
+      ? await playwrightExpect
+          .expect(locator, message)
+          .not.toHaveAttribute(name, value)
+      : await playwrightExpect
+          .expect(locator, message)
+          .toHaveAttribute(name, value);
     LocatorCoreCalls.negativeAssertion = false;
   };
   public static toHaveCSS = async (
     locator: Locator,
     name: string,
-    value: string | RegExp
+    value: string | RegExp,
+    message?: string | undefined
   ): Promise<void> => {
     LocatorCoreCalls.negativeAssertion
-      ? await playwrightExpect.expect(locator).not.toHaveCSS(name, value)
-      : await playwrightExpect.expect(locator).toHaveCSS(name, value);
+      ? await playwrightExpect
+          .expect(locator, message)
+          .not.toHaveCSS(name, value)
+      : await playwrightExpect.expect(locator, message).toHaveCSS(name, value);
     LocatorCoreCalls.negativeAssertion = false;
   };
   public static toHaveClass = async (
     locator: Locator,
-    expected: string | RegExp | Array<string | RegExp>
+    expected: string | RegExp | Array<string | RegExp>,
+    message?: string | undefined
   ): Promise<void> => {
     LocatorCoreCalls.negativeAssertion
-      ? await playwrightExpect.expect(locator).not.toHaveClass(expected)
-      : await playwrightExpect.expect(locator).toHaveClass(expected);
+      ? await playwrightExpect
+          .expect(locator, message)
+          .not.toHaveClass(expected)
+      : await playwrightExpect.expect(locator, message).toHaveClass(expected);
     LocatorCoreCalls.negativeAssertion = false;
   };
   public static toHaveCount = async (
     locator: Locator,
-    count: number
+    count: number,
+    message?: string | undefined
   ): Promise<void> => {
     LocatorCoreCalls.negativeAssertion
-      ? await playwrightExpect.expect(locator).not.toHaveCount(count)
-      : await playwrightExpect.expect(locator).toHaveCount(count);
+      ? await playwrightExpect.expect(locator, message).not.toHaveCount(count)
+      : await playwrightExpect.expect(locator, message).toHaveCount(count);
     LocatorCoreCalls.negativeAssertion = false;
   };
   public static toContainText = async (
     locator: Locator,
-    expected: string | RegExp | (string | RegExp)[]
+    expected: string | RegExp | (string | RegExp)[],
+    message?: string | undefined
   ): Promise<void> => {
     LocatorCoreCalls.negativeAssertion
-      ? await playwrightExpect.expect(locator).not.toContainText(expected)
-      : await playwrightExpect.expect(locator).toContainText(expected);
+      ? await playwrightExpect
+          .expect(locator, message)
+          .not.toContainText(expected)
+      : await playwrightExpect.expect(locator, message).toContainText(expected);
     LocatorCoreCalls.negativeAssertion = false;
   };
   public static toHaveId = async (
     locator: Locator,
-    id: string | RegExp
+    id: string | RegExp,
+    message?: string | undefined
   ): Promise<void> => {
     LocatorCoreCalls.negativeAssertion
-      ? await playwrightExpect.expect(locator).not.toHaveId(id)
-      : await playwrightExpect.expect(locator).toHaveId(id);
+      ? await playwrightExpect.expect(locator, message).not.toHaveId(id)
+      : await playwrightExpect.expect(locator, message).toHaveId(id);
     LocatorCoreCalls.negativeAssertion = false;
   };
 }
 
 export abstract class ExpectGenericCoreCalls {
   public static negativeAssertion: boolean = false;
-  public static toHaveLength = (object: unknown, expected: number): void => {
-    playwrightExpect.expect(object).toHaveLength(expected);
+  public static toHaveLength = (
+    object: unknown,
+    expected: number,
+    message?: string | undefined
+  ): void => {
+    ExpectGenericCoreCalls.negativeAssertion
+      ? playwrightExpect.expect(object, message).not.toHaveLength(expected)
+      : playwrightExpect.expect(object, message).toHaveLength(expected);
   };
   public static toHaveProperty = (
     object: unknown,
     keyPath: string | Array<string>,
-    value?: unknown
+    value?: unknown,
+    message?: string | undefined
   ): void => {
     ExpectGenericCoreCalls.negativeAssertion
-      ? playwrightExpect.expect(object).not.toHaveProperty(keyPath, value)
-      : playwrightExpect.expect(object).toHaveProperty(keyPath, value);
+      ? playwrightExpect
+          .expect(object, message)
+          .not.toHaveProperty(keyPath, value)
+      : playwrightExpect.expect(object, message).toHaveProperty(keyPath, value);
   };
-  public static toBe = (actual: unknown, expected: unknown): void => {
+  public static toBe = (
+    actual: unknown,
+    expected: unknown,
+    message?: string | undefined
+  ): void => {
     ExpectGenericCoreCalls.negativeAssertion
-      ? playwrightExpect.expect(actual).not.toBe(expected)
-      : playwrightExpect.expect(actual).toBe(expected);
+      ? playwrightExpect.expect(actual, message).not.toBe(expected)
+      : playwrightExpect.expect(actual, message).toBe(expected);
   };
-  public static toEqual = (actual: unknown, expected: unknown): void => {
+  public static toEqual = (
+    actual: unknown,
+    expected: unknown,
+    message?: string | undefined
+  ): void => {
     ExpectGenericCoreCalls.negativeAssertion
-      ? playwrightExpect.expect(actual).not.toEqual(expected)
-      : playwrightExpect.expect(actual).toEqual(expected);
+      ? playwrightExpect.expect(actual, message).not.toEqual(expected)
+      : playwrightExpect.expect(actual, message).toEqual(expected);
   };
-  public static toBeFalsy = (actual: unknown): void => {
+  public static toBeFalsy = (
+    actual: unknown,
+    message?: string | undefined
+  ): void => {
     ExpectGenericCoreCalls.negativeAssertion
-      ? playwrightExpect.expect(actual).not.toBeFalsy()
-      : playwrightExpect.expect(actual).toBeFalsy();
+      ? playwrightExpect.expect(actual, message).not.toBeFalsy()
+      : playwrightExpect.expect(actual, message).toBeFalsy();
   };
-  public static toBeTruthy = (actual: unknown): void => {
+  public static toBeTruthy = (
+    actual: unknown,
+    message?: string | undefined
+  ): void => {
     ExpectGenericCoreCalls.negativeAssertion
-      ? playwrightExpect.expect(actual).not.toBeTruthy()
-      : playwrightExpect.expect(actual).toBeTruthy();
+      ? playwrightExpect.expect(actual, message).not.toBeTruthy()
+      : playwrightExpect.expect(actual, message).toBeTruthy();
   };
   public static toBeCloseTo = (
     actual: unknown,
     expected: number,
-    numDigits?: number
+    numDigits?: number,
+    message?: string | undefined
   ): void => {
     ExpectGenericCoreCalls.negativeAssertion
-      ? playwrightExpect.expect(actual).not.toBeCloseTo(expected, numDigits)
-      : playwrightExpect.expect(actual).toBeCloseTo(expected, numDigits);
+      ? playwrightExpect
+          .expect(actual, message)
+          .not.toBeCloseTo(expected, numDigits)
+      : playwrightExpect
+          .expect(actual, message)
+          .toBeCloseTo(expected, numDigits);
   };
   public static toBeGreaterThan = (
     actual: unknown,
-    expected: number | bigint
+    expected: number | bigint,
+    message?: string | undefined
   ): void => {
     ExpectGenericCoreCalls.negativeAssertion
-      ? playwrightExpect.expect(actual).not.toBeGreaterThan(expected)
-      : playwrightExpect.expect(actual).toBeGreaterThan(expected);
+      ? playwrightExpect.expect(actual, message).not.toBeGreaterThan(expected)
+      : playwrightExpect.expect(actual, message).toBeGreaterThan(expected);
   };
   public static toBeGreaterThanOrEqual = (
     actual: unknown,
-    expected: number | bigint
+    expected: number | bigint,
+    message?: string | undefined
   ): void => {
     ExpectGenericCoreCalls.negativeAssertion
-      ? playwrightExpect.expect(actual).not.toBeGreaterThanOrEqual(expected)
-      : playwrightExpect.expect(actual).toBeGreaterThanOrEqual(expected);
+      ? playwrightExpect
+          .expect(actual, message)
+          .not.toBeGreaterThanOrEqual(expected)
+      : playwrightExpect
+          .expect(actual, message)
+          .toBeGreaterThanOrEqual(expected);
   };
   public static toBeLessThan = (
     actual: unknown,
-    expected: number | bigint
+    expected: number | bigint,
+    message?: string | undefined
   ): void => {
     ExpectGenericCoreCalls.negativeAssertion
-      ? playwrightExpect.expect(actual).not.toBeLessThan(expected)
-      : playwrightExpect.expect(actual).toBeLessThan(expected);
+      ? playwrightExpect.expect(actual, message).not.toBeLessThan(expected)
+      : playwrightExpect.expect(actual, message).toBeLessThan(expected);
   };
   public static toBeLessThanOrEqual = (
     actual: unknown,
-    expected: number | bigint
+    expected: number | bigint,
+    message?: string | undefined
   ): void => {
     ExpectGenericCoreCalls.negativeAssertion
-      ? playwrightExpect.expect(actual).not.toBeLessThanOrEqual(expected)
-      : playwrightExpect.expect(actual).toBeLessThanOrEqual(expected);
+      ? playwrightExpect
+          .expect(actual, message)
+          .not.toBeLessThanOrEqual(expected)
+      : playwrightExpect.expect(actual, message).toBeLessThanOrEqual(expected);
   };
-  public static toBeUndefined = (actual: unknown): void => {
+  public static toBeUndefined = (
+    actual: unknown,
+    message?: string | undefined
+  ): void => {
     ExpectGenericCoreCalls.negativeAssertion
-      ? playwrightExpect.expect(actual).not.toBeUndefined()
-      : playwrightExpect.expect(actual).toBeUndefined();
+      ? playwrightExpect.expect(actual, message).not.toBeUndefined()
+      : playwrightExpect.expect(actual, message).toBeUndefined();
   };
-  public static toContain = (actual: unknown, expected: unknown): void => {
+  public static toContain = (
+    actual: unknown,
+    expected: unknown,
+    message?: string | undefined
+  ): void => {
     ExpectGenericCoreCalls.negativeAssertion
-      ? playwrightExpect.expect(actual).not.toContain(expected)
-      : playwrightExpect.expect(actual).toContain(expected);
+      ? playwrightExpect.expect(actual, message).not.toContain(expected)
+      : playwrightExpect.expect(actual, message).toContain(expected);
   };
 }

@@ -1,24 +1,29 @@
 import { LocatorCoreCalls, PageCoreCalls } from './coreCalls';
 import { appInfo, playwrightPage } from './fixtureHooks';
 
+export interface WaitForNetworkIdleProps {
+  timeout: number;
+  maxInflightRequests?: number;
+}
+
 export interface NetworkIdleProps {
-  waitForNetworkIdle?: boolean;
+  waitForNetworkIdle?: WaitForNetworkIdleProps;
 }
 
 export class WaitLogic {
-  public static WaitForNetworkIdle: NetworkIdleProps = {
-    waitForNetworkIdle: true,
+  public static WaitForNetworkIdle = (timeout: number = 5000): NetworkIdleProps => {
+    return {
+      waitForNetworkIdle: {
+        timeout,
+        maxInflightRequests: 0,
+      },
+    };
   };
 }
 
 export interface NetworkResponseProps {
   urlPath: string;
   status?: number;
-}
-
-export interface WaitForNetworkIdleProps {
-  timeout: number;
-  maxInflightRequests?: number;
 }
 
 export async function waitForPageNetworkResponse() {

@@ -35,6 +35,16 @@ export enum Actionable {
   ToBeVisible,
 }
 
+export interface PageOptions {
+  timeout?: number;
+  state?: 'networkidle' | 'load' | 'domcontentloaded' | 'commit';
+}
+
+export interface FindOptions {
+  has?: Locator;
+  hasText?: string | RegExp;
+}
+
 export interface LocatorOptions {
   button?: 'left' | 'right' | 'middle';
   clickCount?: number;
@@ -178,8 +188,6 @@ export class PlaywrightPage implements PlaywrightPageProps {
   public async toHaveId(locator: string, id: string | RegExp): Promise<void> {
     await PageCoreCalls.toHaveId(locator, id);
   }
-
-
 }
 
 export const usePlaywrightPage = (page: Page): PlaywrightPageProps => {
@@ -306,8 +314,6 @@ export class PlaywrightPageLocator implements PlaywrightPageLocatorProps {
   public async toHaveId(id: string | RegExp): Promise<void> {
     await LocatorCoreCalls.toHaveId(this.locator, id);
   }
-
-  
 }
 
 export const usePlaywrightPageLocator = (
