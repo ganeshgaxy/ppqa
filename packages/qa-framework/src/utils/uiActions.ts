@@ -2,7 +2,7 @@ import { Locator, Page } from '@playwright/test';
 import { LocatorExpectProps, PageExpectProps } from '../web/generic';
 import { URLProps } from '../web/webFragment';
 import { PageCoreCalls, LocatorCoreCalls } from './coreCalls';
-import { NetworkIdleProps, waitForNetworkIdle } from './waitActions';
+import { waitForNetworkIdle, WaitForNetworkIdleProps } from './waitActions';
 
 export interface PlaywrightPageProps extends PageExpectProps<void> {
   page: Page;
@@ -340,14 +340,14 @@ export const createFragment = <T extends object>(
           const origMethod = target[prop];
           if (typeof origMethod == 'function') {
             return async function (...args: any[]) {
-              let networkIdle = false;
+              let networkIdle: WaitForNetworkIdleProps | undefined = undefined;
               if (args.length > 0) {
                 let arg = args[args.length - 1];
                 networkIdle = arg.waitForNetworkIdle && arg.waitForNetworkIdle;
               }
               let result = await Promise.all([
                 origMethod.apply(target, args),
-                networkIdle && waitForNetworkIdle(),
+                networkIdle && waitForNetworkIdle(networkIdle),
               ]);
               return result[0];
             };
@@ -373,14 +373,14 @@ export const createFragmentActions = <T extends object>(
           const origMethod = target[prop];
           if (typeof origMethod == 'function') {
             return async function (...args: any[]) {
-              let networkIdle = false;
+              let networkIdle: WaitForNetworkIdleProps | undefined = undefined;
               if (args.length > 0) {
                 let arg = args[args.length - 1];
                 networkIdle = arg.waitForNetworkIdle && arg.waitForNetworkIdle;
               }
               let result = await Promise.all([
                 origMethod.apply(target, args),
-                networkIdle && waitForNetworkIdle(),
+                networkIdle && waitForNetworkIdle(networkIdle),
               ]);
               return result[0];
             };

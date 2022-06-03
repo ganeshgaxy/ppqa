@@ -32,7 +32,11 @@ export {
   createFragment,
   createFragmentActions,
 } from './utils/uiActions';
-export { WaitLogic, NetworkIdleProps } from './utils/waitActions';
+export {
+  WaitLogic,
+  NetworkIdleProps,
+  WaitForNetworkIdleProps,
+} from './utils/waitActions';
 
 export default abstract class QAFramework {
   static playwrightPage = playwrightPage;

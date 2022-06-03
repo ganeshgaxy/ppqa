@@ -3,7 +3,7 @@ import { appInfo, playwrightPage } from './fixtureHooks';
 
 export interface WaitForNetworkIdleProps {
   timeout: number;
-  maxInflightRequests?: number;
+  maxInflightRequests: number;
 }
 
 export interface NetworkIdleProps {
@@ -11,7 +11,9 @@ export interface NetworkIdleProps {
 }
 
 export class WaitLogic {
-  public static WaitForNetworkIdle = (timeout: number = 5000): NetworkIdleProps => {
+  public static WaitForNetworkIdle = (
+    timeout: number = 5000
+  ): NetworkIdleProps => {
     return {
       waitForNetworkIdle: {
         timeout,
@@ -65,8 +67,10 @@ export async function waitForLocatorNetworkResponse() {
 }
 
 export function waitForNetworkIdle(
-  timeout: number = 5000,
-  maxInflightRequests = 0
+  options: WaitForNetworkIdleProps = {
+    timeout: 5000,
+    maxInflightRequests: 0,
+  }
 ) {
   playwrightPage.page.on('request', onRequestStarted);
   playwrightPage.page.on('requestfinished', onRequestFinished);
@@ -75,7 +79,7 @@ export function waitForNetworkIdle(
   let inflight = 0;
   let fulfill: any;
   const promise = new Promise((x) => (fulfill = x));
-  let timeoutId = setTimeout(onTimeoutDone, timeout);
+  let timeoutId = setTimeout(onTimeoutDone, options.timeout);
 
   return promise;
 
@@ -89,7 +93,7 @@ export function waitForNetworkIdle(
   function onRequestStarted() {
     ++inflight;
 
-    if (inflight > maxInflightRequests) {
+    if (inflight > options.maxInflightRequests) {
       clearTimeout(timeoutId);
     }
   }
@@ -101,8 +105,8 @@ export function waitForNetworkIdle(
 
     --inflight;
 
-    if (inflight === maxInflightRequests) {
-      timeoutId = setTimeout(onTimeoutDone, timeout);
+    if (inflight === options.maxInflightRequests) {
+      timeoutId = setTimeout(onTimeoutDone, options.timeout);
     }
   }
 }
