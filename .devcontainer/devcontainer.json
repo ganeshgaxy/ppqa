@@ -24,7 +24,6 @@
   "remoteUser": "vscode",
   "features": {
     "git": "latest",
-    "github-cli": "latest",
     "node": "lts"
   }
 }
