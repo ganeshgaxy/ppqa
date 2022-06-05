@@ -1,5 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
-import QAFramework, { createFragment } from '@qa-framework/playwright-bundles';
+import QAFramework, { createFragment } from '@qa-framework/playwright-ui';
 import { TodoMvcPage } from '../../project/todomvc/ui/pages/TodoMvc/TodoMvcPage';
 import { TodoMvcPageProps } from '../../project/todomvc/ui/pages/TodoMvc/TodoMvcPage.vars';
 

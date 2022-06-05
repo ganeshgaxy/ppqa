@@ -3,7 +3,7 @@ import {
   URLProps,
   WebElement,
   WebFragment,
-} from '@qa-framework/playwright-bundles';
+} from '@qa-framework/playwright-ui';
 import { TodoMvcPageLocators, TodoMvcPageVars } from './TodoMvcPage.vars';
 
 export class TodoMvcPage extends WebFragment {

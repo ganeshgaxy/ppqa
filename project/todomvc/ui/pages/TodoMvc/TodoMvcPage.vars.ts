@@ -3,7 +3,7 @@ import {
   URLProps,
   useWebElement,
   WebElement,
-} from '@qa-framework/playwright-bundles';
+} from '@qa-framework/playwright-ui';
 
 export const TodoMvcPageProps = (): URLProps =>
   new URLBuilder().suffix('todomvc').build();
