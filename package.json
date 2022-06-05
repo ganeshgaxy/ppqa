@@ -7,6 +7,7 @@
     "packages/qa-framework"
   ],
   "scripts": {
+    "dev-setup": "yarn install --frozen-lockfile && npx playwright install --with-deps && yarn run build",
     "build": "npx lerna run build && npm i && npm i"
   },
   "keywords": [],
