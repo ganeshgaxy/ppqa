@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "dev-setup": "yarn install --immutable --immutable-cache --check-cache && npx playwright install --with-deps && yarn run build",
-    "build": "npx lerna run build && yarn install && yarn install"
+    "build": "npx lerna run build && yarn install"
   },
   "keywords": [],
   "author": "",
