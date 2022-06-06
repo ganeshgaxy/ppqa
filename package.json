@@ -5,7 +5,7 @@
   "main": "index.js",
   "private": true,
   "workspaces": [
-    "packages/qa-framework"
+    "packages/qa-framework/*"
   ],
   "scripts": {
     "dev-setup": "yarn config set workspaces-experimental true && npx playwright install --with-deps && yarn run build",
@@ -17,7 +17,7 @@
   "devDependencies": {
     "@playwright/test": "^1.22.0",
     "lerna": "^4.0.0",
-    "@qa-framework/playwright-ui": "./packages/qa-framework"
+    "@qa-framework/playwright-ui": "./packages/qa-framework/playwright-ui"
   },
   "dependencies": {
     "playwright": "^1.22.1"

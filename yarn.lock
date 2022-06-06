@@ -904,7 +904,7 @@
     "@types/node" "*"
     playwright-core "1.22.2"
 
-"@qa-framework/playwright-ui@./packages/qa-framework":
+"@qa-framework/playwright-ui@./packages/qa-framework/playwright-ui":
   version "1.0.0"
   dependencies:
     playwright "^1.22.1"
