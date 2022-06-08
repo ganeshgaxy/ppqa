@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "dev-setup": "yarn config set workspaces-experimental true && npx playwright install --with-deps && yarn run build",
-    "build": "npx lerna run build && yarn install && yarn --check-files",
+    "build": "npx lerna run build --scope=@qa-framework/playwright-ui && yarn install && yarn --check-files",
     "webapp": "npx lerna run dev --scope=@qa-framework/tauri-gui"
   },
   "keywords": [],
