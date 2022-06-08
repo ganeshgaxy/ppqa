@@ -6,7 +6,6 @@
     "**/.git": true,
     "**/.hg": true,
     "**/.svn": true,
-    "**/build": true,
     "**/CVS": true,
     "**/package-lock.json": false
   },
