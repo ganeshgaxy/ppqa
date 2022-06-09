@@ -1,7 +1,13 @@
 import React from 'react';
 import { Navbar, Tooltip, UnstyledButton } from '@mantine/core';
 import Router from 'next/router';
-import { DeviceDesktop, Home2, Icon, Stack2 } from 'tabler-icons-react';
+import {
+  DeviceDesktop,
+  Home2,
+  Icon,
+  Stack2,
+  TestPipe,
+} from 'tabler-icons-react';
 import { useStyles } from './NavbarStyles';
 
 interface MainNavLinkProps {
@@ -14,6 +20,7 @@ const mainNavLinks: MainNavLinkProps[] = [
   { icon: Home2, label: 'Home', route: '/' },
   { icon: Stack2, label: 'Suites', route: '/suites' },
   { icon: DeviceDesktop, label: 'Explore', route: '/explore' },
+  { icon: TestPipe, label: 'Test', route: '/test' },
 ];
 
 export const NavbarContent = () => {

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
 import { getTestsDetails } from './tests';
 
@@ -15,6 +15,13 @@ export interface TestsSelectionProps {
   testsInfo: TestsRowData[] | [];
 }
 
+export const getTestInfoBySuiteAndPath = createAsyncThunk(
+  'getTestInfoBySuiteAndPath',
+  async (suiteInfo: { suiteName: string; filePath: string }) => {
+    return await getTestsDetails(suiteInfo.suiteName, suiteInfo.filePath);
+  }
+);
+
 // Define the initial state using that type
 const initialState: TestsSelectionProps = {
   suiteName: undefined,
@@ -30,15 +37,22 @@ export const testsSlice = createSlice({
       state,
       action: PayloadAction<{ suiteName: string; filePath: string }>
     ) => {
-      getTestsDetails(action.payload.suiteName, action.payload.filePath).then(
-        (testsDetails) => {
-          state.testsInfo = testsDetails;
-        }
-      );
+      state.suiteName = action.payload.suiteName;
+      state.filePath = action.payload.filePath;
     },
+    resetTestsInfo: (state) => {
+      state.suiteName = undefined;
+      state.filePath = undefined;
+      state.testsInfo = [];
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getTestInfoBySuiteAndPath.fulfilled, (state, action) => {
+      state.testsInfo = action.payload;
+    });
   },
 });
 
-export const { updateTestsInfo } = testsSlice.actions;
+export const { updateTestsInfo, resetTestsInfo } = testsSlice.actions;
 
 export default testsSlice.reducer;

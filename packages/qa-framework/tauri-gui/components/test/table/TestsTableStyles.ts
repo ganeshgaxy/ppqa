@@ -7,4 +7,7 @@ export const useStyles = createStyles((theme) => ({
         ? theme.fn.rgba(theme.colors[theme.primaryColor][7], 0.2)
         : theme.colors[theme.primaryColor][0],
   },
+  backAvatar: {
+    color: theme.colorScheme === 'dark' ? theme.colors.cyan : theme.colors.blue,
+  },
 }));

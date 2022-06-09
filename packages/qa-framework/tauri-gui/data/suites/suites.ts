@@ -1,27 +1,32 @@
 import { readTextFile, readDir } from '@tauri-apps/api/fs';
 import path from 'path';
+import { join } from '@tauri-apps/api/path';
 
 export interface FileListProps {
   fileName: string;
   filePath: string;
 }
 
-export const getSuitesDetails = async () => {
-  const filePath = process.cwd();
+export const getSuitesDetails = async (basePath: string) => {
   let fileList: FileListProps[] = [];
 
-  const projectPath = path.resolve(
-    filePath.split('packages\\qa-framework\\tauri-gui')[0]
-  );
+  const projectPath = basePath
+    .replaceAll('\\', '/')
+    .split('packages/qa-framework/tauri-gui')[0];
 
   const checkIfPathExists = async (pathString: string) => {
-    return (await readDir(pathString)) ? true : false;
+    try {
+      await readDir(pathString);
+      return true;
+    } catch (ex) {
+      return false;
+    }
   };
 
   const readTestsFolder = async (pathString: string) => {
     const testsDir = await readDir(pathString);
     for (let file of testsDir) {
-      const filePath = path.join(file.path);
+      const filePath = file.path;
       if (await checkIfPathExists(filePath)) {
         await readTestsFolder(filePath);
       } else {
@@ -36,7 +41,7 @@ export const getSuitesDetails = async () => {
   };
 
   const getTestFiles = async () => {
-    const testPath = path.join(projectPath, 'tests');
+    const testPath = `${projectPath}tests`;
     const testsDirFound = await checkIfPathExists(testPath);
     if (testsDirFound) {
       await readTestsFolder(testPath);

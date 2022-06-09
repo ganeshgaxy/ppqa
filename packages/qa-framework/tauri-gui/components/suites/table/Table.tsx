@@ -62,7 +62,7 @@ function sortData(
 export const SuiteTableContent = ({ headers, data }: TableSelectionProps) => {
   const [search, setSearch] = React.useState('');
   const { classes, theme, cx } = useStyles();
-  const [selection, setSelection] = React.useState(['1']);
+  const [selection, setSelection] = React.useState<string[]>([]);
   const [sortedData, setSortedData] = React.useState(data);
   const [sortBy, setSortBy] = React.useState<any>(undefined);
   const [reverseSortDirection, setReverseSortDirection] = React.useState(false);
@@ -123,7 +123,9 @@ export const SuiteTableContent = ({ headers, data }: TableSelectionProps) => {
             <Anchor<'a'>
               size="sm"
               onClick={(event: React.MouseEvent<HTMLElement>) =>
-                Router.push(`/suites/${item.suite}/${item.path}`)
+                Router.push(
+                  `/suites?suiteName=${item.suite}&filePath=${item.path}`
+                )
               }
             >
               {item.suite}
@@ -131,17 +133,14 @@ export const SuiteTableContent = ({ headers, data }: TableSelectionProps) => {
           </Group>
         </td>
         <td>
-          <Anchor<'a'>
-            size="sm"
-            onClick={(event: React.MouseEvent<HTMLElement>) =>
-              event.preventDefault()
-            }
-          >
+          <Text color="dimmed" size="sm" weight={400}>
             {item.file}
-          </Anchor>
+          </Text>
         </td>
         <td>
-          <Badge>{item.tests}</Badge>
+          <Badge radius="sm" variant="dot">
+            {item.tests}
+          </Badge>
         </td>
       </tr>
     );
@@ -149,6 +148,12 @@ export const SuiteTableContent = ({ headers, data }: TableSelectionProps) => {
 
   return (
     <Paper shadow="xs" radius="xs" p="sm">
+      <Text size="lg" weight={500}>
+        Suites
+      </Text>
+      <Text size="sm" color="dimmed" mt={3} mb="xl">
+        List of all Suites
+      </Text>
       <ScrollArea>
         <TextInput
           placeholder="Search by any field"

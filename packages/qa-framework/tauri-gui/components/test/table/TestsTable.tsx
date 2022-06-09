@@ -7,9 +7,25 @@ import {
   ScrollArea,
   Table,
   TextInput,
+  Text,
+  Button,
+  Avatar,
+  ActionIcon,
+  Menu,
 } from '@mantine/core';
 import React from 'react';
-import { ListDetails, Search } from 'tabler-icons-react';
+import {
+  ChevronLeft,
+  Copy,
+  EyeCheck,
+  Messages,
+  Note,
+  Pencil,
+  ReportAnalytics,
+  Search,
+  Square,
+  Trash,
+} from 'tabler-icons-react';
 import { useStyles } from './TestsTableStyles';
 import { Th } from './Th';
 import Router from 'next/router';
@@ -23,6 +39,7 @@ interface RowData {
 
 interface TableSelectionProps {
   headers: { label: string; name: string }[];
+  suite: string;
   data: RowData[];
 }
 
@@ -56,10 +73,14 @@ function sortData(
   );
 }
 
-export const TestsTableContent = ({ headers, data }: TableSelectionProps) => {
+export const TestsTableContent = ({
+  headers,
+  suite,
+  data,
+}: TableSelectionProps) => {
   const [search, setSearch] = React.useState('');
   const { classes, theme, cx } = useStyles();
-  const [selection, setSelection] = React.useState(['1']);
+  const [selection, setSelection] = React.useState<string[]>([]);
   const [sortedData, setSortedData] = React.useState(data);
   const [sortBy, setSortBy] = React.useState<any>(undefined);
   const [reverseSortDirection, setReverseSortDirection] = React.useState(false);
@@ -85,6 +106,7 @@ export const TestsTableContent = ({ headers, data }: TableSelectionProps) => {
         ? current.filter((item) => item !== id)
         : [...current, id]
     );
+
   const toggleAll = () =>
     setSelection((current) =>
       current.length === data.length ? [] : data.map((item) => item.id)
@@ -116,31 +138,39 @@ export const TestsTableContent = ({ headers, data }: TableSelectionProps) => {
         </td>
         <td>
           <Group spacing="sm">
-            <ListDetails size={16} color={theme.colors.blue[5]} />
-            <Anchor<'a'>
-              size="sm"
-              onClick={(event: React.MouseEvent<HTMLElement>) =>
-                Router.push(
-                  `/suites?suiteName=${item.suite}&filePath=${item.path}`
-                )
-              }
-            >
+            <Square size={16} color={theme.colors.blue[5]} />
+            <Text size="sm" weight={400}>
               {item.test}
-            </Anchor>
+            </Text>
           </Group>
         </td>
         <td>
-          <Anchor<'a'>
-            size="sm"
-            onClick={(event: React.MouseEvent<HTMLElement>) =>
-              event.preventDefault()
-            }
-          >
+          <Text color="dimmed" size="sm" weight={400}>
             {item.suite}
-          </Anchor>
+          </Text>
         </td>
         <td>
-          <Badge>Options</Badge>
+          <Group spacing={0} position="left">
+            <ActionIcon
+              onClick={() =>
+                Router.push(
+                  `/test?testName=${item.test}&suiteName=${item.suite}&filePath=${item.path}`
+                )
+              }
+            >
+              <EyeCheck size={16} />
+            </ActionIcon>
+            <Menu transition="pop" withArrow placement="end">
+              <Menu.Item icon={<Pencil size={16} />}>Edit test</Menu.Item>
+              <Menu.Item icon={<Copy size={16} />}>Duplicate</Menu.Item>
+              <Menu.Item icon={<ReportAnalytics size={16} />}>
+                Analytics
+              </Menu.Item>
+              <Menu.Item icon={<Trash size={16} />} color="red">
+                Delete Test
+              </Menu.Item>
+            </Menu>
+          </Group>
         </td>
       </tr>
     );
@@ -148,6 +178,22 @@ export const TestsTableContent = ({ headers, data }: TableSelectionProps) => {
 
   return (
     <Paper shadow="xs" radius="xs" p="sm">
+      <Group spacing="sm">
+        <Avatar className={classes.backAvatar}>
+          <ChevronLeft
+            className={classes.backAvatar}
+            onClick={() => {
+              Router.push(`/suites`);
+            }}
+          />
+        </Avatar>
+        <Text size="lg" weight={500}>
+          Tests
+        </Text>
+      </Group>
+      <Text size="sm" color="dimmed" mt={3} mb="xl">
+        {`List of all Tests in ${suite}`}
+      </Text>
       <ScrollArea>
         <TextInput
           placeholder="Search by any field"
