@@ -26,9 +26,10 @@ export const suitesSlice = createSlice({
   initialState,
   reducers: {
     getSuitesInfo: (state) => {
-      const suitesDetails = getSuitesDetails();
-      state.projectPath = suitesDetails.projectPath;
-      state.suitesInfo = suitesDetails.suitesInfo;
+      getSuitesDetails().then((suitesDetails) => {
+        state.projectPath = suitesDetails.projectPath;
+        state.suitesInfo = suitesDetails.suitesInfo;
+      });
     },
   },
 });

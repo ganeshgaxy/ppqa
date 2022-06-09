@@ -1,8 +1,8 @@
-import fs from 'fs';
+import { readTextFile } from '@tauri-apps/api/fs';
 
-export const getTestsDetails = (suiteName: string, filePath: string) => {
+export const getTestsDetails = async (suiteName: string, filePath: string) => {
   let testsList = [];
-  const suiteData = fs.readFileSync(filePath);
+  const suiteData = await readTextFile(filePath);
   const suiteDataStringRegex = (suite: string) =>
     RegExp(
       `(test.describe)([\\n\\r\\s]+||)(\\()([\\n\\r\\s]+||)('||")(${suite})('||")([\\n\\r\\s]+||)(([\\n\\r\\s]||.)*?)(}([\\n\\r\\s]+||)\\);)([\\n\\r\\s]+||)(}([\\n\\r\\s]+||)\\);)`,

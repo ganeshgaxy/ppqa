@@ -30,11 +30,11 @@ export const testsSlice = createSlice({
       state,
       action: PayloadAction<{ suiteName: string; filePath: string }>
     ) => {
-      const testsDetails = getTestsDetails(
-        action.payload.suiteName,
-        action.payload.filePath
+      getTestsDetails(action.payload.suiteName, action.payload.filePath).then(
+        (testsDetails) => {
+          state.testsInfo = testsDetails;
+        }
       );
-      state.testsInfo = testsDetails;
     },
   },
 });

@@ -1,4 +1,4 @@
-import fs from 'fs';
+import { readTextFile, readDir } from '@tauri-apps/api/fs';
 import path from 'path';
 
 export interface FileListProps {
@@ -6,7 +6,7 @@ export interface FileListProps {
   filePath: string;
 }
 
-export const getSuitesDetails = () => {
+export const getSuitesDetails = async () => {
   const filePath = process.cwd();
   let fileList: FileListProps[] = [];
 
@@ -14,30 +14,32 @@ export const getSuitesDetails = () => {
     filePath.split('packages\\qa-framework\\tauri-gui')[0]
   );
 
-  const checkIfPathExists = (pathString: string) => {
-    return fs.existsSync(pathString);
+  const checkIfPathExists = async (pathString: string) => {
+    return (await readDir(pathString)) ? true : false;
   };
 
-  const readTestsFolder = (pathString: string) => {
-    const testsDir = fs.readdirSync(pathString);
+  const readTestsFolder = async (pathString: string) => {
+    const testsDir = await readDir(pathString);
     for (let file of testsDir) {
-      const filePath = path.join(pathString, file);
-      if (fs.statSync(filePath).isDirectory()) {
-        readTestsFolder(filePath);
+      const filePath = path.join(file.path);
+      if (await checkIfPathExists(filePath)) {
+        await readTestsFolder(filePath);
       } else {
-        fileList.push({
-          fileName: file,
-          filePath: filePath,
-        });
+        if (file.name) {
+          fileList.push({
+            fileName: file.name,
+            filePath: filePath,
+          });
+        }
       }
     }
   };
 
-  const getTestFiles = () => {
+  const getTestFiles = async () => {
     const testPath = path.join(projectPath, 'tests');
-    const testsDirFound = checkIfPathExists(testPath);
+    const testsDirFound = await checkIfPathExists(testPath);
     if (testsDirFound) {
-      readTestsFolder(testPath);
+      await readTestsFolder(testPath);
       return {
         count: fileList.length,
         files: fileList,
@@ -47,18 +49,18 @@ export const getSuitesDetails = () => {
     }
   };
 
-  const testsInfo = getTestFiles();
+  const testsInfo = await getTestFiles();
 
-  const suitesInfo = getSuitesInfo(testsInfo);
+  const suitesInfo = await getSuitesInfo(testsInfo);
 
   return { projectPath, suitesInfo };
 };
 
-const getSuitesInfo = (testsInfo: any) => {
+const getSuitesInfo = async (testsInfo: any) => {
   let suitesInfo = [];
   if (testsInfo && testsInfo.files) {
     for (let file of testsInfo.files) {
-      const suiteData = fs.readFileSync(file.filePath);
+      const suiteData = await readTextFile(file.filePath);
       const suiteNamesRegex =
         /(test.describe)([\n\r\s]+||)(\()([\n\r\s]+||)('||")(.*?)('||")([\n\r\s]+||)(,)/g;
       const testsRegex =

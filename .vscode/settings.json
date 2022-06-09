@@ -37,5 +37,14 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "docwriter.style": "Auto-detect"
+  "docwriter.style": "Auto-detect",
+  "cSpell.words": [
+    "dropzone",
+    "mantine",
+    "ppqa",
+    "reduxjs",
+    "tabler",
+    "tauri",
+    "tauriapp"
+  ]
 }
