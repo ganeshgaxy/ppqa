@@ -1,5 +1,6 @@
 import React from 'react';
+import { Layer } from 'react-konva';
 
 export const TestView = () => {
-  return <div>TestView</div>;
+  return <Layer></Layer>;
 };

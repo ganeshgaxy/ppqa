@@ -3,9 +3,20 @@ import type { RootState } from '../../store';
 import { getTestDetails } from './test';
 
 export interface StepRowData {
-  imports: string[] | [];
-  steps: string;
-  variableInfo: { type: string; var: string } | undefined;
+  imports:
+    | {
+        members: { import: string; default: boolean }[];
+        path: string | undefined;
+      }[]
+    | [];
+  step: string;
+  variableInfo:
+    | {
+        declaration: string | undefined;
+        type: string | undefined;
+        name: string;
+      }
+    | undefined;
   usage: string[] | [];
   id: string;
 }
@@ -42,7 +53,7 @@ const initialState: TestSelectionProps = {
   stepsInfo: [],
 };
 
-export const testsSlice = createSlice({
+export const testSlice = createSlice({
   name: 'suites',
   initialState,
   reducers: {
@@ -74,6 +85,6 @@ export const testsSlice = createSlice({
   },
 });
 
-export const { updateTestInfo, resetTestInfo } = testsSlice.actions;
+export const { updateTestInfo, resetTestInfo } = testSlice.actions;
 
-export default testsSlice.reducer;
+export default testSlice.reducer;

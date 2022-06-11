@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import suitesReducer from './suites/suitesSlice';
 import testsReducer from './tests/testsSlice';
+import testReducer from './tests/test/testSlice';
 
 export const store = configureStore({
   reducer: {
     suites: suitesReducer,
     tests: testsReducer,
+    test: testReducer,
   },
 });
 
