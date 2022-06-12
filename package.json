@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "dev-setup": "yarn config set workspaces-experimental true && npx playwright install --with-deps && yarn run build",
-    "build": "npx lerna run build --scope=@qa-framework/playwright-ui && yarn link '@qa-framework/playwright-ui' && yarn install",
+    "build": "npx lerna run build --scope=@qa-framework/playwright-ui && yarn link '@qa-framework/playwright-ui' && yarn install"
   },
   "keywords": [],
   "author": "",
