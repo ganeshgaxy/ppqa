@@ -38,7 +38,7 @@ export {
   WaitForNetworkIdleProps,
 } from './utils/waitActions';
 
-export default abstract class QAFramework {
+export default abstract class QAFrameworkUI {
   static playwrightPage = playwrightPage;
   static registerAppUrl = registerAppUrl;
   static registerPlaywrightPage = registerPlaywrightPage;

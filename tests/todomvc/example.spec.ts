@@ -1,12 +1,12 @@
 import { test, expect, Page } from '@playwright/test';
-import QAFramework, { createFragment } from '@qa-framework/playwright-ui';
+import QAFrameworkUI, { createFragment } from '@qa-framework/playwright-ui';
 import { TodoMvcPage } from '../../project/todomvc/ui/pages/TodoMvc/TodoMvcPage';
 import { TodoMvcPageProps } from '../../project/todomvc/ui/pages/TodoMvc/TodoMvcPage.vars';
 
 test.beforeEach(async ({ page }) => {
-  QAFramework.registerAppUrl('https://demo.playwright.dev/');
-  QAFramework.registerPlaywrightPage(page);
-  QAFramework.registerPlaywrightExpect(expect);
+  QAFrameworkUI.registerAppUrl('https://demo.playwright.dev/');
+  QAFrameworkUI.registerPlaywrightPage(page);
+  QAFrameworkUI.registerPlaywrightExpect(expect);
 });
 
 const TODO_ITEMS = [
