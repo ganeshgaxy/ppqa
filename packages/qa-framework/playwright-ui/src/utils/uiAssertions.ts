@@ -14,6 +14,12 @@ export class PlaywrightExpect implements PlaywrightExpectProps {
   }
 }
 
+/**
+ * usePlaywrightExpect
+ * To use the playwright expect with Proxy traps
+ * @param expect Playwright Expect to be used
+ * @returns 
+ */
 export const usePlaywrightExpect = (expect: Expect): PlaywrightExpectProps => {
   const returnObject: PlaywrightExpectProps = new PlaywrightExpect(expect);
 
@@ -26,41 +32,116 @@ export class PageLocatorExpect implements LocatorExpectProps<void> {
     playwrightPageLocator.not();
     return this;
   }
-  public async toBeEmpty(): Promise<void> {
-    await playwrightPageLocator.toBeEmpty();
+
+  /**
+   * toBeEmpty
+   * * To check if the Element is empty or has no text
+   * @param message The message to be shown on expect
+   */
+  public async toBeEmpty(message?: string): Promise<void> {
+    await playwrightPageLocator.toBeEmpty(message);
   }
+
+  /**
+   * toHaveText
+   * * To check if the Element is has the expected test
+   * @param expected The Expected Text in the element
+   * @param message The message to be shown on expect
+   */
   public async toHaveText(
-    expected: string | RegExp | (string | RegExp)[]
+    expected: string | RegExp | (string | RegExp)[],
+    message?: string
   ): Promise<void> {
-    await playwrightPageLocator.toHaveText(expected);
+    await playwrightPageLocator.toHaveText(expected, message);
   }
-  public async toHaveValue(value: string | RegExp): Promise<void> {
-    await playwrightPageLocator.toHaveValue(value);
+
+  /**
+   * toHaveValue
+   * * To check if the Element is has the expected input value
+   * @param value The Expected value in the element
+   * @param message The message to be shown on expect
+   */
+  public async toHaveValue(
+    value: string | RegExp,
+    message?: string
+  ): Promise<void> {
+    await playwrightPageLocator.toHaveValue(value, message);
   }
+
+  /**
+   * toHaveAttribute
+   * * To check if the Element is has the expected attribute and value
+   * @param name The Expected name of attribute in the element
+   * @param value The Expected value of attribute in the element
+   * @param message The message to be shown on expect
+   */
   public async toHaveAttribute(
     name: string,
-    value: string | RegExp
+    value: string | RegExp,
+    message?: string
   ): Promise<void> {
-    await playwrightPageLocator.toHaveAttribute(name, value);
+    await playwrightPageLocator.toHaveAttribute(name, value, message);
   }
-  public async toHaveCSS(name: string, value: string | RegExp): Promise<void> {
-    await playwrightPageLocator.toHaveCSS(name, value);
+
+  /**
+   * toHaveCSS
+   * * To check if the Element is has the expected css attribute and value
+   * @param name The Expected name of  CSS attribute in the element
+   * @param value The Expected value of CSS attribute in the element
+   * @param message The message to be shown on expect
+   */
+  public async toHaveCSS(
+    name: string,
+    value: string | RegExp,
+    message?: string
+  ): Promise<void> {
+    await playwrightPageLocator.toHaveCSS(name, value, message);
   }
+
+  /**
+   * toHaveClass
+   * * To check if the Element is has the expected class
+   * @param expected The Expected class in the element
+   * @param message The message to be shown on expect
+   */
   public async toHaveClass(
-    expected: string | RegExp | (string | RegExp)[]
+    expected: string | RegExp | (string | RegExp)[],
+    message?: string
   ): Promise<void> {
-    await playwrightPageLocator.toHaveClass(expected);
+    await playwrightPageLocator.toHaveClass(expected, message);
   }
-  public async toHaveCount(count: number): Promise<void> {
-    await playwrightPageLocator.toHaveCount(count);
+
+  /**
+   * toHaveCount
+   * * To check if the Locator resolves to expected number of elements
+   * @param count The count expected to be found - as DOM nodes
+   * @param message The message to be shown on expect
+   */
+  public async toHaveCount(count: number, message?: string): Promise<void> {
+    await playwrightPageLocator.toHaveCount(count, message);
   }
+
+  /**
+   * toContainText
+   * * To check if the element contains expected text
+   * @param expected The expected part of text to be found
+   * @param message The message to be shown on expect
+   */
   public async toContainText(
-    expected: string | RegExp | (string | RegExp)[]
+    expected: string | RegExp | (string | RegExp)[],
+    message?: string
   ): Promise<void> {
-    await playwrightPageLocator.toContainText(expected);
+    await playwrightPageLocator.toContainText(expected, message);
   }
-  public async toHaveId(id: string | RegExp): Promise<void> {
-    await playwrightPageLocator.toHaveId(id);
+
+  /**
+   * toHaveId
+   * * To check if the element has expected ID
+   * @param id The expected ID in web Element
+   * @param message The message to be shown on expect
+   */
+  public async toHaveId(id: string | RegExp, message?: string): Promise<void> {
+    await playwrightPageLocator.toHaveId(id, message);
   }
 }
 
@@ -70,48 +151,176 @@ export class GenericExpect implements GenericExpectProps<void> {
       !ExpectGenericCoreCalls.negativeAssertion;
     return this;
   }
-  public toHaveLength(object: unknown, expected: number): void {
-    ExpectGenericCoreCalls.toHaveLength(object, expected);
+
+  /**
+   * toHaveLength
+   * * To check if the object/array to have expected length
+   * @param object The Object/Array to checked for length
+   * @param expected Expected Length of the Object/Array
+   * @param message The Message to be used on expect
+   */
+  public toHaveLength(
+    object: unknown,
+    expected: number,
+    message?: string
+  ): void {
+    ExpectGenericCoreCalls.toHaveLength(object, expected, message);
   }
+
+  /**
+   * toHaveProperty
+   * * To check if the object/array to have expected property/key
+   * @param object The Object/Array to checked for length
+   * @param keyPath The property/key of an object
+   * @param value The expected value of key/property
+   * @param message The Message to be used on expect
+   */
   public toHaveProperty(
     object: unknown,
     keyPath: string | string[],
-    value?: unknown
+    value?: unknown,
+    message?: string
   ): void {
-    ExpectGenericCoreCalls.toHaveProperty(object, keyPath, value);
+    ExpectGenericCoreCalls.toHaveProperty(object, keyPath, value, message);
   }
-  public toBe(actual: unknown, expected: unknown): void {
-    ExpectGenericCoreCalls.toBe(actual, expected);
+
+  /**
+   * toBe
+   * * To check if the actual is same as expected
+   * @param actual The actual data to be checked
+   * @param expected The expected data to be checked
+   * @param message The Message to be used on expect
+   */
+  public toBe(actual: unknown, expected: unknown, message?: string): void {
+    ExpectGenericCoreCalls.toBe(actual, expected, message);
   }
-  public toEqual(actual: unknown, expected: unknown): void {
-    ExpectGenericCoreCalls.toEqual(actual, expected);
+
+  /**
+   * toEqual
+   * * To check if the actual is same as expected
+   * @param actual The actual data to be checked
+   * @param expected The expected data to be checked
+   * @param message The Message to be used on expect
+   */
+  public toEqual(actual: unknown, expected: unknown, message?: string): void {
+    ExpectGenericCoreCalls.toEqual(actual, expected, message);
   }
-  public toBeFalsy(actual: unknown): void {
-    ExpectGenericCoreCalls.toBeFalsy(actual);
+
+  /**
+   * toBeFalsy
+   * * To check if the actual data is false
+   * @param actual The actual data to be checked
+   * @param message The Message to be used on expect
+   */
+  public toBeFalsy(actual: unknown, message?: string): void {
+    ExpectGenericCoreCalls.toBeFalsy(actual, message);
   }
-  public toBeTruthy(actual: unknown): void {
-    ExpectGenericCoreCalls.toBeTruthy(actual);
+
+  /**
+   * toBeTruthy
+   * * To check if the actual data is true
+   * @param actual The actual data to be checked
+   * @param message The Message to be used on expect
+   */
+  public toBeTruthy(actual: unknown, message?: string): void {
+    ExpectGenericCoreCalls.toBeTruthy(actual, message);
   }
+
+  /**
+   * toBeCloseTo
+   * * To check if the actual data is as close to expected
+   * @param actual The actual data to be checked
+   * @param expected The expected data to be checked
+   * @param numDigits The expected data to close to match
+   * @param message The Message to be used on expect
+   */
   public toBeCloseTo(
     actual: unknown,
     expected: number,
-    numDigits?: number
+    numDigits?: number,
+    message?: string
   ): void {
-    ExpectGenericCoreCalls.toBeCloseTo(actual, expected, numDigits);
+    ExpectGenericCoreCalls.toBeCloseTo(actual, expected, numDigits, message);
   }
-  public toBeGreaterThan(actual: unknown, expected: number | bigint): void {
-    ExpectGenericCoreCalls.toBeGreaterThan(actual, expected);
+
+  /**
+   * toBeGreaterThan
+   * * To check if the actual data is greater than expected
+   * @param actual The actual data to be checked
+   * @param expected The expected data to be checked
+   * @param message The Message to be used on expect
+   */
+  public toBeGreaterThan(
+    actual: unknown,
+    expected: number | bigint,
+    message?: string
+  ): void {
+    ExpectGenericCoreCalls.toBeGreaterThan(actual, expected, message);
   }
-  public toBeLessThan(actual: unknown, expected: number | bigint): void {
-    ExpectGenericCoreCalls.toBeLessThan(actual, expected);
+
+  /**
+   * toBeGreaterThanOrEqual
+   * * To check if the actual data is greater than or equal to expected
+   * @param actual The actual data to be checked
+   * @param expected The expected data to be checked
+   * @param message The Message to be used on expect
+   */
+  public toBeGreaterThanOrEqual(
+    actual: unknown,
+    expected: number | bigint,
+    message?: string
+  ): void {
+    ExpectGenericCoreCalls.toBeGreaterThanOrEqual(actual, expected, message);
   }
-  public toBeLessThanOrEqual(actual: unknown, expected: number | bigint): void {
-    ExpectGenericCoreCalls.toBeLessThanOrEqual(actual, expected);
+
+  /**
+   * toBeLessThan
+   * * To check if the actual data is less than expected
+   * @param actual The actual data to be checked
+   * @param expected The expected data to be checked
+   * @param message The Message to be used on expect
+   */
+  public toBeLessThan(
+    actual: unknown,
+    expected: number | bigint,
+    message?: string
+  ): void {
+    ExpectGenericCoreCalls.toBeLessThan(actual, expected, message);
   }
-  public toBeUndefined(actual: unknown): void {
-    ExpectGenericCoreCalls.toBeUndefined(actual);
+
+  /**
+   * toBeLessThanOrEqual
+   * * To check if the actual data is less than or equal to expected
+   * @param actual The actual data to be checked
+   * @param expected The expected data to be checked
+   * @param message The Message to be used on expect
+   */
+  public toBeLessThanOrEqual(
+    actual: unknown,
+    expected: number | bigint,
+    message?: string
+  ): void {
+    ExpectGenericCoreCalls.toBeLessThanOrEqual(actual, expected, message);
   }
-  public toContain(actual: unknown, expected: unknown): void {
-    ExpectGenericCoreCalls.toContain(actual, expected);
+
+  /**
+   * toBeUndefined
+   * * To check if the actual data is undefined
+   * @param actual The actual data to be checked
+   * @param message The Message to be used on expect
+   */
+  public toBeUndefined(actual: unknown, message?: string): void {
+    ExpectGenericCoreCalls.toBeUndefined(actual, message);
+  }
+
+  /**
+   * toContain
+   * * To check if the actual data to contain expected
+   * @param actual The actual data to be checked
+   * @param expected The actual data to be checked
+   * @param message The Message to be used on expect
+   */
+  public toContain(actual: unknown, expected: unknown, message?: string): void {
+    ExpectGenericCoreCalls.toContain(actual, expected, message);
   }
 }

@@ -37,8 +37,9 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "docwriter.style": "Auto-detect",
+  "docwriter.style": "JSDoc",
   "cSpell.words": [
+    "actionables",
     "dropzone",
     "konva",
     "mantine",
@@ -46,6 +47,7 @@
     "reduxjs",
     "tabler",
     "tauri",
-    "tauriapp"
+    "tauriapp",
+    "unchecking"
   ]
 }
