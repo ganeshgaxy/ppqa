@@ -3,6 +3,7 @@ import {
   URLProps,
   useWebElement,
   WebElement,
+  WebFragmentActions,
 } from '@qa-framework/playwright-ui';
 
 export const TodoMvcPageProps = (): URLProps =>
@@ -50,4 +51,8 @@ export abstract class TodoMvcPageVars {
     useWebElement({
       locator: TodoMvcPageLocators.filterTodoWithTextLocator(filterText),
     });
+}
+
+export class TodoMvcPageActions extends WebFragmentActions{
+  
 }

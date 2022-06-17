@@ -40,9 +40,11 @@
   "docwriter.style": "JSDoc",
   "cSpell.words": [
     "actionables",
+    "domcontentloaded",
     "dropzone",
     "konva",
     "mantine",
+    "networkidle",
     "ppqa",
     "reduxjs",
     "tabler",

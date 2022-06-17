@@ -3,6 +3,8 @@ import {
   registerPlaywrightPage,
   registerPlaywrightExpect,
   registerAppUrl,
+  registerAll,
+  registerPlaywrightAPI,
 } from './utils/fixtureHooks';
 import { WebElement, useWebElement } from './web/webElement';
 import { WebFragment, WebFragmentActions, URLBuilder } from './web/webFragment';
@@ -18,6 +20,8 @@ export {
   registerPlaywrightPage,
   registerPlaywrightExpect,
   registerAppUrl,
+  registerAll,
+  registerPlaywrightAPI,
 } from './utils/fixtureHooks';
 export {
   WebFragment,
@@ -41,6 +45,8 @@ export {
 export default abstract class QAFrameworkUI {
   static playwrightPage = playwrightPage;
   static registerAppUrl = registerAppUrl;
+  static registerAll = registerAll;
+  static registerPlaywrightAPI = registerPlaywrightAPI;
   static registerPlaywrightPage = registerPlaywrightPage;
   static registerPlaywrightExpect = registerPlaywrightExpect;
   static WebFragment = WebFragment;

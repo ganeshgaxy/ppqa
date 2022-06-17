@@ -182,7 +182,8 @@ export interface PlaywrightPageProps extends PageExpectProps<void> {
     actionable: Actionable,
     options?: LocatorOptions
   ): Promise<void>;
-  not(): void;
+  assert(): PlaywrightPageProps;
+  not(): PlaywrightPageProps;
 }
 
 export enum Actionable {
@@ -457,8 +458,17 @@ export class PlaywrightPage implements PlaywrightPageProps {
    * not
    * * Negated Assertions
    */
-  public not(): void {
+  public assert(): PlaywrightPageProps {
+    return this;
+  }
+
+  /**
+   * not
+   * * Negated Assertions
+   */
+  public not(): PlaywrightPageProps {
     PageCoreCalls.negativeAssertion = true;
+    return this;
   }
 
   /**

@@ -1,4 +1,5 @@
-import { Expect, Locator, Page } from '@playwright/test';
+import { APIRequestContext, Expect, Locator, Page } from '@playwright/test';
+import { PlaywrightAPI, usePlaywrightAPI } from './apiActions';
 import {
   LocatorOptions,
   PlaywrightPage,
@@ -10,6 +11,7 @@ import { PlaywrightExpect, usePlaywrightExpect } from './uiAssertions';
 
 export let playwrightPage: PlaywrightPage;
 export let playwrightExpect: PlaywrightExpect;
+export let playwrightAPI: PlaywrightAPI;
 export let playwrightPageLocator: PlaywrightPageLocator;
 export let appInfo: AppInfo;
 
@@ -47,6 +49,31 @@ export const registerPlaywrightPage = (page: Page) => {
  */
 export const registerPlaywrightExpect = (expect: Expect) => {
   playwrightExpect = usePlaywrightExpect(expect);
+};
+
+/**
+ * registerPlaywrightAPI
+ * * To register the api object to be used for testing
+ * @param request Playwright tests request to be used
+ */
+export const registerPlaywrightAPI = (request: APIRequestContext) => {
+  playwrightAPI = usePlaywrightAPI(request);
+};
+
+/**
+ * It registers all the Playwright functions that we'll be using in our tests
+ * @param hooks - object that accepts url, page, expect, request module from Playwright
+ */
+export const registerAll = (hooks: {
+  url: string;
+  page: Page;
+  expect: Expect;
+  request: APIRequestContext;
+}) => {
+  appInfo = { baseURL: hooks.url };
+  playwrightPage = usePlaywrightPage(hooks.page);
+  playwrightExpect = usePlaywrightExpect(hooks.expect);
+  playwrightAPI = usePlaywrightAPI(hooks.request);
 };
 
 /**
