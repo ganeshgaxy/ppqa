@@ -3,7 +3,7 @@
  <img width=300px height=90px src="https://i.imgur.com/5dJr9VT.png" alt="Project logo"></a>
 </p>
 
-<h3 align="center">ppqa</h3>
+<h3 align="center">PPQA - Not a library but just a framework</h3>
 
 <div align="center">
 
@@ -38,7 +38,9 @@ Playwright is arguably a one of the best automation tool available right now. Th
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
-Yarn is highly recommended for this project/framework. Please install yarn if you don't have using below command
+Yarn is highly recommended for this project/framework. Please install yarn if you don't have using below command.
+
+This framework also forces the users to use only typescript and also requires a good practical knowledge on playwright.
 
 ```
 npm i yarn -g
