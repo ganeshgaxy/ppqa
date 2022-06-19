@@ -16,7 +16,7 @@
 
 ---
 
-<p align="center"> PPQA is a project designed to provide any software automation testing team with a framework that suites the corporate level standards and flexibility towards building your own test cases with good practices and guidelines. This project uses [playwright](https://github.com/microsoft/playwright) and [playwright/test](https://github.com/microsoft/playwright-test) for all UI and API interactions.
+<p align="center"> PPQA is a project designed to provide any software automation testing team with a framework that suites the corporate level standards and flexibility towards building your own test cases with good practices and guidelines. This project uses <a href='https://github.com/microsoft/playwright'>playwright</a> and <a href='https://github.com/microsoft/playwright-test'>playwright/test</a>' for all UI and API interactions.
     <br> 
 </p>
 
