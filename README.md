@@ -8,15 +8,15 @@
 <div align="center">
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/pulls)
+[![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/ganeshgaxy/ppqa/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/ganeshgaxy/ppqa/pulls)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
 </div>
 
 ---
 
-<p align="center"> Few lines describing your project.
+<p align="center"> PPQA is a project designed to provide any software automation testing team with a framework that suites the corporate level standards and flexibility towards building your own test cases with good practices and guidelines. This project uses [playwright](https://github.com/microsoft/playwright) and [playwright/test](https://github.com/microsoft/playwright-test) for all UI and API interactions.
     <br> 
 </p>
 
@@ -24,7 +24,7 @@
 
 - [About](#about)
 - [Getting Started](#getting_started)
-- [Deployment](#deployment)
+- [Codespaces](#codespaces)
 - [Usage](#usage)
 - [Built Using](#built_using)
 - [TODO](../TODO.md)
@@ -34,23 +34,39 @@
 
 ## 🧐 About <a name = "about"></a>
 
-Write about 1-2 paragraphs describing the purpose of your project.
+Playwright is arguably a one of the best automation tool available right now. This project harnesses the power of playwright and combined it with good test writing principles to better help integration testers come up with good quality test cases and test components/modules. This project will also explain the necessary guidelines a tester has to follow while writing your test cases. Currently this project is only suitable for testing web apps.
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
+Yarn is highly recommended for this project/framework. Please install yarn if you don't have using below command
+
+```
+npm i yarn -g
+```
+
+If you are using this framework for the first time, see the below instructions to set it up. See [codespaces](#codespaces) for notes on how to deploy the project on a live system.
+
+Clone this repo and open it in your VSCODE. After that open the terminal for the current project folder and start following the instructions below,
+
+First time setup command in the terminal
+
+```
+yarn run dev-setup
+```
 
 ### Prerequisites
 
-What things you need to install the software and how to install them.
+Dev setup command take care of everything that is required but in case of failure, please update nodejs. This project also uses [lerna](https://github.com/lerna/lerna) for using workspaces
+
+Use the below command to install lerna globally, if required as Dev Setup should have already installed [lerna](https://github.com/lerna/lerna) locally.
 
 ```
-Give examples
+yarn add lerna -d
 ```
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running.
+A step by step series of examples that tell you how to get the project/framework usable.
 
 Say what the step will be
 
