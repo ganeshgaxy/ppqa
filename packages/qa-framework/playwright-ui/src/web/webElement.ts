@@ -4,60 +4,7 @@ import { PageLocatorExpect } from '../utils/uiAssertions';
 import { ElementOrFragmentProps } from './generic';
 import { checkPageActionable } from './webFragment';
 
-export interface WebElementProps extends ElementOrFragmentProps<WebElement> {
-  webElementProps: TypeWebElement;
-  pageLocatorExpect: PageLocatorExpect;
-
-  /**
-   * search
-   * * A static method that is used to type text into an element and/or wait for network response.
-   * @param text The text to be entered
-   * @param options Locator options Interface
-   */
-  search(text?: string, options?: LocatorOptions): Promise<WebElement>;
-
-  /**
-   * typeIn
-   * * A static method that is used to type text into an element and/or wait for network response.
-   * @param text The text to be entered
-   * @param options Locator options Interface
-   */
-  typeIn(text?: string, options?: LocatorOptions): Promise<WebElement>;
-
-  /**
-   * pressKey
-   * * A function that is press a key on element and/or then waiting for the network response.
-   * @param text The Key to be pressed
-   * @param options Locator options Interface
-   */
-  pressKey(text?: string, options?: LocatorOptions): Promise<WebElement>;
-
-  /**
-   * findInLocator
-   * * Finds a locator in a locator
-   * @param {string} locator - string - the locator you want to find
-   * @returns The return type is LocatorFragmentProps.
-   */
-  findInLocator(locator: string, options?: FindOptions): WebElement;
-
-  /**
-   * findNth
-   * * Creating a method that is called to find the nth element.
-   * @param nth Nth count of element to be found
-   * @returns PlaywrightPageLocator (this)
-   */
-  findNth(nth: number, options?: FindOptions): WebElement;
-
-  /**
-   * findFirst
-   * * Creating a method that is called to find the first element.
-   * @returns PlaywrightPageLocator (this)
-   */
-  findFirst(options?: FindOptions): WebElement;
-  assert(): PageLocatorExpect;
-}
-
-export interface TypeWebElementProps {
+export interface TypeWebElement {
   locator: string;
   text?: string;
   nth?: number;
@@ -65,9 +12,7 @@ export interface TypeWebElementProps {
   options?: LocatorOptions;
 }
 
-export type TypeWebElement = TypeWebElementProps;
-
-export class WebElement implements WebElementProps {
+export class WebElement {
   public webElementProps: TypeWebElement;
   public pageLocatorExpect: PageLocatorExpect;
   constructor(webElementProps: TypeWebElement) {
@@ -103,7 +48,7 @@ export class WebElement implements WebElementProps {
    * * Wait for a network response after a given URL path and status.
    * @param {string} urlPath - string - The URL path to wait for.
    * @param {number} [status] - The HTTP status code to wait for.
-   * @returns The return type is LocatorFragmentProps.
+   * @returns The return type is LocatorFragment.
    */
   public waitForNetworkResponseAfter(
     urlPath: string,
@@ -122,7 +67,7 @@ export class WebElement implements WebElementProps {
    * * The function is async, so we can use the await keyword
    * @param {string} text - string - the text to search for
    * @param options LocatorOptions - Interface
-   * @returns The LocatorFragmentProps object.
+   * @returns The LocatorFragment object.
    */
   public async search(
     text?: string,
@@ -141,7 +86,7 @@ export class WebElement implements WebElementProps {
    * * Type in the text passed in as a parameter and return the current instance of the class.
    * @param {string} text - string - The text to type into the element
    * @param options LocatorOptions - Interface
-   * @returns The return type is LocatorFragmentProps.
+   * @returns The return type is LocatorFragment.
    */
   public async typeIn(
     text?: string,
@@ -160,7 +105,7 @@ export class WebElement implements WebElementProps {
    * * This function will press a key on the page and return the locator fragment props.
    * @param {string} text - string - The text to type into the element.
    * @param options LocatorOptions - Interface
-   * @returns The return type is LocatorFragmentProps.
+   * @returns The return type is LocatorFragment.
    */
   public async pressKey(
     text: string,
@@ -174,7 +119,7 @@ export class WebElement implements WebElementProps {
    * findInLocator
    * * Finds a locator in a locator
    * @param {string} locator - string - the locator you want to find
-   * @returns The return type is LocatorFragmentProps.
+   * @returns The return type is LocatorFragment.
    */
   public findInLocator(locator: string): WebElement {
     playwrightPageLocator.find(locator);
@@ -183,10 +128,10 @@ export class WebElement implements WebElementProps {
 
   /**
    * findNth
-   * * "Finds the nth element that matches the locator and returns a new LocatorFragmentProps object."
+   * * "Finds the nth element that matches the locator and returns a new LocatorFragment object."
    * * The function is called like this:
    * @param {number} nth - number - The nth element to find.
-   * @returns The return type is LocatorFragmentProps.
+   * @returns The return type is LocatorFragment.
    */
   public findNth(nth: number): WebElement {
     playwrightPageLocator.findNth(nth);
@@ -205,9 +150,9 @@ export class WebElement implements WebElementProps {
 
   /**
    * click
-   * * Click on the element and return the LocatorFragmentProps.
+   * * Click on the element and return the LocatorFragment.
    * @param options LocatorOptions - Interface
-   * @returns The LocatorFragmentProps object.
+   * @returns The LocatorFragment object.
    */
   public async click(options?: LocatorOptions): Promise<WebElement> {
     await playwrightPageLocator.click(options);
@@ -219,7 +164,7 @@ export class WebElement implements WebElementProps {
    * * This function dispatches an event to the element that is currently being located.
    * @param {string} type - string - The type of event to dispatch.
    * @param options LocatorOptions - Interface
-   * @returns The return type is LocatorFragmentProps.
+   * @returns The return type is LocatorFragment.
    */
   public async dispatchEvent(
     type: string,
@@ -231,11 +176,11 @@ export class WebElement implements WebElementProps {
 
   /**
    * dblclick
-   * * The function dblclick() is a public function that returns a promise of type LocatorFragmentProps.
+   * * The function dblclick() is a public function that returns a promise of type LocatorFragment.
    * * The function dblclick() is an async function that calls the function dblclick() from the
    * * playwrightPageLocator object.
    * @param options LocatorOptions - Interface
-   * @returns The LocatorFragmentProps object.
+   * @returns The LocatorFragment object.
    */
   public async dblclick(options?: LocatorOptions): Promise<WebElement> {
     await playwrightPageLocator.dblclick(options);
@@ -244,11 +189,11 @@ export class WebElement implements WebElementProps {
 
   /**
    * check
-   * * The check function is a public function that returns a promise of a LocatorFragmentProps object.
+   * * The check function is a public function that returns a promise of a LocatorFragment object.
    * * The check function is an async function that calls the check function of the playwrightPageLocator
    * * object.
    * @param options LocatorOptions - Interface
-   * @returns The LocatorFragmentProps object.
+   * @returns The LocatorFragment object.
    */
   public async check(options?: LocatorOptions): Promise<WebElement> {
     await playwrightPageLocator.check(options);
@@ -259,7 +204,7 @@ export class WebElement implements WebElementProps {
    * uncheck
    * * Uncheck the checkbox if it is checked, otherwise do nothing.
    * @param options LocatorOptions - Interface
-   * @returns The return type is LocatorFragmentProps.
+   * @returns The return type is LocatorFragment.
    */
   public async uncheck(options?: LocatorOptions): Promise<WebElement> {
     await playwrightPageLocator.uncheck(options);
@@ -271,7 +216,7 @@ export class WebElement implements WebElementProps {
    * * Verify that the actionable is present on the page, and return the locator fragment props.
    * @param {Actionable} actionable - Actionable
    * @param options LocatorOptions - Interface
-   * @returns The return type is LocatorFragmentProps.
+   * @returns The return type is LocatorFragment.
    */
   public async verifyActionable(
     actionable: Actionable,
@@ -286,7 +231,7 @@ export class WebElement implements WebElementProps {
    * * Verify that the element is not actionable.
    * @param {Actionable} actionable - Actionable
    * @param options LocatorOptions - Interface
-   * @returns The return type is LocatorFragmentProps.
+   * @returns The return type is LocatorFragment.
    */
   public async verifyNotActionable(
     actionable: Actionable,
@@ -312,11 +257,9 @@ export class WebElement implements WebElementProps {
  * @param webElementProps WebElementType
  * @returns WebElement
  */
-export const useWebElement = (
-  webElementProps: TypeWebElement
-): WebElementProps => {
-  const returnObject: WebElementProps = new WebElement(webElementProps);
+export const useWebElement = (webElementProps: TypeWebElement): WebElement => {
+  const returnObject: WebElement = new WebElement(webElementProps);
 
   const handler = {};
-  return new Proxy(returnObject, handler) as WebElementProps;
+  return new Proxy(returnObject, handler) as WebElement;
 };

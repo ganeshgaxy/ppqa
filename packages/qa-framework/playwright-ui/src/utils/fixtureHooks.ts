@@ -1,5 +1,5 @@
 import { APIRequestContext, Expect, Locator, Page } from '@playwright/test';
-import { PlaywrightAPI, usePlaywrightAPI } from './apiActions';
+import { PlaywrightApi, usePlaywrightApi } from './apiActions';
 import {
   LocatorOptions,
   PlaywrightPage,
@@ -11,7 +11,7 @@ import { PlaywrightExpect, usePlaywrightExpect } from './uiAssertions';
 
 export let playwrightPage: PlaywrightPage;
 export let playwrightExpect: PlaywrightExpect;
-export let playwrightAPI: PlaywrightAPI;
+export let playwrightApi: PlaywrightApi;
 export let playwrightPageLocator: PlaywrightPageLocator;
 export let appInfo: AppInfo;
 
@@ -20,6 +20,7 @@ export let appInfo: AppInfo;
  */
 export interface AppInfo {
   baseURL: string;
+  apiURL?: string;
   version?: string;
   extra?: unknown;
 }
@@ -31,6 +32,15 @@ export interface AppInfo {
  */
 export const registerAppUrl = (url: string) => {
   appInfo = { baseURL: url };
+};
+
+/**
+ * It takes an object of type AppInfo and assigns it to the appInfo variable
+ * @param {AppInfo} info - AppInfo
+ */
+export const registerAppInfo = (info: AppInfo) => {
+  appInfo = info;
+  appInfo.apiURL = info.apiURL ? info.apiURL : info.baseURL;
 };
 
 /**
@@ -57,7 +67,7 @@ export const registerPlaywrightExpect = (expect: Expect) => {
  * @param request Playwright tests request to be used
  */
 export const registerPlaywrightAPI = (request: APIRequestContext) => {
-  playwrightAPI = usePlaywrightAPI(request);
+  playwrightApi = usePlaywrightApi(request);
 };
 
 /**
@@ -65,15 +75,15 @@ export const registerPlaywrightAPI = (request: APIRequestContext) => {
  * @param hooks - object that accepts url, page, expect, request module from Playwright
  */
 export const registerAll = (hooks: {
-  url: string;
+  info: AppInfo;
   page: Page;
   expect: Expect;
   request: APIRequestContext;
 }) => {
-  appInfo = { baseURL: hooks.url };
+  registerAppInfo(hooks.info);
   playwrightPage = usePlaywrightPage(hooks.page);
   playwrightExpect = usePlaywrightExpect(hooks.expect);
-  playwrightAPI = usePlaywrightAPI(hooks.request);
+  playwrightApi = usePlaywrightApi(hooks.request);
 };
 
 /**

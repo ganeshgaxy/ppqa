@@ -3,7 +3,6 @@ import {
   appInfo,
   playwrightExpect,
   playwrightPage,
-  playwrightPageLocator,
 } from '../utils/fixtureHooks';
 import {
   Actionable,
@@ -12,50 +11,7 @@ import {
   PageOptions,
 } from '../utils/uiActions';
 import { GenericExpect, PageLocatorExpect } from '../utils/uiAssertions';
-import { LocatorFragmentProps, LocatorFragment } from './locatorFragment';
-
-export interface WebFragmentProps {
-  /**
-   * open
-   * * To open the webpage with url
-   * @param urlProps URLProps Interface
-   */
-  open(urlProps?: URLProps): Promise<WebFragmentProps>;
-
-  /**
-   * reload
-   * * A method that is being called on the playwrightPage object.
-   * @param options PageOptions Interface
-   */
-  reload(options?: PageOptions): Promise<WebFragmentProps>;
-
-  /**
-   * goBack
-   * * A method that is used to go back to the previous page.
-   * @param options PageOptions Interface
-   */
-  goBack(options?: PageOptions): Promise<WebFragmentProps>;
-
-  /**
-   * getTitle
-   * * To get a title of a page as a promise
-   * @returns Title of the page as a promise
-   */
-  getTitle(): Promise<string>;
-
-  /**
-   * waitForPageLoad
-   * * Waiting for the page to load.
-   * @param timeout timeout in milliseconds
-   * @param state state to achieve upon load
-   */
-  waitForPageLoad(
-    timeout?: number,
-    state?: 'networkidle' | 'load' | 'domcontentloaded' | 'commit'
-  ): Promise<WebFragmentProps>;
-}
-
-export interface WebFragmentActionsProps {}
+import { LocatorFragment } from './locatorFragment';
 
 export class URLBuilder {
   private _url: URLProps;
@@ -64,9 +20,9 @@ export class URLBuilder {
    * A Simple constructor to initialize the _page value
    * without this, above data member will become undefined
    */
-  constructor() {
+  protected constructor(url?: string) {
     this._url = {
-      url: `${appInfo.baseURL}`,
+      url: `${url ? url : appInfo.baseURL}`,
     };
   }
 
@@ -75,7 +31,7 @@ export class URLBuilder {
    * @param {string} culture - string
    * @returns The URLBuilder object.
    */
-  culture(culture: string): URLBuilder {
+  protected culture(culture: string): URLBuilder {
     this._url.culture = culture;
     this._url.url = `${this._url.url}${this._url.culture}`;
     return this;
@@ -89,7 +45,7 @@ export class URLBuilder {
    * @param {string} suffix - string - The suffix to be added to the URL.
    * @returns The URLBuilder object.
    */
-  suffix(suffix: string): URLBuilder {
+  protected suffix(suffix: string): URLBuilder {
     this._url.suffix = suffix;
     this._url.url = `${this._url.url}${this._url.suffix}`;
     return this;
@@ -102,7 +58,7 @@ export class URLBuilder {
    * @param {string} extra - string - This is the extra string that will be appended to the url.
    * @returns The URLBuilder object.
    */
-  extra(extra: string): URLBuilder {
+  protected extra(extra: string): URLBuilder {
     this._url.extra = extra;
     this._url.url = `${this._url.url}${this._url.extra}`;
     return this;
@@ -114,7 +70,7 @@ export class URLBuilder {
    * @param options - simpleOptions
    * @returns The URLBuilder object.
    */
-  options(options: {
+  protected options(options: {
     referer?: string | undefined;
     timeout?: number | undefined;
     waitUntil?:
@@ -133,7 +89,7 @@ export class URLBuilder {
    * @param {string} expectedTitle - The title of the page you expect to be on.
    * @returns The URLBuilder object.
    */
-  expectedTitle(expectedTitle: string): URLBuilder {
+  protected expectedTitle(expectedTitle: string): URLBuilder {
     this._url.expectedTitle = expectedTitle;
     return this;
   }
@@ -142,7 +98,7 @@ export class URLBuilder {
    * The function returns the URLProps object that was created in the constructor.
    * @returns The URLProps object.
    */
-  build(): URLProps {
+  protected build(): URLProps {
     return this._url;
   }
 }
@@ -165,7 +121,7 @@ export interface URLProps {
   };
 }
 
-export class WebFragment implements WebFragmentProps {
+export class WebFragment {
   protected defaultURL: URLProps | undefined;
 
   constructor(urlProps?: URLProps) {
@@ -177,7 +133,7 @@ export class WebFragment implements WebFragmentProps {
    * * To open the webpage with url
    * @param urlProps URLProps Interface
    */
-  public async open(urlProps?: URLProps): Promise<WebFragmentProps> {
+  public async open(urlProps?: URLProps): Promise<WebFragment> {
     urlProps && (await playwrightPage.goto(urlProps));
     !urlProps &&
       this.defaultURL &&
@@ -190,7 +146,7 @@ export class WebFragment implements WebFragmentProps {
    * * A method that is being called on the playwrightPage object.
    * @param options PageOptions Interface
    */
-  public async reload(options?: PageOptions): Promise<WebFragmentProps> {
+  public async reload(options?: PageOptions): Promise<WebFragment> {
     await playwrightPage.reload(options);
     return this;
   }
@@ -200,7 +156,7 @@ export class WebFragment implements WebFragmentProps {
    * * A method that is used to go back to the previous page.
    * @param options PageOptions Interface
    */
-  public async goBack(options?: PageOptions): Promise<WebFragmentProps> {
+  public async goBack(options?: PageOptions): Promise<WebFragment> {
     await playwrightPage.goBack(options);
     return this;
   }
@@ -223,7 +179,7 @@ export class WebFragment implements WebFragmentProps {
   public async waitForPageLoad(
     timeout?: number,
     state?: 'networkidle' | 'load' | 'domcontentloaded' | 'commit'
-  ): Promise<WebFragmentProps> {
+  ): Promise<WebFragment> {
     await playwrightPage.waitForPageLoad();
     return this;
   }
@@ -244,13 +200,13 @@ export class WebFragment implements WebFragmentProps {
    * * a bunch of functions that can be used to interact with the web element that was found by the
    * * playwrightPage.find() function.
    * @param {string} locator - string - the locator to find the element
-   * @returns A LocatorFragmentProps object.
+   * @returns A LocatorFragment object.
    */
   protected webElement(
     locator: string,
     baseLocator?: Locator,
     options?: FindOptions
-  ): LocatorFragmentProps {
+  ): LocatorFragment {
     playwrightPage.find(locator, baseLocator, options);
     return new LocatorFragment();
   }
@@ -269,7 +225,7 @@ export class WebFragment implements WebFragmentProps {
     actionable?: Actionable | Actionable[],
     baseLocator?: Locator,
     options?: FindOptions
-  ): LocatorFragmentProps {
+  ): LocatorFragment {
     playwrightPage.find(locator, baseLocator, options);
     if (actionable && Array.isArray(actionable)) {
       for (let actionableCheck of actionable) {
@@ -299,7 +255,7 @@ export class WebFragment implements WebFragmentProps {
     nth: number,
     actionable?: Actionable | Actionable[],
     options?: FindOptions
-  ): LocatorFragmentProps {
+  ): LocatorFragment {
     playwrightPage.findNth(nth, locator, options);
     if (actionable && Array.isArray(actionable)) {
       for (let actionableCheck of actionable) {
@@ -316,21 +272,21 @@ export class WebFragment implements WebFragmentProps {
   }
 }
 
-export class WebFragmentActions implements WebFragmentActionsProps {
+export class WebFragmentActions {
   /**
    * webElement
    * * This function returns a new LocatorFragment object, which is a class that extends the
-   * * LocatorFragmentProps interface.
+   * * LocatorFragment interface.
    * @param {string} locator - string - the locator to find
    * @param {Locator} [baseLocator] - The base locator to use for the element.
    * @param {FindOptions} [options] - FindOptions
-   * @returns A LocatorFragmentProps object.
+   * @returns A LocatorFragment object.
    */
   protected webElement(
     locator: string,
     baseLocator?: Locator,
     options?: FindOptions
-  ): LocatorFragmentProps {
+  ): LocatorFragment {
     playwrightPage.find(locator, baseLocator, options);
     return new LocatorFragment();
   }
@@ -358,7 +314,7 @@ export class WebFragmentActions implements WebFragmentActionsProps {
     actionable?: Actionable | Actionable[],
     baseLocator?: Locator,
     options?: FindOptions
-  ): LocatorFragmentProps {
+  ): LocatorFragment {
     playwrightPage.find(locator, baseLocator, options);
     if (actionable && Array.isArray(actionable)) {
       for (let actionableCheck of actionable) {
@@ -386,7 +342,7 @@ export class WebFragmentActions implements WebFragmentActionsProps {
     locator: string,
     nth: number,
     actionable?: Actionable | Actionable[]
-  ): LocatorFragmentProps {
+  ): LocatorFragment {
     playwrightPage.findNth(nth, locator);
     if (actionable && Array.isArray(actionable)) {
       for (let actionableCheck of actionable) {

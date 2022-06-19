@@ -14,11 +14,14 @@ import {
   createFragmentActions,
 } from './utils/uiActions';
 import { WaitLogic } from './utils/waitActions';
+import { createApiFragment } from './utils/apiActions';
+import { ApiFragment, ApiURLBuilder } from './api/apiFragment';
 
 export {
   playwrightPage,
   registerPlaywrightPage,
   registerPlaywrightExpect,
+  registerAppInfo,
   registerAppUrl,
   registerAll,
   registerPlaywrightAPI,
@@ -41,6 +44,9 @@ export {
   NetworkIdleProps,
   WaitForNetworkIdleProps,
 } from './utils/waitActions';
+export { createApiFragment } from './utils/apiActions';
+export { ApiFragment, ApiURLBuilder } from './api/apiFragment';
+export { AppInfo } from './utils/fixtureHooks';
 
 export default abstract class QAFrameworkUI {
   static playwrightPage = playwrightPage;
@@ -53,9 +59,12 @@ export default abstract class QAFrameworkUI {
   static WebFragmentActions = WebFragmentActions;
   static WebElement = WebElement;
   static useWebElement = useWebElement;
+  static ApiFragment = ApiFragment;
   static Actionable = Actionable;
   static createFragment = createFragment;
   static createFragmentActions = createFragmentActions;
+  static createApiFragment = createApiFragment;
   static URLBuilder = URLBuilder;
+  static ApiURLBuilder = ApiURLBuilder;
   static WaitLogic = WaitLogic;
 }

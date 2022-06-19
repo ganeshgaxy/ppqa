@@ -1,4 +1,5 @@
-import { LocatorCoreCalls, PageCoreCalls } from './coreCalls';
+import { LocatorCoreCalls } from '../core/locatorCoreCalls';
+import { PageCoreCalls } from '../core/pageCoreCalls';
 import { appInfo, playwrightPage } from './fixtureHooks';
 
 export interface WaitForNetworkIdleProps {

@@ -1,7 +1,8 @@
 import { Locator, Page } from '@playwright/test';
+import { LocatorCoreCalls } from '../core/locatorCoreCalls';
+import { PageCoreCalls } from '../core/pageCoreCalls';
 import { LocatorExpectProps, PageExpectProps } from '../web/generic';
 import { URLProps } from '../web/webFragment';
-import { PageCoreCalls, LocatorCoreCalls } from './coreCalls';
 import { waitForNetworkIdle, WaitForNetworkIdleProps } from './waitActions';
 
 export interface PlaywrightPageProps extends PageExpectProps<void> {
@@ -195,6 +196,12 @@ export enum Actionable {
   ToBeVisible,
 }
 
+/**
+ * It creates a new proxy object that wraps the original object and returns a new object with the same
+ * methods as the original object
+ * @param ClassObject - { new (): T; }
+ * @returns A Proxy object that wraps the ClassObject.
+ */
 export interface PageOptions {
   timeout?: number;
   state?: 'networkidle' | 'load' | 'domcontentloaded' | 'commit';

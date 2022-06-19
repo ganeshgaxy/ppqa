@@ -1,6 +1,6 @@
 import { Expect } from '@playwright/test';
 import { GenericExpectProps, LocatorExpectProps } from '../web/generic';
-import { ExpectGenericCoreCalls } from './coreCalls';
+import { ExpectGenericCoreCalls } from '../core/expectGenericCoreCalls';
 import { playwrightPageLocator } from './fixtureHooks';
 
 export interface PlaywrightExpectProps {
