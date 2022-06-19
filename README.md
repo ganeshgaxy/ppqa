@@ -68,15 +68,15 @@ yarn add lerna -d
 
 A step by step series of examples that tell you how to get the project/framework usable.
 
-This project has workspaces and it is present under *packages* folder. So in order to build the workspace library project simple run below command from the current project's terminal. This command will link the package to the current project
+This project has workspaces and it is present under _packages_ folder. So in order to build the workspace library project simple run below command from the current project's terminal. This command will link the package to the current project
 
 ```
 yarn run build
 ```
 
-Install the necessary extensions mentioned in the Recommended Extensions sections, You can find them under *.vscode/extensions.json*
+Install the necessary extensions mentioned in the Recommended Extensions sections, You can find them under _.vscode/extensions.json_
 
-All the test files are placed under *tests* folder and the project modules are under *project* folder.
+All the test files are placed under _tests_ folder and the project modules are under _project_ folder.
 
 This framework design is mostly object oriented.
 
@@ -94,9 +94,12 @@ npx playwright test -g 'TEST_CASE_NAME'
 
 ## 🎈 Usage <a name="usage"></a>
 
-In order to use this framework just active the below hooks in *test.beforeAll* like below.
+In order to use this framework just activate the below hooks in _test.beforeAll_ like below.
 
 ```
+import { test, expect, Page } from '@playwright/test';
+import QAFrameworkUI, { createFragment } from '@qa-framework/playwright-ui';
+
 test.beforeEach(async ({ page }) => {
   QAFrameworkUI.registerAppUrl('https://demo.playwright.dev/');
   QAFrameworkUI.registerPlaywrightPage(page);
@@ -104,7 +107,7 @@ test.beforeEach(async ({ page }) => {
 });
 ```
 
-And all the available core functionalities are available under *import QAFrameworkUI from '@qa-framework/playwright-ui';*
+And all the available core functionalities are available under _import QAFrameworkUI from '@qa-framework/playwright-ui';_
 
 The usage of this framework is further reduced to few components like WebFragments, WebElements and WebFragmentActions
 
@@ -152,14 +155,14 @@ export class TodoMvcPage extends WebFragment {
 ...
 ```
 
-As shown above the element can be accessed by using *this.webElement*, *this.waitForWebElement* and more. It is only available under class that extends WebFragment
+As shown above the element can be accessed by using _this.webElement_, _this.waitForWebElement_ and more. It is only available under class that extends WebFragment
 
 You can finally create test cases like below,
 
 ```
 export const TodoMvcPageProps = (): URLProps =>
   new URLBuilder().suffix('todomvc').build();
-  
+
 ...
 test.describe('New Todo', () => {
   test('should allow me to add todo items', async ({ page }) => {
