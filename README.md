@@ -16,7 +16,7 @@
 
 ---
 
-<p align="center"> PPQA is a project designed to provide any software automation testing team with a framework that suites the corporate level standards and flexibility towards building your own test cases with good practices and guidelines. This project uses <a href='https://github.com/microsoft/playwright'>playwright</a> and <a href='https://github.com/microsoft/playwright-test'>playwright/test</a>' for all UI and API interactions.
+<p align="center"> PPQA is a project not a standalone library which is designed to provide any software automation testing team with a framework that suites the corporate level standards and flexibility towards building your own test cases with good practices and guidelines. This project uses <a href='https://github.com/microsoft/playwright'>playwright</a> and <a href='https://github.com/microsoft/playwright-test'>playwright/test</a> for all UI and API interactions.
     <br> 
 </p>
 
@@ -68,60 +68,50 @@ yarn add lerna -d
 
 A step by step series of examples that tell you how to get the project/framework usable.
 
-Say what the step will be
+This project has workspaces and it is present under *packages* folder. So in order to build the workspace library project simple run below command from the current project's terminal. This command will link the package to the current project
 
 ```
-Give the example
+yarn run build
 ```
 
-And repeat
+Install the necessary extensions mentioned in the Recommended Extensions sections, You can find them under *.vscode/extensions.json*
 
-```
-until finished
-```
+All the test files are placed under *tests* folder and the project modules are under *project* folder.
 
-End with an example of getting some data out of the system or using it for a little demo.
+This framework design is mostly object oriented.
 
 ## 🔧 Running the tests <a name = "tests"></a>
 
-Explain how to run the automated tests for this system.
+You can simply use the playwright runner commands to run the tests in this framework
 
-### Break down into end to end tests
+### Run tests individually
 
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
+You can add the recommended playwright extension or simply run the below command to run cases by test name
 
 ```
-Give an example
+npx playwright test -g 'TEST_CASE_NAME'
 ```
 
 ## 🎈 Usage <a name="usage"></a>
 
 Add notes about how to use the system.
 
-## 🚀 Deployment <a name = "deployment"></a>
+## 🚀 Codespaces <a name = "codespaces"></a>
 
 Add additional notes about how to deploy this on a live system.
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
-- [MongoDB](https://www.mongodb.com/) - Database
-- [Express](https://expressjs.com/) - Server Framework
-- [VueJs](https://vuejs.org/) - Web Framework
-- [NodeJs](https://nodejs.org/en/) - Server Environment
+- [Playwright](https://playwright.dev/) - Testing tool/framework
+- [Lerna](https://expressjs.com/) - Monorepo management
+- [Yarn](https://vuejs.org/) - Package management
+- [NodeJs](https://nodejs.org/en/) - Environment
 
 ## ✍️ Authors <a name = "authors"></a>
 
-- [@kylelobo](https://github.com/kylelobo) - Idea & Initial work
+- [@ganeshgaxy](https://github.com/ganeshgaxy) - Idea & Initial work
 
-See also the list of [contributors](https://github.com/kylelobo/The-Documentation-Compendium/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/ganeshgaxy/ppqa/contributors) who participated in this project.
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 
