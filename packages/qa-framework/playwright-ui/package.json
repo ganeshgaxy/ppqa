@@ -9,7 +9,7 @@
     "build": "yarn install && npx tsc && yarn link"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@playwright/test": "^1.22.0"
   },
