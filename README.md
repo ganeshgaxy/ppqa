@@ -94,7 +94,88 @@ npx playwright test -g 'TEST_CASE_NAME'
 
 ## 🎈 Usage <a name="usage"></a>
 
-Add notes about how to use the system.
+In order to use this framework just active the below hooks in *test.beforeAll* like below.
+
+```
+test.beforeEach(async ({ page }) => {
+  QAFrameworkUI.registerAppUrl('https://demo.playwright.dev/');
+  QAFrameworkUI.registerPlaywrightPage(page);
+  QAFrameworkUI.registerPlaywrightExpect(expect);
+});
+```
+
+And all the available core functionalities are available under *import QAFrameworkUI from '@qa-framework/playwright-ui';*
+
+The usage of this framework is further reduced to few components like WebFragments, WebElements and WebFragmentActions
+
+You can create a WebElement like below
+
+```
+export abstract class TodoMvcPageLocators {
+  static newTodoTextBoxSelector = '.new-todo';
+...
+
+export abstract class TodoMvcPageVars {
+  static newTodoTextBox = (text?: string): WebElement =>
+    useWebElement({
+      locator: TodoMvcPageLocators.newTodoTextBoxSelector,
+      text,
+    });
+...
+```
+
+This WebElement can be later used like below,
+
+```
+async addNewTodo(todo: string) {
+  let todoLabels: WebElement = TodoMvcPageVars.newTodoTextBox(todo);
+  await todoLabels.typeIn();
+  await todoLabels.pressKey('Enter');
+}
+```
+
+This same thing can be achieved without using the WebElement too,
+
+```
+export abstract class TodoMvcPageLocators {
+  static todoToggleItemsLocator = '.todo-list li .toggle';
+...
+
+export class TodoMvcPage extends WebFragment {
+  constructor(urlProps?: URLProps) {
+    super(urlProps);
+  }
+  async editATodoText(nth: number, text: string) {
+      await this.waitForNthWebElement(TodoMvcPageLocators.todoItemsLocator, nth)
+        .findInLocator('.edit')
+        .typeIn(text);
+...
+```
+
+As shown above the element can be accessed by using *this.webElement*, *this.waitForWebElement* and more. It is only available under class that extends WebFragment
+
+You can finally create test cases like below,
+
+```
+test.describe('New Todo', () => {
+  test('should allow me to add todo items', async ({ page }) => {
+    let todoMvcPage: TodoMvcPage = createFragment(
+      TodoMvcPage,
+      TodoMvcPageProps()
+    );
+    await todoMvcPage.open();
+    // Create 1st todo.
+    await todoMvcPage.addNewTodo(TODO_ITEMS[0]);
+    await todoMvcPage.verifyTodoLabel(TODO_ITEMS[0]);
+
+    // Create 2nd todo.
+    await todoMvcPage.addNewTodo(TODO_ITEMS[1]);
+    await todoMvcPage.verifyTodoLabel([TODO_ITEMS[0], TODO_ITEMS[1]]);
+
+    await checkNumberOfTodosInLocalStorage(page, 2);
+  });
+...
+```
 
 ## 🚀 Codespaces <a name = "codespaces"></a>
 
