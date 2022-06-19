@@ -157,6 +157,10 @@ As shown above the element can be accessed by using *this.webElement*, *this.wai
 You can finally create test cases like below,
 
 ```
+export const TodoMvcPageProps = (): URLProps =>
+  new URLBuilder().suffix('todomvc').build();
+  
+...
 test.describe('New Todo', () => {
   test('should allow me to add todo items', async ({ page }) => {
     let todoMvcPage: TodoMvcPage = createFragment(
