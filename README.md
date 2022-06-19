@@ -115,6 +115,5 @@ See also the list of [contributors](https://github.com/ganeshgaxy/ppqa/contribut
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 
-- Hat tip to anyone whose code was used
 - Inspiration
 - References
