@@ -42,7 +42,7 @@ Yarn is highly recommended for this project/framework. Please install yarn if yo
 
 This framework also forces the users to use only typescript and also requires a good practical knowledge on playwright.
 
-```
+```node
 npm i yarn -g
 ```
 
@@ -52,7 +52,7 @@ Clone this repo and open it in your VSCODE. After that open the terminal for the
 
 First time setup command in the terminal
 
-```
+```node
 yarn run dev-setup
 ```
 
@@ -62,7 +62,7 @@ Dev setup command take care of everything that is required but in case of failur
 
 Use the below command to install lerna globally, if required as Dev Setup should have already installed [lerna](https://github.com/lerna/lerna) locally.
 
-```
+```node
 yarn add lerna -d
 ```
 
@@ -72,7 +72,7 @@ A step by step series of examples that tell you how to get the project/framework
 
 This project has workspaces and it is present under _packages_ folder. So in order to build the workspace library project simple run below command from the current project's terminal. This command will link the package to the current project
 
-```
+```node
 yarn run build
 ```
 
@@ -90,7 +90,7 @@ You can simply use the playwright runner commands to run the tests in this frame
 
 You can add the recommended playwright extension or simply run the below command to run cases by test name
 
-```
+```node
 npx playwright test -g 'TEST_CASE_NAME'
 ```
 
@@ -98,7 +98,7 @@ npx playwright test -g 'TEST_CASE_NAME'
 
 In order to use this framework just activate the below hooks in _test.beforeAll_ like below.
 
-```
+```ts
 import { test, expect, Page } from '@playwright/test';
 import QAFramework, { createFragment } from '@qa-framework/playwright-ui';
 
@@ -115,7 +115,7 @@ The usage of this framework is further reduced to few components like WebFragmen
 
 You can create a WebElement like below
 
-```
+```ts
 export abstract class TodoMvcPageLocators {
   static newTodoTextBoxSelector = '.new-todo';
 ...
@@ -131,7 +131,7 @@ export abstract class TodoMvcPageVars {
 
 This WebElement can be later used like below,
 
-```
+```ts
 async addNewTodo(todo: string) {
   let todoLabels: WebElement = TodoMvcPageVars.newTodoTextBox(todo);
   await todoLabels.typeIn();
@@ -141,7 +141,7 @@ async addNewTodo(todo: string) {
 
 This same thing can be achieved without using the WebElement too,
 
-```
+```ts
 export abstract class TodoMvcPageLocators {
   static todoToggleItemsLocator = '.todo-list li .toggle';
 ...
@@ -161,7 +161,7 @@ As shown above the element can be accessed by using _this.webElement_, _this.wai
 
 You can finally create test cases like below,
 
-```
+```ts
 export const TodoMvcPageProps = (): URLProps =>
   new URLBuilder().suffix('todomvc').build();
 
