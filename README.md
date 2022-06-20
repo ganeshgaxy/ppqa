@@ -188,7 +188,15 @@ test.describe('New Todo', () => {
 
 ## 🚀 Codespaces <a name = "codespaces"></a>
 
-Add additional notes about how to deploy this on a live system.
+Dev container files are already added to this project. Users can simply create codespaces directly from Github and start following this same ReadMe to set up the framework.
+
+The only difference is by default if you try to run a case, it will fail as xvfbrun is enabled by default.
+
+Please either add HEADLESS option like below or edit the *playwright.config.ts* to always run headless
+
+```node
+export HEADLESS=true && npx playwright test
+```
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 

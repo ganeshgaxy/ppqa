@@ -40,6 +40,7 @@
   "docwriter.style": "JSDoc",
   "cSpell.words": [
     "actionables",
+    "codespaces",
     "domcontentloaded",
     "dropzone",
     "Ganeshan",
@@ -52,6 +53,7 @@
     "tabler",
     "tauri",
     "tauriapp",
-    "unchecking"
+    "unchecking",
+    "xvfbrun"
   ]
 }
