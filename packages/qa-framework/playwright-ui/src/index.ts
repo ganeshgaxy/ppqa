@@ -48,7 +48,7 @@ export { createApiFragment } from './utils/apiActions';
 export { ApiFragment, ApiURLBuilder } from './api/apiFragment';
 export { AppInfo } from './utils/fixtureHooks';
 
-export default abstract class QAFrameworkUI {
+export default abstract class QAFramework {
   static playwrightPage = playwrightPage;
   static registerAppUrl = registerAppUrl;
   static registerAll = registerAll;

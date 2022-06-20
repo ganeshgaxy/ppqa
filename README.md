@@ -100,16 +100,16 @@ In order to use this framework just activate the below hooks in _test.beforeAll_
 
 ```
 import { test, expect, Page } from '@playwright/test';
-import QAFrameworkUI, { createFragment } from '@qa-framework/playwright-ui';
+import QAFramework, { createFragment } from '@qa-framework/playwright-ui';
 
 test.beforeEach(async ({ page }) => {
-  QAFrameworkUI.registerAppUrl('https://demo.playwright.dev/');
-  QAFrameworkUI.registerPlaywrightPage(page);
-  QAFrameworkUI.registerPlaywrightExpect(expect);
+  QAFramework.registerAppUrl('https://demo.playwright.dev/');
+  QAFramework.registerPlaywrightPage(page);
+  QAFramework.registerPlaywrightExpect(expect);
 });
 ```
 
-And all the available core functionalities are available under _import QAFrameworkUI from '@qa-framework/playwright-ui';_
+And all the available core functionalities are available under _import QAFramework from '@qa-framework/playwright-ui';_
 
 The usage of this framework is further reduced to few components like WebFragments, WebElements and WebFragmentActions
 
