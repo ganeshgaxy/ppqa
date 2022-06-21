@@ -64,8 +64,18 @@ export class ApiFragment {
    * @returns The return value of the function is the return value of the function that is being
    * called.
    */
-  public async getJson() {
-    return await playwrightApi.getJson();
+  public async getJson(options?: { keys?: string[] }) {
+    return await playwrightApi.getJson(options);
+  }
+
+  /**
+   * getJsonWithKeys
+   * * This function returns a JSON object with the keys specified in the options object.
+   * @param [options] - Splicing options like keys
+   * @returns The return value is a promise that resolves to an object.
+   */
+  public async getJsonWithKeys(options?: { keys?: string[] }) {
+    return await playwrightApi.getJsonWithKeys(options);
   }
 
   /**
@@ -86,5 +96,9 @@ export class ApiFragment {
   public isResponseOK() {
     playwrightApi.isResponseOK();
     return this;
+  }
+
+  public utils() {
+    return playwrightApi.genericActions;
   }
 }

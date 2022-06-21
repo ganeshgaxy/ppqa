@@ -41,9 +41,12 @@
   "cSpell.words": [
     "actionables",
     "codespaces",
+    "deps",
     "domcontentloaded",
     "dropzone",
+    "Durandal",
     "Ganeshan",
+    "ganeshgaxy",
     "konva",
     "Manickam",
     "mantine",
@@ -53,6 +56,8 @@
     "tabler",
     "tauri",
     "tauriapp",
+    "todomvc",
+    "Todos",
     "unchecking",
     "xvfbrun"
   ]
