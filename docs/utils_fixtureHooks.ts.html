@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: utils/fixtureHooks.ts</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: utils/fixtureHooks.ts</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { APIRequestContext, Expect, Locator, Page } from '@playwright/test';
+import { PlaywrightApi, usePlaywrightApi } from './apiActions';
+import {
+  LocatorOptions,
+  PlaywrightPage,
+  PlaywrightPageLocator,
+  usePlaywrightPage,
+  usePlaywrightPageLocator,
+} from './uiActions';
+import { PlaywrightExpect, usePlaywrightExpect } from './uiAssertions';
+
+export let playwrightPage: PlaywrightPage;
+export let playwrightExpect: PlaywrightExpect;
+export let playwrightApi: PlaywrightApi;
+export let playwrightPageLocator: PlaywrightPageLocator;
+export let appInfo: AppInfo;
+
+/**
+ * The basic appinfo data might be needed for testing the app
+ */
+export interface AppInfo {
+  baseURL: string;
+  apiURL?: string;
+  version?: string;
+  extra?: unknown;
+}
+
+/**
+ * registerAppUrl
+ * * To register the base url for testing
+ * @param url The base URL string
+ */
+export const registerAppUrl = (url: string) => {
+  appInfo = { baseURL: url };
+};
+
+/**
+ * It takes an object of type AppInfo and assigns it to the appInfo variable
+ * @param {AppInfo} info - AppInfo
+ */
+export const registerAppInfo = (info: AppInfo) => {
+  appInfo = info;
+  appInfo.apiURL = info.apiURL ? info.apiURL : info.baseURL;
+};
+
+/**
+ * registerPlaywrightPage
+ * * To register the page to be used for testing
+ * @param page Playwright tests page to be used
+ */
+export const registerPlaywrightPage = (page: Page) => {
+  playwrightPage = usePlaywrightPage(page);
+};
+
+/**
+ * registerPlaywrightExpect
+ * * To register the expect object to be used for testing
+ * @param expect Playwright tests expect to be used
+ */
+export const registerPlaywrightExpect = (expect: Expect) => {
+  playwrightExpect = usePlaywrightExpect(expect);
+};
+
+/**
+ * registerPlaywrightAPI
+ * * To register the api object to be used for testing
+ * @param request Playwright tests request to be used
+ */
+export const registerPlaywrightAPI = (request: APIRequestContext) => {
+  playwrightApi = usePlaywrightApi(request);
+};
+
+/**
+ * It registers all the Playwright functions that we'll be using in our tests
+ * @param hooks - object that accepts url, page, expect, request module from Playwright
+ */
+export const registerAll = (hooks: {
+  info: AppInfo;
+  page: Page;
+  expect: Expect;
+  request: APIRequestContext;
+}) => {
+  registerAppInfo(hooks.info);
+  playwrightPage = usePlaywrightPage(hooks.page);
+  playwrightExpect = usePlaywrightExpect(hooks.expect);
+  playwrightApi = usePlaywrightApi(hooks.request);
+};
+
+/**
+ * registerPlaywrightPageLocator
+ * * To register the locator to be used for testing
+ * @param locator The locator to be used for testing
+ * @param options
+ */
+export const registerPlaywrightPageLocator = (
+  locator: Locator,
+  options?: LocatorOptions
+) => {
+  playwrightPageLocator = usePlaywrightPageLocator(locator, options &amp;&amp; options);
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ApiURLBuilder.html">ApiURLBuilder</a></li><li><a href="URLBuilder_URLBuilder.html">URLBuilder</a></li></ul><h3>Interfaces</h3><ul><li><a href="AppInfo.html">AppInfo</a></li><li><a href="PageOptions.html">PageOptions</a></li></ul><h3>Global</h3><ul><li><a href="global.html#checkLocatorActionable">checkLocatorActionable</a></li><li><a href="global.html#checkPageActionable">checkPageActionable</a></li><li><a href="global.html#createApiFragment">createApiFragment</a></li><li><a href="global.html#createFragment">createFragment</a></li><li><a href="global.html#createFragmentActions">createFragmentActions</a></li><li><a href="global.html#registerAll">registerAll</a></li><li><a href="global.html#registerAppInfo">registerAppInfo</a></li><li><a href="global.html#registerAppUrl">registerAppUrl</a></li><li><a href="global.html#registerPlaywrightAPI">registerPlaywrightAPI</a></li><li><a href="global.html#registerPlaywrightExpect">registerPlaywrightExpect</a></li><li><a href="global.html#registerPlaywrightPage">registerPlaywrightPage</a></li><li><a href="global.html#registerPlaywrightPageLocator">registerPlaywrightPageLocator</a></li><li><a href="global.html#usePlaywrightApi">usePlaywrightApi</a></li><li><a href="global.html#usePlaywrightExpect">usePlaywrightExpect</a></li><li><a href="global.html#usePlaywrightPage">usePlaywrightPage</a></li><li><a href="global.html#usePlaywrightPageLocator">usePlaywrightPageLocator</a></li><li><a href="global.html#useWebElement">useWebElement</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Jun 22 2022 00:51:58 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

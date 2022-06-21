@@ -6,7 +6,8 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "yarn install && npx tsc && yarn link"
+    "build": "yarn install && npx tsc && yarn link",
+    "docs": "jsdoc -c jsdoc.json src/**/* -d ../../../docs/"
   },
   "author": "",
   "license": "MIT",
@@ -14,6 +15,7 @@
     "@playwright/test": "^1.22.0"
   },
   "dependencies": {
+    "better-docs": "^2.7.2",
     "playwright": "^1.22.1",
     "tsc": "^2.0.4",
     "typescript": "^4.6.4"

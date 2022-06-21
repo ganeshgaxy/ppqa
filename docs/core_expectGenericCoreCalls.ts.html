@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: core/expectGenericCoreCalls.ts</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: core/expectGenericCoreCalls.ts</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { playwrightExpect } from '../utils/fixtureHooks';
+
+export abstract class ExpectGenericCoreCalls {
+  public static negativeAssertion: boolean = false;
+
+  /**
+   * toHaveLength
+   * * To check if the object/array to have expected length
+   * @param object The Object/Array to checked for length
+   * @param expected Expected Length of the Object/Array
+   * @param message The Message to be used on expect
+   */
+  public static toHaveLength = (
+    object: unknown,
+    expected: number,
+    message?: string | undefined
+  ): void => {
+    ExpectGenericCoreCalls.negativeAssertion
+      ? playwrightExpect.expect(object, message).not.toHaveLength(expected)
+      : playwrightExpect.expect(object, message).toHaveLength(expected);
+  };
+
+  /**
+   * toHaveProperty
+   * * To check if the object/array to have expected property/key
+   * @param object The Object/Array to checked for length
+   * @param keyPath The property/key of an object
+   * @param value The expected value of key/property
+   * @param message The Message to be used on expect
+   */
+  public static toHaveProperty = (
+    object: unknown,
+    keyPath: string | Array&lt;string>,
+    value?: unknown,
+    message?: string | undefined
+  ): void => {
+    ExpectGenericCoreCalls.negativeAssertion
+      ? playwrightExpect
+          .expect(object, message)
+          .not.toHaveProperty(keyPath, value)
+      : playwrightExpect.expect(object, message).toHaveProperty(keyPath, value);
+  };
+
+  /**
+   * toBe
+   * * To check if the actual is same as expected
+   * @param actual The actual data to be checked
+   * @param expected The expected data to be checked
+   * @param message The Message to be used on expect
+   */
+  public static toBe = (
+    actual: unknown,
+    expected: unknown,
+    message?: string | undefined
+  ): void => {
+    ExpectGenericCoreCalls.negativeAssertion
+      ? playwrightExpect.expect(actual, message).not.toBe(expected)
+      : playwrightExpect.expect(actual, message).toBe(expected);
+  };
+
+  /**
+   * toEqual
+   * * To check if the actual is same as expected
+   * @param actual The actual data to be checked
+   * @param expected The expected data to be checked
+   * @param message The Message to be used on expect
+   */
+  public static toEqual = (
+    actual: unknown,
+    expected: unknown,
+    message?: string | undefined
+  ): void => {
+    ExpectGenericCoreCalls.negativeAssertion
+      ? playwrightExpect.expect(actual, message).not.toEqual(expected)
+      : playwrightExpect.expect(actual, message).toEqual(expected);
+  };
+
+  /**
+   * toBeFalsy
+   * * To check if the actual data is false
+   * @param actual The actual data to be checked
+   * @param message The Message to be used on expect
+   */
+  public static toBeFalsy = (
+    actual: unknown,
+    message?: string | undefined
+  ): void => {
+    ExpectGenericCoreCalls.negativeAssertion
+      ? playwrightExpect.expect(actual, message).not.toBeFalsy()
+      : playwrightExpect.expect(actual, message).toBeFalsy();
+  };
+
+  /**
+   * toBeTruthy
+   * * To check if the actual data is true
+   * @param actual The actual data to be checked
+   * @param message The Message to be used on expect
+   */
+  public static toBeTruthy = (
+    actual: unknown,
+    message?: string | undefined
+  ): void => {
+    ExpectGenericCoreCalls.negativeAssertion
+      ? playwrightExpect.expect(actual, message).not.toBeTruthy()
+      : playwrightExpect.expect(actual, message).toBeTruthy();
+  };
+
+  /**
+   * toBeCloseTo
+   * * To check if the actual data is as close to expected
+   * @param actual The actual data to be checked
+   * @param expected The expected data to be checked
+   * @param numDigits The expected data to close to match
+   * @param message The Message to be used on expect
+   */
+  public static toBeCloseTo = (
+    actual: unknown,
+    expected: number,
+    numDigits?: number,
+    message?: string | undefined
+  ): void => {
+    ExpectGenericCoreCalls.negativeAssertion
+      ? playwrightExpect
+          .expect(actual, message)
+          .not.toBeCloseTo(expected, numDigits)
+      : playwrightExpect
+          .expect(actual, message)
+          .toBeCloseTo(expected, numDigits);
+  };
+
+  /**
+   * toBeGreaterThan
+   * * To check if the actual data is greater than expected
+   * @param actual The actual data to be checked
+   * @param expected The expected data to be checked
+   * @param message The Message to be used on expect
+   */
+  public static toBeGreaterThan = (
+    actual: unknown,
+    expected: number | bigint,
+    message?: string | undefined
+  ): void => {
+    ExpectGenericCoreCalls.negativeAssertion
+      ? playwrightExpect.expect(actual, message).not.toBeGreaterThan(expected)
+      : playwrightExpect.expect(actual, message).toBeGreaterThan(expected);
+  };
+
+  /**
+   * toBeGreaterThanOrEqual
+   * * To check if the actual data is greater than or equal to expected
+   * @param actual The actual data to be checked
+   * @param expected The expected data to be checked
+   * @param message The Message to be used on expect
+   */
+  public static toBeGreaterThanOrEqual = (
+    actual: unknown,
+    expected: number | bigint,
+    message?: string | undefined
+  ): void => {
+    ExpectGenericCoreCalls.negativeAssertion
+      ? playwrightExpect
+          .expect(actual, message)
+          .not.toBeGreaterThanOrEqual(expected)
+      : playwrightExpect
+          .expect(actual, message)
+          .toBeGreaterThanOrEqual(expected);
+  };
+
+  /**
+   * toBeLessThan
+   * * To check if the actual data is less than expected
+   * @param actual The actual data to be checked
+   * @param expected The expected data to be checked
+   * @param message The Message to be used on expect
+   */
+  public static toBeLessThan = (
+    actual: unknown,
+    expected: number | bigint,
+    message?: string | undefined
+  ): void => {
+    ExpectGenericCoreCalls.negativeAssertion
+      ? playwrightExpect.expect(actual, message).not.toBeLessThan(expected)
+      : playwrightExpect.expect(actual, message).toBeLessThan(expected);
+  };
+
+  /**
+   * toBeLessThanOrEqual
+   * * To check if the actual data is less than or equal to expected
+   * @param actual The actual data to be checked
+   * @param expected The expected data to be checked
+   * @param message The Message to be used on expect
+   */
+  public static toBeLessThanOrEqual = (
+    actual: unknown,
+    expected: number | bigint,
+    message?: string | undefined
+  ): void => {
+    ExpectGenericCoreCalls.negativeAssertion
+      ? playwrightExpect
+          .expect(actual, message)
+          .not.toBeLessThanOrEqual(expected)
+      : playwrightExpect.expect(actual, message).toBeLessThanOrEqual(expected);
+  };
+
+  /**
+   * toBeUndefined
+   * * To check if the actual data is undefined
+   * @param actual The actual data to be checked
+   * @param message The Message to be used on expect
+   */
+  public static toBeUndefined = (
+    actual: unknown,
+    message?: string | undefined
+  ): void => {
+    ExpectGenericCoreCalls.negativeAssertion
+      ? playwrightExpect.expect(actual, message).not.toBeUndefined()
+      : playwrightExpect.expect(actual, message).toBeUndefined();
+  };
+
+  /**
+   * toContain
+   * * To check if the actual data to contain expected
+   * @param actual The actual data to be checked
+   * @param expected The actual data to be checked
+   * @param message The Message to be used on expect
+   */
+  public static toContain = (
+    actual: unknown,
+    expected: unknown,
+    message?: string | undefined
+  ): void => {
+    ExpectGenericCoreCalls.negativeAssertion
+      ? playwrightExpect.expect(actual, message).not.toContain(expected)
+      : playwrightExpect.expect(actual, message).toContain(expected);
+  };
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ApiURLBuilder.html">ApiURLBuilder</a></li><li><a href="URLBuilder_URLBuilder.html">URLBuilder</a></li></ul><h3>Interfaces</h3><ul><li><a href="AppInfo.html">AppInfo</a></li><li><a href="PageOptions.html">PageOptions</a></li></ul><h3>Global</h3><ul><li><a href="global.html#checkLocatorActionable">checkLocatorActionable</a></li><li><a href="global.html#checkPageActionable">checkPageActionable</a></li><li><a href="global.html#createApiFragment">createApiFragment</a></li><li><a href="global.html#createFragment">createFragment</a></li><li><a href="global.html#createFragmentActions">createFragmentActions</a></li><li><a href="global.html#registerAll">registerAll</a></li><li><a href="global.html#registerAppInfo">registerAppInfo</a></li><li><a href="global.html#registerAppUrl">registerAppUrl</a></li><li><a href="global.html#registerPlaywrightAPI">registerPlaywrightAPI</a></li><li><a href="global.html#registerPlaywrightExpect">registerPlaywrightExpect</a></li><li><a href="global.html#registerPlaywrightPage">registerPlaywrightPage</a></li><li><a href="global.html#registerPlaywrightPageLocator">registerPlaywrightPageLocator</a></li><li><a href="global.html#usePlaywrightApi">usePlaywrightApi</a></li><li><a href="global.html#usePlaywrightExpect">usePlaywrightExpect</a></li><li><a href="global.html#usePlaywrightPage">usePlaywrightPage</a></li><li><a href="global.html#usePlaywrightPageLocator">usePlaywrightPageLocator</a></li><li><a href="global.html#useWebElement">useWebElement</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Jun 22 2022 00:51:58 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

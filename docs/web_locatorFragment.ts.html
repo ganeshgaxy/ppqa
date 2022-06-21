@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: web/locatorFragment.ts</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: web/locatorFragment.ts</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { playwrightPage, playwrightPageLocator } from '../utils/fixtureHooks';
+import { Actionable, FindOptions, LocatorOptions } from '../utils/uiActions';
+import { GenericExpect, PageLocatorExpect } from '../utils/uiAssertions';
+import { ElementOrFragmentProps } from './generic';
+
+export class LocatorFragment {
+  public assert: PageLocatorExpect;
+  public genericExpect: GenericExpect;
+  constructor() {
+    this.assert = new PageLocatorExpect();
+    this.genericExpect = new GenericExpect();
+  }
+
+  /**
+   * waitForNetworkResponseAfter
+   * * Wait for a network response after a given URL path and status.
+   * @param {string} urlPath - string - The URL path to wait for.
+   * @param {number} [status] - The HTTP status code to wait for.
+   * @returns The return type is LocatorFragment.
+   */
+  public waitForNetworkResponseAfter(
+    urlPath: string,
+    status?: number
+  ): LocatorFragment {
+    playwrightPageLocator.waitForNetworkResponseAfter(
+      urlPath,
+      status &amp;&amp; status
+    );
+    return this;
+  }
+
+  /**
+   * search
+   * * "Type text into the search box and return the current page object."
+   * * The function is async, so we can use the await keyword
+   * @param {string} text - string - the text to search for
+   * @param options LocatorOptions - Interface
+   * @returns The LocatorFragment object.
+   */
+  public async search(
+    text: string,
+    options?: LocatorOptions
+  ): Promise&lt;LocatorFragment> {
+    await playwrightPageLocator.type(text, options);
+    return this;
+  }
+
+  /**
+   * typeIn
+   * * Type in the text passed in as a parameter and return the current instance of the class.
+   * @param {string} text - string - The text to type into the element
+   * @param options LocatorOptions - Interface
+   * @returns The return type is LocatorFragment.
+   */
+  public async typeIn(
+    text: string,
+    options?: LocatorOptions
+  ): Promise&lt;LocatorFragment> {
+    await playwrightPageLocator.type(text, options);
+    return this;
+  }
+
+  /**
+   * pressKey
+   * * This function will press a key on the page and return the locator fragment props.
+   * @param {string} text - string - The text to type into the element.
+   * @param options LocatorOptions - Interface
+   * @returns The return type is LocatorFragment.
+   */
+  public async pressKey(
+    text: string,
+    options?: LocatorOptions
+  ): Promise&lt;LocatorFragment> {
+    await playwrightPageLocator.press(text, options);
+    return this;
+  }
+
+  /**
+   * findInLocator
+   * * Finds a locator in a locator
+   * @param {string} locator - string - the locator you want to find
+   * @param options LocatorOptions - Interface
+   * @returns The return type is LocatorFragment.
+   */
+  public findInLocator(
+    locator: string,
+    options?: FindOptions
+  ): LocatorFragment {
+    playwrightPage.find(locator, playwrightPageLocator.locator, options);
+    return this;
+  }
+
+  /**
+   * findNth
+   * * "Finds the nth element that matches the locator and returns a new LocatorFragment object."
+   * * The function is called like this:
+   * @param {number} nth - number - The nth element to find.
+   * @param {string} locator - string - The locator to find the element
+   * @param options LocatorOptions - Interface
+   * @returns The return type is LocatorFragment.
+   */
+  public findNth(
+    nth: number,
+    locator: string,
+    options?: FindOptions
+  ): LocatorFragment {
+    playwrightPage.findNth(nth, locator, options);
+    return this;
+  }
+
+  /**
+   * findFirst
+   * * "Finds the first element that matches the locator and returns a new LocatorFragment object."
+   * * The LocatorFragment object is a class that extends the LocatorFragment class
+   * @param {string} locator - string - The locator to find the element
+   * @param options LocatorOptions - Interface
+   * @returns The return type is LocatorFragment.
+   */
+  public findFirst(locator: string, options?: FindOptions): LocatorFragment {
+    playwrightPage.findFirst(locator, options);
+    return this;
+  }
+
+  /**
+   * click
+   * * Click on the element and return the LocatorFragment.
+   * @param options LocatorOptions - Interface
+   * @returns The LocatorFragment object.
+   */
+  public async click(options?: LocatorOptions): Promise&lt;LocatorFragment> {
+    await playwrightPageLocator.click(options);
+    return this;
+  }
+
+  /**
+   * dispatchEvent
+   * * This function dispatches an event to the element that is currently being located.
+   * @param {string} type - string - The type of event to dispatch.
+   * @param options LocatorOptions - Interface
+   * @returns The return type is LocatorFragment.
+   */
+  public async dispatchEvent(
+    type: string,
+    options?: LocatorOptions
+  ): Promise&lt;LocatorFragment> {
+    await playwrightPageLocator.dispatchEvent(type, options);
+    return this;
+  }
+
+  /**
+   * dblclick
+   * * The function dblclick() is a public function that returns a promise of type LocatorFragment.
+   * * The function dblclick() is an async function that calls the function dblclick() from the
+   * * playwrightPageLocator object.
+   * @param options LocatorOptions - Interface
+   * @returns The LocatorFragment object.
+   */
+  public async dblclick(options?: LocatorOptions): Promise&lt;LocatorFragment> {
+    await playwrightPageLocator.dblclick(options);
+    return this;
+  }
+
+  /**
+   * check
+   * * The check function is a public function that returns a promise of a LocatorFragment object.
+   * * The check function is an async function that calls the check function of the playwrightPageLocator
+   * * object.
+   * @param options LocatorOptions - Interface
+   * @returns The LocatorFragment object.
+   */
+  public async check(options?: LocatorOptions): Promise&lt;LocatorFragment> {
+    await playwrightPageLocator.check(options);
+    return this;
+  }
+
+  /**
+   * uncheck
+   * * Uncheck the checkbox if it is checked, otherwise do nothing.
+   * @param options LocatorOptions - Interface
+   * @returns The return type is LocatorFragment.
+   */
+  public async uncheck(options?: LocatorOptions): Promise&lt;LocatorFragment> {
+    await playwrightPageLocator.uncheck(options);
+    return this;
+  }
+
+  /**
+   * verifyActionable
+   * * Verify that the actionable is present on the page, and return the locator fragment props.
+   * @param {Actionable} actionable - Actionable
+   * @param options LocatorOptions - Interface
+   * @returns The return type is LocatorFragment.
+   */
+  public async verifyActionable(
+    actionable: Actionable,
+    options?: LocatorOptions
+  ): Promise&lt;LocatorFragment> {
+    await playwrightPageLocator.verifyActionable(actionable, options);
+    return this;
+  }
+
+  /**
+   * verifyNotActionable
+   * * Verify that the element is not actionable.
+   * @param {Actionable} actionable - Actionable
+   * @param options LocatorOptions - Interface
+   * @returns The return type is LocatorFragment.
+   */
+  public async verifyNotActionable(
+    actionable: Actionable,
+    options?: LocatorOptions
+  ): Promise&lt;LocatorFragment> {
+    await playwrightPageLocator.verifyNotActionable(actionable, options);
+    return this;
+  }
+
+  /**
+   * assert
+   * * This function returns a new instance of the PageLocatorExpect class.
+   * @returns The pageLocatorExpect object.
+   */
+  /*public assert(): PageLocatorExpect {
+    return this.pageLocatorExpect;
+  }*/
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ApiURLBuilder.html">ApiURLBuilder</a></li><li><a href="URLBuilder_URLBuilder.html">URLBuilder</a></li></ul><h3>Interfaces</h3><ul><li><a href="AppInfo.html">AppInfo</a></li><li><a href="PageOptions.html">PageOptions</a></li></ul><h3>Global</h3><ul><li><a href="global.html#checkLocatorActionable">checkLocatorActionable</a></li><li><a href="global.html#checkPageActionable">checkPageActionable</a></li><li><a href="global.html#createApiFragment">createApiFragment</a></li><li><a href="global.html#createFragment">createFragment</a></li><li><a href="global.html#createFragmentActions">createFragmentActions</a></li><li><a href="global.html#registerAll">registerAll</a></li><li><a href="global.html#registerAppInfo">registerAppInfo</a></li><li><a href="global.html#registerAppUrl">registerAppUrl</a></li><li><a href="global.html#registerPlaywrightAPI">registerPlaywrightAPI</a></li><li><a href="global.html#registerPlaywrightExpect">registerPlaywrightExpect</a></li><li><a href="global.html#registerPlaywrightPage">registerPlaywrightPage</a></li><li><a href="global.html#registerPlaywrightPageLocator">registerPlaywrightPageLocator</a></li><li><a href="global.html#usePlaywrightApi">usePlaywrightApi</a></li><li><a href="global.html#usePlaywrightExpect">usePlaywrightExpect</a></li><li><a href="global.html#usePlaywrightPage">usePlaywrightPage</a></li><li><a href="global.html#usePlaywrightPageLocator">usePlaywrightPageLocator</a></li><li><a href="global.html#useWebElement">useWebElement</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Jun 22 2022 00:51:58 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
