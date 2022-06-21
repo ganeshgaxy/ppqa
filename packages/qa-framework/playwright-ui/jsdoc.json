@@ -1,8 +1,8 @@
 {
-  "plugins": ["../../../node_modules/better-docs/typescript"],
+  "plugins": [],
   "recurseDepth": 10,
   "source": {
-    "includePattern": "\\.(jsx|js|ts|tsx)$"
+    "includePattern": "\\.(jsx|js)$"
   },
   "sourceType": "module",
   "tags": {
