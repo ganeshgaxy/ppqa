@@ -53,6 +53,4 @@ export abstract class TodoMvcPageVars {
     });
 }
 
-export class TodoMvcPageActions extends WebFragmentActions{
-  
-}
+export class TodoMvcPageActions extends WebFragmentActions {}

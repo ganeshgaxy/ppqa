@@ -93,7 +93,7 @@ export class TodoMvcPage extends WebFragment {
     filterClass: string | string[]
   ) {
     let filterTodoWithText = TodoMvcPageVars.filterTodoWithText(filterText);
-    await filterTodoWithText.assert().toHaveClass(filterClass);
+    await filterTodoWithText.assert.toHaveClass(filterClass);
   }
 
   async verifyClearCompletedIsHidden() {
@@ -106,45 +106,35 @@ export class TodoMvcPage extends WebFragment {
     await this.waitForWebElement(
       TodoMvcPageLocators.clearCompletedLabelLocator,
       Actionable.ToBeEnabled
-    )
-      .assert()
-      .toHaveText(text);
+    ).assert.toHaveText(text);
   }
 
   async verifyTodoLabel(todo: string | string[]) {
     await this.waitForWebElement(
       TodoMvcPageLocators.todoLabelSelector,
       Actionable.ToBeEnabled
-    )
-      .assert()
-      .toHaveText(todo);
+    ).assert.toHaveText(todo);
   }
 
   async verifyTodosCount(count: number) {
     await this.waitForWebElement(
       TodoMvcPageLocators.todoItemsLocator,
       Actionable.ToBeEnabled
-    )
-      .assert()
-      .toHaveCount(count);
+    ).assert.toHaveCount(count);
   }
 
   async verifyTodosText(text: string | RegExp | (string | RegExp)[]) {
     await this.waitForWebElement(
       TodoMvcPageLocators.todoItemsLocator,
       Actionable.ToBeEnabled
-    )
-      .assert()
-      .toHaveText(text);
+    ).assert.toHaveText(text);
   }
 
   async verifyTodoItemsClass(todoClass: string | string[]) {
     await this.waitForWebElement(
       TodoMvcPageLocators.todoItemsLocator,
       Actionable.ToBeEnabled
-    )
-      .assert()
-      .toHaveClass(todoClass);
+    ).assert.toHaveClass(todoClass);
   }
 
   async verifyATodoItemClass(nth: number, todoClass: string | string[]) {
@@ -152,9 +142,7 @@ export class TodoMvcPage extends WebFragment {
       TodoMvcPageLocators.todoItemsLocator,
       nth,
       Actionable.ToBeEnabled
-    )
-      .assert()
-      .toHaveClass(todoClass);
+    ).assert.toHaveClass(todoClass);
   }
 
   async verifyATodoItemWithoutClass(nth: number, todoClass: string | string[]) {
@@ -163,32 +151,27 @@ export class TodoMvcPage extends WebFragment {
       nth,
       Actionable.ToBeEnabled
     )
-      .assert()
-      .not()
+      .assert.not()
       .toHaveClass(todoClass);
   }
 
   async verifyAEditedTodoItemValue(nth: number, text: string | RegExp) {
     let toggleATodoBtn: WebElement = TodoMvcPageVars.nthTodoItem(nth);
-    await toggleATodoBtn.findInLocator('.edit').assert().toHaveValue(text);
+    await toggleATodoBtn.findInLocator('.edit').assert.toHaveValue(text);
   }
 
   async verifyTodoCountLabelContains(text: string) {
     await this.waitForWebElement(
       TodoMvcPageLocators.todoCountLabelSelector,
       Actionable.ToBeEnabled
-    )
-      .assert()
-      .toContainText(text);
+    ).assert.toContainText(text);
   }
 
   async verifyTodoCountLabel(text: string | RegExp | (string | RegExp)[]) {
     await this.waitForWebElement(
       TodoMvcPageLocators.todoCountLabelSelector,
       Actionable.ToBeEnabled
-    )
-      .assert()
-      .toHaveText(text);
+    ).assert.toHaveText(text);
   }
 
   async verifyATodoToggleNotVisible(nth: number) {
@@ -231,6 +214,6 @@ export class TodoMvcPage extends WebFragment {
 
   async verifyEmptyTodoTextBox() {
     let newTodoTextBox: WebElement = TodoMvcPageVars.newTodoTextBox();
-    await newTodoTextBox.assert().toBeEmpty();
+    await newTodoTextBox.assert.toBeEmpty();
   }
 }

@@ -4,10 +4,10 @@ import { GenericExpect, PageLocatorExpect } from '../utils/uiAssertions';
 import { ElementOrFragmentProps } from './generic';
 
 export class LocatorFragment {
-  public pageLocatorExpect: PageLocatorExpect;
+  public assert: PageLocatorExpect;
   public genericExpect: GenericExpect;
   constructor() {
-    this.pageLocatorExpect = new PageLocatorExpect();
+    this.assert = new PageLocatorExpect();
     this.genericExpect = new GenericExpect();
   }
 
@@ -219,7 +219,7 @@ export class LocatorFragment {
    * * This function returns a new instance of the PageLocatorExpect class.
    * @returns The pageLocatorExpect object.
    */
-  public assert(): PageLocatorExpect {
+  /*public assert(): PageLocatorExpect {
     return this.pageLocatorExpect;
-  }
+  }*/
 }

@@ -14,10 +14,10 @@ export interface TypeWebElement {
 
 export class WebElement {
   public webElementProps: TypeWebElement;
-  public pageLocatorExpect: PageLocatorExpect;
+  public assert: PageLocatorExpect;
   constructor(webElementProps: TypeWebElement) {
     this.webElementProps = webElementProps;
-    this.pageLocatorExpect = new PageLocatorExpect();
+    this.assert = new PageLocatorExpect();
     webElementProps.nth !== undefined
       ? playwrightPage.findNth(
           webElementProps.nth,
@@ -246,9 +246,9 @@ export class WebElement {
    * * This function returns a new instance of the PageLocatorExpect class.
    * @returns The pageLocatorExpect object.
    */
-  public assert(): PageLocatorExpect {
+  /*public assert(): PageLocatorExpect {
     return this.pageLocatorExpect;
-  }
+  }*/
 }
 
 /**

@@ -18,7 +18,7 @@ export class PlaywrightExpect implements PlaywrightExpectProps {
  * usePlaywrightExpect
  * To use the playwright expect with Proxy traps
  * @param expect Playwright Expect to be used
- * @returns 
+ * @returns
  */
 export const usePlaywrightExpect = (expect: Expect): PlaywrightExpectProps => {
   const returnObject: PlaywrightExpectProps = new PlaywrightExpect(expect);

@@ -20,7 +20,7 @@ export class URLBuilder {
    * A Simple constructor to initialize the _page value
    * without this, above data member will become undefined
    */
-  protected constructor(url?: string) {
+  constructor(url?: string) {
     this._url = {
       url: `${url ? url : appInfo.baseURL}`,
     };
@@ -31,7 +31,7 @@ export class URLBuilder {
    * @param {string} culture - string
    * @returns The URLBuilder object.
    */
-  protected culture(culture: string): URLBuilder {
+  culture(culture: string): URLBuilder {
     this._url.culture = culture;
     this._url.url = `${this._url.url}${this._url.culture}`;
     return this;
@@ -45,7 +45,7 @@ export class URLBuilder {
    * @param {string} suffix - string - The suffix to be added to the URL.
    * @returns The URLBuilder object.
    */
-  protected suffix(suffix: string): URLBuilder {
+  suffix(suffix: string): URLBuilder {
     this._url.suffix = suffix;
     this._url.url = `${this._url.url}${this._url.suffix}`;
     return this;
@@ -58,7 +58,7 @@ export class URLBuilder {
    * @param {string} extra - string - This is the extra string that will be appended to the url.
    * @returns The URLBuilder object.
    */
-  protected extra(extra: string): URLBuilder {
+  extra(extra: string): URLBuilder {
     this._url.extra = extra;
     this._url.url = `${this._url.url}${this._url.extra}`;
     return this;
@@ -89,7 +89,7 @@ export class URLBuilder {
    * @param {string} expectedTitle - The title of the page you expect to be on.
    * @returns The URLBuilder object.
    */
-  protected expectedTitle(expectedTitle: string): URLBuilder {
+  expectedTitle(expectedTitle: string): URLBuilder {
     this._url.expectedTitle = expectedTitle;
     return this;
   }
@@ -98,7 +98,7 @@ export class URLBuilder {
    * The function returns the URLProps object that was created in the constructor.
    * @returns The URLProps object.
    */
-  protected build(): URLProps {
+  build(): URLProps {
     return this._url;
   }
 }
@@ -124,8 +124,11 @@ export interface URLProps {
 export class WebFragment {
   protected defaultURL: URLProps | undefined;
 
+  public assert: GenericExpect;
+
   constructor(urlProps?: URLProps) {
     this.defaultURL = urlProps && urlProps;
+    this.assert = new LocatorFragment().genericExpect;
   }
 
   /**
@@ -190,9 +193,9 @@ export class WebFragment {
    * * `genericExpect` of that instance
    * @returns A new instance of the LocatorFragment class.
    */
-  public assert(): GenericExpect {
+  /*public assert(): GenericExpect {
     return new LocatorFragment().genericExpect;
-  }
+  }*
 
   /**
    * webElement
@@ -273,6 +276,11 @@ export class WebFragment {
 }
 
 export class WebFragmentActions {
+  public assert: PageLocatorExpect;
+
+  constructor() {
+    this.assert = new LocatorFragment().assert;
+  }
   /**
    * webElement
    * * This function returns a new LocatorFragment object, which is a class that extends the
@@ -296,9 +304,9 @@ export class WebFragmentActions {
    * * It returns a new instance of the LocatorFragment class.
    * @returns A new instance of the LocatorFragment class.
    */
-  public assert(): PageLocatorExpect {
+  /*public assert(): PageLocatorExpect {
     return new LocatorFragment().pageLocatorExpect;
-  }
+  }*/
 
   /**
    * waitForWebElement
