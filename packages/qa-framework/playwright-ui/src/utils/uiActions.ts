@@ -196,12 +196,6 @@ export enum Actionable {
   ToBeVisible,
 }
 
-/**
- * It creates a new proxy object that wraps the original object and returns a new object with the same
- * methods as the original object
- * @param ClassObject - { new (): T; }
- * @returns A Proxy object that wraps the ClassObject.
- */
 export interface PageOptions {
   timeout?: number;
   state?: 'networkidle' | 'load' | 'domcontentloaded' | 'commit';
