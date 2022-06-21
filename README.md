@@ -96,6 +96,8 @@ npx playwright test -g 'TEST_CASE_NAME'
 
 ## 🎈 Usage <a name="usage"></a>
 
+Check the Github Pages [here](https://ganeshgaxy.github.io/ppqa/)
+
 In order to use this framework just activate the below hooks in _test.beforeAll_ like below.
 
 ```ts
@@ -192,7 +194,7 @@ Dev container files are already added to this project. Users can simply create c
 
 The only difference is by default if you try to run a case, it will fail as xvfbrun is enabled by default.
 
-Please either add HEADLESS option like below or edit the *playwright.config.ts* to always run headless
+Please either add HEADLESS option like below or edit the _playwright.config.ts_ to always run headless
 
 ```node
 export HEADLESS=true && npx playwright test
