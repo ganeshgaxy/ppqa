@@ -18,6 +18,7 @@ export abstract class ExpectGenericCoreCalls {
     ExpectGenericCoreCalls.negativeAssertion
       ? playwrightExpect.expect(object, message).not.toHaveLength(expected)
       : playwrightExpect.expect(object, message).toHaveLength(expected);
+    ExpectGenericCoreCalls.negativeAssertion = false;
   };
 
   /**
@@ -39,6 +40,7 @@ export abstract class ExpectGenericCoreCalls {
           .expect(object, message)
           .not.toHaveProperty(keyPath, value)
       : playwrightExpect.expect(object, message).toHaveProperty(keyPath, value);
+    ExpectGenericCoreCalls.negativeAssertion = false;
   };
 
   /**
@@ -56,6 +58,7 @@ export abstract class ExpectGenericCoreCalls {
     ExpectGenericCoreCalls.negativeAssertion
       ? playwrightExpect.expect(actual, message).not.toBe(expected)
       : playwrightExpect.expect(actual, message).toBe(expected);
+    ExpectGenericCoreCalls.negativeAssertion = false;
   };
 
   /**
@@ -73,6 +76,7 @@ export abstract class ExpectGenericCoreCalls {
     ExpectGenericCoreCalls.negativeAssertion
       ? playwrightExpect.expect(actual, message).not.toEqual(expected)
       : playwrightExpect.expect(actual, message).toEqual(expected);
+    ExpectGenericCoreCalls.negativeAssertion = false;
   };
 
   /**
@@ -88,6 +92,7 @@ export abstract class ExpectGenericCoreCalls {
     ExpectGenericCoreCalls.negativeAssertion
       ? playwrightExpect.expect(actual, message).not.toBeFalsy()
       : playwrightExpect.expect(actual, message).toBeFalsy();
+    ExpectGenericCoreCalls.negativeAssertion = false;
   };
 
   /**
@@ -103,6 +108,7 @@ export abstract class ExpectGenericCoreCalls {
     ExpectGenericCoreCalls.negativeAssertion
       ? playwrightExpect.expect(actual, message).not.toBeTruthy()
       : playwrightExpect.expect(actual, message).toBeTruthy();
+    ExpectGenericCoreCalls.negativeAssertion = false;
   };
 
   /**
@@ -126,6 +132,7 @@ export abstract class ExpectGenericCoreCalls {
       : playwrightExpect
           .expect(actual, message)
           .toBeCloseTo(expected, numDigits);
+    ExpectGenericCoreCalls.negativeAssertion = false;
   };
 
   /**
@@ -143,6 +150,7 @@ export abstract class ExpectGenericCoreCalls {
     ExpectGenericCoreCalls.negativeAssertion
       ? playwrightExpect.expect(actual, message).not.toBeGreaterThan(expected)
       : playwrightExpect.expect(actual, message).toBeGreaterThan(expected);
+    ExpectGenericCoreCalls.negativeAssertion = false;
   };
 
   /**
@@ -164,6 +172,7 @@ export abstract class ExpectGenericCoreCalls {
       : playwrightExpect
           .expect(actual, message)
           .toBeGreaterThanOrEqual(expected);
+    ExpectGenericCoreCalls.negativeAssertion = false;
   };
 
   /**
@@ -181,6 +190,7 @@ export abstract class ExpectGenericCoreCalls {
     ExpectGenericCoreCalls.negativeAssertion
       ? playwrightExpect.expect(actual, message).not.toBeLessThan(expected)
       : playwrightExpect.expect(actual, message).toBeLessThan(expected);
+    ExpectGenericCoreCalls.negativeAssertion = false;
   };
 
   /**
@@ -200,6 +210,7 @@ export abstract class ExpectGenericCoreCalls {
           .expect(actual, message)
           .not.toBeLessThanOrEqual(expected)
       : playwrightExpect.expect(actual, message).toBeLessThanOrEqual(expected);
+    ExpectGenericCoreCalls.negativeAssertion = false;
   };
 
   /**
@@ -215,6 +226,7 @@ export abstract class ExpectGenericCoreCalls {
     ExpectGenericCoreCalls.negativeAssertion
       ? playwrightExpect.expect(actual, message).not.toBeUndefined()
       : playwrightExpect.expect(actual, message).toBeUndefined();
+    ExpectGenericCoreCalls.negativeAssertion = false;
   };
 
   /**
@@ -232,5 +244,6 @@ export abstract class ExpectGenericCoreCalls {
     ExpectGenericCoreCalls.negativeAssertion
       ? playwrightExpect.expect(actual, message).not.toContain(expected)
       : playwrightExpect.expect(actual, message).toContain(expected);
+    ExpectGenericCoreCalls.negativeAssertion = false;
   };
 }
