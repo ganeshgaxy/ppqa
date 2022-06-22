@@ -1,5 +1,6 @@
 import { Actionable, LocatorOptions } from '../utils/uiActions';
 
+/* A TypeScript interface for Element or Fragment specific functions. */
 export interface ElementOrFragmentProps<T> {
   /**
    * waitForNetworkResponseAfter
@@ -84,6 +85,7 @@ export interface ElementOrFragmentProps<T> {
   ): Promise<T>;
 }
 
+/* Defining the interface for the generic expect function. */
 export interface GenericExpectProps<T> {
   /**
    * toHaveLength
@@ -224,6 +226,7 @@ export interface GenericExpectProps<T> {
   toContain(actual: unknown, expected: unknown, message?: string): T;
 }
 
+/* A TypeScript interface for Locator specific assertions. */
 export interface LocatorExpectProps<T> {
   /**
    * toBeEmpty
@@ -312,6 +315,7 @@ export interface LocatorExpectProps<T> {
   toHaveId(id: string | RegExp, message?: string): Promise<T>;
 }
 
+/* A TypeScript interface for page specific assertions. */
 export interface PageExpectProps<T> {
   /**
    * toBeEmpty

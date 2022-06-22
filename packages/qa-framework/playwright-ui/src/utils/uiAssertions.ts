@@ -3,10 +3,12 @@ import { GenericExpectProps, LocatorExpectProps } from '../web/generic';
 import { ExpectGenericCoreCalls } from '../core/expectGenericCoreCalls';
 import { playwrightPageLocator } from './fixtureHooks';
 
+/* Defining the interface for the class PlaywrightExpectProps. */
 export interface PlaywrightExpectProps {
   expect: Expect;
 }
 
+/* The PlaywrightExpect class is a wrapper around the Expect class */
 export class PlaywrightExpect implements PlaywrightExpectProps {
   public expect: Expect;
   constructor(expect: Expect) {
@@ -27,6 +29,8 @@ export const usePlaywrightExpect = (expect: Expect): PlaywrightExpectProps => {
   return new Proxy(returnObject, handler) as PlaywrightExpectProps;
 };
 
+/* It's a class that extends the LocatorExpectProps interface, and implements all of the methods in
+that interface */
 export class PageLocatorExpect implements LocatorExpectProps<void> {
   public not(): PageLocatorExpect {
     playwrightPageLocator.not();
@@ -145,7 +149,13 @@ export class PageLocatorExpect implements LocatorExpectProps<void> {
   }
 }
 
+/* It's a class that has a bunch of methods that call a bunch of methods on another class */
 export class GenericExpect implements GenericExpectProps<void> {
+  
+  /**
+   * `not()` is a function that toggles the value of a static variable
+   * @returns The return type is GenericExpect.
+   */
   public not(): GenericExpect {
     ExpectGenericCoreCalls.negativeAssertion =
       !ExpectGenericCoreCalls.negativeAssertion;

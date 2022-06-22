@@ -9,10 +9,14 @@ import {
 } from './uiActions';
 import { PlaywrightExpect, usePlaywrightExpect } from './uiAssertions';
 
+/* A variable that is being exported with all page functions. */
 export let playwrightPage: PlaywrightPage;
+/* Exporting the variable playwrightExpect with locator specific expect functions. */
 export let playwrightExpect: PlaywrightExpect;
 export let playwrightApi: PlaywrightApi;
+/* A variable that is being exported with all page functions on locator. */
 export let playwrightPageLocator: PlaywrightPageLocator;
+/* A variable that is being exported with necessary AppInfo. */
 export let appInfo: AppInfo;
 
 /**

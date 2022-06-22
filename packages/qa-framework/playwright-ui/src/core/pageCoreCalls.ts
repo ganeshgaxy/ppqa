@@ -19,6 +19,7 @@ import {
 import { URLProps, checkPageActionable } from '../web/webFragment';
 import { ExpectGenericCoreCalls } from './expectGenericCoreCalls';
 
+/* The below code is a class that is being used to create a page object model on core ui calls for a page. */
 export abstract class PageCoreCalls {
   public static negativeAssertion: boolean = false;
   public static WAIT_FOR_NETWORK_RESPONSE: NetworkResponseProps | undefined;

@@ -3,8 +3,13 @@ import { Actionable, FindOptions, LocatorOptions } from '../utils/uiActions';
 import { GenericExpect, PageLocatorExpect } from '../utils/uiAssertions';
 import { ElementOrFragmentProps } from './generic';
 
+/**
+ * The LocatorFragment class is a class that can be used to do playwright operations on top of the current locator.
+ */
 export class LocatorFragment {
+  /* Creating a new instance of the PageLocatorExpect class. It is used for assertion on Locator*/
   public assert: PageLocatorExpect;
+  /* Creating a new instance of the GenericExpect class. It is used for assertion on General things*/
   public genericExpect: GenericExpect;
   constructor() {
     this.assert = new PageLocatorExpect();

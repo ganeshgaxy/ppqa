@@ -13,6 +13,13 @@ import {
 import { GenericExpect, PageLocatorExpect } from '../utils/uiAssertions';
 import { LocatorFragment } from './locatorFragment';
 
+/**
+ * This class is used to build a URLProps object.
+ * This will be used build the URL to be used later to create an URLProps to add WebFragment(WebPage/Component/or any sort)
+ * @example
+ * //Build a simple URLProps like below
+ * export const TodoMvcPageProps = (): URLProps => new URLBuilder().suffix('todomvc').build();
+ */
 export class URLBuilder {
   private _url: URLProps;
 
@@ -70,7 +77,7 @@ export class URLBuilder {
    * @param options - simpleOptions
    * @returns The URLBuilder object.
    */
-  protected options(options: {
+  options(options: {
     referer?: string | undefined;
     timeout?: number | undefined;
     waitUntil?:
@@ -103,6 +110,7 @@ export class URLBuilder {
   }
 }
 
+/* Defining the interface for the URLProps object. */
 export interface URLProps {
   culture?: string;
   suffix?: string;
@@ -121,6 +129,16 @@ export interface URLProps {
   };
 }
 
+/**
+ * It's a class that contains functions that can be used to interact with the dom nodes in a web page/component/anything by that design
+ * @example
+ * //Create a simple class and make sure the class extends WebFragment to avail all the below functionalities
+ * export class TodoMvcPage extends WebFragment {
+ *   constructor(urlProps?: URLProps) {
+ *     super(urlProps);
+ *   }
+ *   ...
+ */
 export class WebFragment {
   protected defaultURL: URLProps | undefined;
 
@@ -275,6 +293,26 @@ export class WebFragment {
   }
 }
 
+/**
+ * This class is a base class for all page objects. It contains functions that return a new instance of the LocatorFragment class.
+ * Use this class to pawn of the actions thats can be done in a web page, primary building actions of the available DOM nodes in a web fragment
+ * This is almost similar to how WebFragment works except this class will not have any actions one can see on page like goBack(), reload(), etc
+ * @example
+ * //Create a simple class and make sure the class extends WebFragment to avail all the below functionalities
+ * export class TodoMvcPageActions extends WebFragmentActions {
+ *   constructor() {
+ *     super();
+ *   }
+ *   ...
+ * //This can be later called in a class that extends WebFragment to link the actions available in WebFragment like below
+ * export class TodoMvcPage extends WebFragment {
+ *   actions: TodoMvcPageActions;
+ *   constructor(urlProps?: URLProps) {
+ *     super(urlProps);
+ *     this.actions = createFragmentActions(TodoMvcPageActions);
+ *   }
+ *   ...
+ */
 export class WebFragmentActions {
   public assert: PageLocatorExpect;
 
@@ -375,7 +413,7 @@ export class WebFragmentActions {
  * @param {Actionable} actionable - Actionable - This is an enum that I created that has the following
  * values:
  * @param {boolean} [negative=false] - boolean = false,
- * @param {LocatorOptions} [options] - LocatorOptions = {
+ * @param {LocatorOptions} [options] - LocatorOptions
  */
 export const checkPageActionable = async (
   locator: string,

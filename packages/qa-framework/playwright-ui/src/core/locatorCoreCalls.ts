@@ -16,6 +16,8 @@ import {
 } from '../utils/waitActions';
 import { checkLocatorActionable } from '../web/webFragment';
 
+/* The above code is a class that has static methods that are used to perform actions on the web
+elements with locators. */
 export abstract class LocatorCoreCalls {
   public static negativeAssertion: boolean = false;
   public static WAIT_FOR_NETWORK_RESPONSE: NetworkResponseProps | undefined;

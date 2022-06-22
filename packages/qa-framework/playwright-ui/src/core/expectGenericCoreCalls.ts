@@ -1,5 +1,6 @@
 import { playwrightExpect } from '../utils/fixtureHooks';
 
+/* The above code is a generic class which is used to call the playwright expect methods but its all generic. */
 export abstract class ExpectGenericCoreCalls {
   public static negativeAssertion: boolean = false;
 

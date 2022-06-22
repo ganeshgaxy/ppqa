@@ -3,8 +3,20 @@
 <dl>
 <dt><a href="#ApiURLBuilder">ApiURLBuilder</a></dt>
 <dd><p>To Build API URLs</p></dd>
+<dt><a href="#WaitLogic">WaitLogic</a></dt>
+<dd><p>This class is used to wait for the network to be idle before continuing with the test.
+This module cannot be used directly by a test code, but can be provided to be used by Proxy
+Check createFragment and createFragmentActions for how it is being used</p></dd>
+<dt><a href="#LocatorFragment">LocatorFragment</a></dt>
+<dd><p>The LocatorFragment class is a class that can be used to do playwright operations on top of the current locator.</p></dd>
+<dt><a href="#WebElement">WebElement</a></dt>
+<dd><p>This class can be used to create a WebElement for Dom Nodes and interact with them using the functions in this class
+The class is a wrapper for the playwrightPageLocator object. The class is used to create a fluent interface for the playwrightPageLocator object.</p></dd>
 <dt><a href="#URLBuilder">URLBuilder</a></dt>
-<dd></dd>
+<dd><p>This class is used to build a URLProps object.
+This will be used build the URL to be used later to create an URLProps to add WebFragment(WebPage/Component/or any sort)</p></dd>
+<dt><a href="#WebFragment">WebFragment</a></dt>
+<dd><p>It's a class that contains functions that can be used to interact with the dom nodes in a web page/component/anything by that design</p></dd>
 </dl>
 
  Members
@@ -72,6 +84,10 @@ To use the playwright expect with Proxy traps</p></dd>
 <ul>
 <li>To create a WebElement for the given props</li>
 </ul></dd>
+<dt><a href="#WebFragment">WebFragment</a></dt>
+<dd><p>This class is a base class for all page objects. It contains functions that return a new instance of the LocatorFragment class.
+Use this class to pawn of the actions thats can be done in a web page, primary building actions of the available DOM nodes in a web fragment
+This is almost similar to how WebFragment works except this class will not have any actions one can see on page like goBack(), reload(), etc</p></dd>
 <dt><a href="#WebFragmentActions">WebFragmentActions</a></dt>
 <dd><p>checkPageActionable</p>
 <ul>
@@ -95,6 +111,14 @@ To use the playwright expect with Proxy traps</p></dd>
 <ul>
 <li>To register the base url for testing</li>
 </ul></dd>
+<dt><a href="#waitForPageNetworkResponse">waitForPageNetworkResponse()</a></dt>
+<dd><p>If the WAIT_FOR_NETWORK_RESPONSE property is set, wait for a network response with the specified URL
+and status.</p></dd>
+<dt><a href="#waitForLocatorNetworkResponse">waitForLocatorNetworkResponse()</a></dt>
+<dd><p>If the LocatorCoreCalls.WAIT_FOR_NETWORK_RESPONSE property is set, wait for a network response with
+the specified URL and status.</p></dd>
+<dt><a href="#waitForNetworkIdle">waitForNetworkIdle(options)</a> ⇒</dt>
+<dd><p>This function waits for the network to be idle for a certain amount of time before continuing.</p></dd>
 </dl>
 
 <a name="ApiURLBuilder"></a>
@@ -103,9 +127,513 @@ To use the playwright expect with Proxy traps</p></dd>
 <p>To Build API URLs</p>
 
 **Kind**: global class  
+<a name="WaitLogic"></a>
+
+ WaitLogic
+<p>This class is used to wait for the network to be idle before continuing with the test.
+This module cannot be used directly by a test code, but can be provided to be used by Proxy
+Check createFragment and createFragmentActions for how it is being used</p>
+
+**Kind**: global class  
+<a name="LocatorFragment"></a>
+
+ LocatorFragment
+<p>The LocatorFragment class is a class that can be used to do playwright operations on top of the current locator.</p>
+
+**Kind**: global class  
+
+* [LocatorFragment](#LocatorFragment)
+    * [.waitForNetworkResponseAfter(urlPath, [status])](#LocatorFragment+waitForNetworkResponseAfter) ⇒
+    * [.search(text, options)](#LocatorFragment+search) ⇒
+    * [.typeIn(text, options)](#LocatorFragment+typeIn) ⇒
+    * [.pressKey(text, options)](#LocatorFragment+pressKey) ⇒
+    * [.findInLocator(locator, options)](#LocatorFragment+findInLocator) ⇒
+    * [.findNth(nth, locator, options)](#LocatorFragment+findNth) ⇒
+    * [.findFirst(locator, options)](#LocatorFragment+findFirst) ⇒
+    * [.click(options)](#LocatorFragment+click) ⇒
+    * [.dispatchEvent(type, options)](#LocatorFragment+dispatchEvent) ⇒
+    * [.dblclick(options)](#LocatorFragment+dblclick) ⇒
+    * [.check(options)](#LocatorFragment+check) ⇒
+    * [.uncheck(options)](#LocatorFragment+uncheck) ⇒
+    * [.verifyActionable(actionable, options)](#LocatorFragment+verifyActionable) ⇒
+    * [.verifyNotActionable(actionable, options)](#LocatorFragment+verifyNotActionable) ⇒
+
+<a name="LocatorFragment+waitForNetworkResponseAfter"></a>
+
+# locatorFragment.waitForNetworkResponseAfter(urlPath, [status]) ⇒
+<p>waitForNetworkResponseAfter</p>
+<ul>
+<li>Wait for a network response after a given URL path and status.</li>
+</ul>
+
+**Kind**: instance method of [<code>LocatorFragment</code>](#LocatorFragment)  
+**Returns**: <p>The return type is LocatorFragment.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| urlPath | <code>string</code> | <p>string - The URL path to wait for.</p> |
+| [status] | <code>number</code> | <p>The HTTP status code to wait for.</p> |
+
+<a name="LocatorFragment+search"></a>
+
+# locatorFragment.search(text, options) ⇒
+<p>search</p>
+<ul>
+<li>&quot;Type text into the search box and return the current page object.&quot;</li>
+<li>The function is async, so we can use the await keyword</li>
+</ul>
+
+**Kind**: instance method of [<code>LocatorFragment</code>](#LocatorFragment)  
+**Returns**: <p>The LocatorFragment object.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| text | <code>string</code> | <p>string - the text to search for</p> |
+| options |  | <p>LocatorOptions - Interface</p> |
+
+<a name="LocatorFragment+typeIn"></a>
+
+# locatorFragment.typeIn(text, options) ⇒
+<p>typeIn</p>
+<ul>
+<li>Type in the text passed in as a parameter and return the current instance of the class.</li>
+</ul>
+
+**Kind**: instance method of [<code>LocatorFragment</code>](#LocatorFragment)  
+**Returns**: <p>The return type is LocatorFragment.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| text | <code>string</code> | <p>string - The text to type into the element</p> |
+| options |  | <p>LocatorOptions - Interface</p> |
+
+<a name="LocatorFragment+pressKey"></a>
+
+# locatorFragment.pressKey(text, options) ⇒
+<p>pressKey</p>
+<ul>
+<li>This function will press a key on the page and return the locator fragment props.</li>
+</ul>
+
+**Kind**: instance method of [<code>LocatorFragment</code>](#LocatorFragment)  
+**Returns**: <p>The return type is LocatorFragment.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| text | <code>string</code> | <p>string - The text to type into the element.</p> |
+| options |  | <p>LocatorOptions - Interface</p> |
+
+<a name="LocatorFragment+findInLocator"></a>
+
+# locatorFragment.findInLocator(locator, options) ⇒
+<p>findInLocator</p>
+<ul>
+<li>Finds a locator in a locator</li>
+</ul>
+
+**Kind**: instance method of [<code>LocatorFragment</code>](#LocatorFragment)  
+**Returns**: <p>The return type is LocatorFragment.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| locator | <code>string</code> | <p>string - the locator you want to find</p> |
+| options |  | <p>LocatorOptions - Interface</p> |
+
+<a name="LocatorFragment+findNth"></a>
+
+# locatorFragment.findNth(nth, locator, options) ⇒
+<p>findNth</p>
+<ul>
+<li>&quot;Finds the nth element that matches the locator and returns a new LocatorFragment object.&quot;</li>
+<li>The function is called like this:</li>
+</ul>
+
+**Kind**: instance method of [<code>LocatorFragment</code>](#LocatorFragment)  
+**Returns**: <p>The return type is LocatorFragment.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| nth | <code>number</code> | <p>number - The nth element to find.</p> |
+| locator | <code>string</code> | <p>string - The locator to find the element</p> |
+| options |  | <p>LocatorOptions - Interface</p> |
+
+<a name="LocatorFragment+findFirst"></a>
+
+# locatorFragment.findFirst(locator, options) ⇒
+<p>findFirst</p>
+<ul>
+<li>&quot;Finds the first element that matches the locator and returns a new LocatorFragment object.&quot;</li>
+<li>The LocatorFragment object is a class that extends the LocatorFragment class</li>
+</ul>
+
+**Kind**: instance method of [<code>LocatorFragment</code>](#LocatorFragment)  
+**Returns**: <p>The return type is LocatorFragment.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| locator | <code>string</code> | <p>string - The locator to find the element</p> |
+| options |  | <p>LocatorOptions - Interface</p> |
+
+<a name="LocatorFragment+click"></a>
+
+# locatorFragment.click(options) ⇒
+<p>click</p>
+<ul>
+<li>Click on the element and return the LocatorFragment.</li>
+</ul>
+
+**Kind**: instance method of [<code>LocatorFragment</code>](#LocatorFragment)  
+**Returns**: <p>The LocatorFragment object.</p>  
+
+| Param | Description |
+| --- | --- |
+| options | <p>LocatorOptions - Interface</p> |
+
+<a name="LocatorFragment+dispatchEvent"></a>
+
+# locatorFragment.dispatchEvent(type, options) ⇒
+<p>dispatchEvent</p>
+<ul>
+<li>This function dispatches an event to the element that is currently being located.</li>
+</ul>
+
+**Kind**: instance method of [<code>LocatorFragment</code>](#LocatorFragment)  
+**Returns**: <p>The return type is LocatorFragment.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| type | <code>string</code> | <p>string - The type of event to dispatch.</p> |
+| options |  | <p>LocatorOptions - Interface</p> |
+
+<a name="LocatorFragment+dblclick"></a>
+
+# locatorFragment.dblclick(options) ⇒
+<p>dblclick</p>
+<ul>
+<li>The function dblclick() is a public function that returns a promise of type LocatorFragment.</li>
+<li>The function dblclick() is an async function that calls the function dblclick() from the</li>
+<li>playwrightPageLocator object.</li>
+</ul>
+
+**Kind**: instance method of [<code>LocatorFragment</code>](#LocatorFragment)  
+**Returns**: <p>The LocatorFragment object.</p>  
+
+| Param | Description |
+| --- | --- |
+| options | <p>LocatorOptions - Interface</p> |
+
+<a name="LocatorFragment+check"></a>
+
+# locatorFragment.check(options) ⇒
+<p>check</p>
+<ul>
+<li>The check function is a public function that returns a promise of a LocatorFragment object.</li>
+<li>The check function is an async function that calls the check function of the playwrightPageLocator</li>
+<li>object.</li>
+</ul>
+
+**Kind**: instance method of [<code>LocatorFragment</code>](#LocatorFragment)  
+**Returns**: <p>The LocatorFragment object.</p>  
+
+| Param | Description |
+| --- | --- |
+| options | <p>LocatorOptions - Interface</p> |
+
+<a name="LocatorFragment+uncheck"></a>
+
+# locatorFragment.uncheck(options) ⇒
+<p>uncheck</p>
+<ul>
+<li>Uncheck the checkbox if it is checked, otherwise do nothing.</li>
+</ul>
+
+**Kind**: instance method of [<code>LocatorFragment</code>](#LocatorFragment)  
+**Returns**: <p>The return type is LocatorFragment.</p>  
+
+| Param | Description |
+| --- | --- |
+| options | <p>LocatorOptions - Interface</p> |
+
+<a name="LocatorFragment+verifyActionable"></a>
+
+# locatorFragment.verifyActionable(actionable, options) ⇒
+<p>verifyActionable</p>
+<ul>
+<li>Verify that the actionable is present on the page, and return the locator fragment props.</li>
+</ul>
+
+**Kind**: instance method of [<code>LocatorFragment</code>](#LocatorFragment)  
+**Returns**: <p>The return type is LocatorFragment.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| actionable | <code>Actionable</code> | <p>Actionable</p> |
+| options |  | <p>LocatorOptions - Interface</p> |
+
+<a name="LocatorFragment+verifyNotActionable"></a>
+
+# locatorFragment.verifyNotActionable(actionable, options) ⇒
+<p>verifyNotActionable</p>
+<ul>
+<li>Verify that the element is not actionable.</li>
+</ul>
+
+**Kind**: instance method of [<code>LocatorFragment</code>](#LocatorFragment)  
+**Returns**: <p>The return type is LocatorFragment.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| actionable | <code>Actionable</code> | <p>Actionable</p> |
+| options |  | <p>LocatorOptions - Interface</p> |
+
+<a name="WebElement"></a>
+
+ WebElement
+<p>This class can be used to create a WebElement for Dom Nodes and interact with them using the functions in this class
+The class is a wrapper for the playwrightPageLocator object. The class is used to create a fluent interface for the playwrightPageLocator object.</p>
+
+**Kind**: global class  
+
+* [WebElement](#WebElement)
+    * [.waitForNetworkResponseAfter(urlPath, [status])](#WebElement+waitForNetworkResponseAfter) ⇒
+    * [.search(text, options)](#WebElement+search) ⇒
+    * [.typeIn(text, options)](#WebElement+typeIn) ⇒
+    * [.pressKey(text, options)](#WebElement+pressKey) ⇒
+    * [.findInLocator(locator)](#WebElement+findInLocator) ⇒
+    * [.findNth(nth)](#WebElement+findNth) ⇒
+    * [.findFirst()](#WebElement+findFirst) ⇒
+    * [.click(options)](#WebElement+click) ⇒
+    * [.dispatchEvent(type, options)](#WebElement+dispatchEvent) ⇒
+    * [.dblclick(options)](#WebElement+dblclick) ⇒
+    * [.check(options)](#WebElement+check) ⇒
+    * [.uncheck(options)](#WebElement+uncheck) ⇒
+    * [.verifyActionable(actionable, options)](#WebElement+verifyActionable) ⇒
+    * [.verifyNotActionable(actionable, options)](#WebElement+verifyNotActionable) ⇒
+
+<a name="WebElement+waitForNetworkResponseAfter"></a>
+
+# webElement.waitForNetworkResponseAfter(urlPath, [status]) ⇒
+<p>waitForNetworkResponseAfter</p>
+<ul>
+<li>Wait for a network response after a given URL path and status.</li>
+</ul>
+
+**Kind**: instance method of [<code>WebElement</code>](#WebElement)  
+**Returns**: <p>The return type is LocatorFragment.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| urlPath | <code>string</code> | <p>string - The URL path to wait for.</p> |
+| [status] | <code>number</code> | <p>The HTTP status code to wait for.</p> |
+
+<a name="WebElement+search"></a>
+
+# webElement.search(text, options) ⇒
+<p>search</p>
+<ul>
+<li>&quot;Type text into the search box and return the current page object.&quot;</li>
+<li>The function is async, so we can use the await keyword</li>
+</ul>
+
+**Kind**: instance method of [<code>WebElement</code>](#WebElement)  
+**Returns**: <p>The LocatorFragment object.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| text | <code>string</code> | <p>string - the text to search for</p> |
+| options |  | <p>LocatorOptions - Interface</p> |
+
+<a name="WebElement+typeIn"></a>
+
+# webElement.typeIn(text, options) ⇒
+<p>typeIn</p>
+<ul>
+<li>Type in the text passed in as a parameter and return the current instance of the class.</li>
+</ul>
+
+**Kind**: instance method of [<code>WebElement</code>](#WebElement)  
+**Returns**: <p>The return type is LocatorFragment.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| text | <code>string</code> | <p>string - The text to type into the element</p> |
+| options |  | <p>LocatorOptions - Interface</p> |
+
+<a name="WebElement+pressKey"></a>
+
+# webElement.pressKey(text, options) ⇒
+<p>pressKey</p>
+<ul>
+<li>This function will press a key on the page and return the locator fragment props.</li>
+</ul>
+
+**Kind**: instance method of [<code>WebElement</code>](#WebElement)  
+**Returns**: <p>The return type is LocatorFragment.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| text | <code>string</code> | <p>string - The text to type into the element.</p> |
+| options |  | <p>LocatorOptions - Interface</p> |
+
+<a name="WebElement+findInLocator"></a>
+
+# webElement.findInLocator(locator) ⇒
+<p>findInLocator</p>
+<ul>
+<li>Finds a locator in a locator</li>
+</ul>
+
+**Kind**: instance method of [<code>WebElement</code>](#WebElement)  
+**Returns**: <p>The return type is LocatorFragment.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| locator | <code>string</code> | <p>string - the locator you want to find</p> |
+
+<a name="WebElement+findNth"></a>
+
+# webElement.findNth(nth) ⇒
+<p>findNth</p>
+<ul>
+<li>&quot;Finds the nth element that matches the locator and returns a new LocatorFragment object.&quot;</li>
+<li>The function is called like this:</li>
+</ul>
+
+**Kind**: instance method of [<code>WebElement</code>](#WebElement)  
+**Returns**: <p>The return type is LocatorFragment.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| nth | <code>number</code> | <p>number - The nth element to find.</p> |
+
+<a name="WebElement+findFirst"></a>
+
+# webElement.findFirst() ⇒
+<p>findFirst</p>
+<ul>
+<li>Creating a static method that is called to find the first element.</li>
+</ul>
+
+**Kind**: instance method of [<code>WebElement</code>](#WebElement)  
+**Returns**: <p>PlaywrightPageLocator (this)</p>  
+<a name="WebElement+click"></a>
+
+# webElement.click(options) ⇒
+<p>click</p>
+<ul>
+<li>Click on the element and return the LocatorFragment.</li>
+</ul>
+
+**Kind**: instance method of [<code>WebElement</code>](#WebElement)  
+**Returns**: <p>The LocatorFragment object.</p>  
+
+| Param | Description |
+| --- | --- |
+| options | <p>LocatorOptions - Interface</p> |
+
+<a name="WebElement+dispatchEvent"></a>
+
+# webElement.dispatchEvent(type, options) ⇒
+<p>dispatchEvent</p>
+<ul>
+<li>This function dispatches an event to the element that is currently being located.</li>
+</ul>
+
+**Kind**: instance method of [<code>WebElement</code>](#WebElement)  
+**Returns**: <p>The return type is LocatorFragment.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| type | <code>string</code> | <p>string - The type of event to dispatch.</p> |
+| options |  | <p>LocatorOptions - Interface</p> |
+
+<a name="WebElement+dblclick"></a>
+
+# webElement.dblclick(options) ⇒
+<p>dblclick</p>
+<ul>
+<li>The function dblclick() is a public function that returns a promise of type LocatorFragment.</li>
+<li>The function dblclick() is an async function that calls the function dblclick() from the</li>
+<li>playwrightPageLocator object.</li>
+</ul>
+
+**Kind**: instance method of [<code>WebElement</code>](#WebElement)  
+**Returns**: <p>The LocatorFragment object.</p>  
+
+| Param | Description |
+| --- | --- |
+| options | <p>LocatorOptions - Interface</p> |
+
+<a name="WebElement+check"></a>
+
+# webElement.check(options) ⇒
+<p>check</p>
+<ul>
+<li>The check function is a public function that returns a promise of a LocatorFragment object.</li>
+<li>The check function is an async function that calls the check function of the playwrightPageLocator</li>
+<li>object.</li>
+</ul>
+
+**Kind**: instance method of [<code>WebElement</code>](#WebElement)  
+**Returns**: <p>The LocatorFragment object.</p>  
+
+| Param | Description |
+| --- | --- |
+| options | <p>LocatorOptions - Interface</p> |
+
+<a name="WebElement+uncheck"></a>
+
+# webElement.uncheck(options) ⇒
+<p>uncheck</p>
+<ul>
+<li>Uncheck the checkbox if it is checked, otherwise do nothing.</li>
+</ul>
+
+**Kind**: instance method of [<code>WebElement</code>](#WebElement)  
+**Returns**: <p>The return type is LocatorFragment.</p>  
+
+| Param | Description |
+| --- | --- |
+| options | <p>LocatorOptions - Interface</p> |
+
+<a name="WebElement+verifyActionable"></a>
+
+# webElement.verifyActionable(actionable, options) ⇒
+<p>verifyActionable</p>
+<ul>
+<li>Verify that the actionable is present on the page, and return the locator fragment props.</li>
+</ul>
+
+**Kind**: instance method of [<code>WebElement</code>](#WebElement)  
+**Returns**: <p>The return type is LocatorFragment.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| actionable | <code>Actionable</code> | <p>Actionable</p> |
+| options |  | <p>LocatorOptions - Interface</p> |
+
+<a name="WebElement+verifyNotActionable"></a>
+
+# webElement.verifyNotActionable(actionable, options) ⇒
+<p>verifyNotActionable</p>
+<ul>
+<li>Verify that the element is not actionable.</li>
+</ul>
+
+**Kind**: instance method of [<code>WebElement</code>](#WebElement)  
+**Returns**: <p>The return type is LocatorFragment.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| actionable | <code>Actionable</code> | <p>Actionable</p> |
+| options |  | <p>LocatorOptions - Interface</p> |
+
 <a name="URLBuilder"></a>
 
  URLBuilder
+<p>This class is used to build a URLProps object.
+This will be used build the URL to be used later to create an URLProps to add WebFragment(WebPage/Component/or any sort)</p>
+
 **Kind**: global class  
 
 * [URLBuilder](#URLBuilder)
@@ -123,6 +651,10 @@ To use the playwright expect with Proxy traps</p></dd>
 <p>A Simple constructor to initialize the _page value
 without this, above data member will become undefined</p>
 
+**Example**  
+```js
+//Build a simple URLProps like belowexport const TodoMvcPageProps = (): URLProps => new URLBuilder().suffix('todomvc').build();
+```
 <a name="URLBuilder+culture"></a>
 
 # urlBuilder.culture(culture) ⇒
@@ -196,6 +728,125 @@ properties.&quot;</p>
 
 **Kind**: instance method of [<code>URLBuilder</code>](#URLBuilder)  
 **Returns**: <p>The URLProps object.</p>  
+<a name="WebFragment"></a>
+
+ WebFragment
+<p>It's a class that contains functions that can be used to interact with the dom nodes in a web page/component/anything by that design</p>
+
+**Kind**: global class  
+
+* [WebFragment](#WebFragment)
+    * [.open(urlProps)](#WebFragment+open)
+    * [.reload(options)](#WebFragment+reload)
+    * [.goBack(options)](#WebFragment+goBack)
+    * [.getTitle()](#WebFragment+getTitle) ⇒
+    * [.waitForPageLoad(timeout, state)](#WebFragment+waitForPageLoad)
+    * [.waitForWebElement(locator, [actionable], [baseLocator], [options])](#WebFragment+waitForWebElement) ⇒
+    * [.waitForNthWebElement(locator, nth, [actionable], [options])](#WebFragment+waitForNthWebElement) ⇒
+
+<a name="WebFragment+open"></a>
+
+# webFragment.open(urlProps)
+<p>open</p>
+<ul>
+<li>To open the webpage with url</li>
+</ul>
+
+**Kind**: instance method of [<code>WebFragment</code>](#WebFragment)  
+
+| Param | Description |
+| --- | --- |
+| urlProps | <p>URLProps Interface</p> |
+
+<a name="WebFragment+reload"></a>
+
+# webFragment.reload(options)
+<p>reload</p>
+<ul>
+<li>A method that is being called on the playwrightPage object.</li>
+</ul>
+
+**Kind**: instance method of [<code>WebFragment</code>](#WebFragment)  
+
+| Param | Description |
+| --- | --- |
+| options | <p>PageOptions Interface</p> |
+
+<a name="WebFragment+goBack"></a>
+
+# webFragment.goBack(options)
+<p>goBack</p>
+<ul>
+<li>A method that is used to go back to the previous page.</li>
+</ul>
+
+**Kind**: instance method of [<code>WebFragment</code>](#WebFragment)  
+
+| Param | Description |
+| --- | --- |
+| options | <p>PageOptions Interface</p> |
+
+<a name="WebFragment+getTitle"></a>
+
+# webFragment.getTitle() ⇒
+<p>getTitle</p>
+<ul>
+<li>To get a title of a page as a promise</li>
+</ul>
+
+**Kind**: instance method of [<code>WebFragment</code>](#WebFragment)  
+**Returns**: <p>Title of the page as a promise</p>  
+<a name="WebFragment+waitForPageLoad"></a>
+
+# webFragment.waitForPageLoad(timeout, state)
+<p>waitForPageLoad</p>
+<ul>
+<li>Waiting for the page to load.</li>
+</ul>
+
+**Kind**: instance method of [<code>WebFragment</code>](#WebFragment)  
+
+| Param | Description |
+| --- | --- |
+| timeout | <p>timeout in milliseconds</p> |
+| state | <p>state to achieve upon load</p> |
+
+<a name="WebFragment+waitForWebElement"></a>
+
+# webFragment.waitForWebElement(locator, [actionable], [baseLocator], [options]) ⇒
+<p>waitForWebElement</p>
+<ul>
+<li>Wait for a web element to be present, then return a new LocatorFragment object.</li>
+</ul>
+
+**Kind**: instance method of [<code>WebFragment</code>](#WebFragment)  
+**Returns**: <p>A LocatorFragment object.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| locator | <code>string</code> | <p>string - the locator to find</p> |
+| [actionable] | <code>Actionable</code> \| <code>Array.&lt;Actionable&gt;</code> | <p>Actionable | Actionable[]</p> |
+| [baseLocator] | <code>Locator</code> | <p>The base locator to use for the find.</p> |
+| [options] | <code>FindOptions</code> | <p>FindOptions = {</p> |
+
+<a name="WebFragment+waitForNthWebElement"></a>
+
+# webFragment.waitForNthWebElement(locator, nth, [actionable], [options]) ⇒
+<p>waitForNthWebElement</p>
+<ul>
+<li>Wait for the nth element to be visible, then return a new LocatorFragment object.</li>
+</ul>
+
+**Kind**: instance method of [<code>WebFragment</code>](#WebFragment)  
+**Returns**: <p>A new instance of the LocatorFragment class.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| locator | <code>string</code> | <p>string - the locator to find</p> |
+| nth | <code>number</code> | <p>number - the nth element to find</p> |
+| [actionable] | <code>Actionable</code> \| <code>Array.&lt;Actionable&gt;</code> | <p>Actionable | Actionable[]</p> |
+| [options] | <code>FindOptions</code> | <p>FindOptions = {</p> |
+
 <a name="PlaywrightApi"></a>
 
  PlaywrightApi ⇒
@@ -1323,6 +1974,10 @@ A method called to initialize the PlaywrightPage with given page</p>
 | ClassObject | <p>The ClassObject that will use WebFragment</p> |
 | urlProps | <p>The URLProps</p> |
 
+**Example**  
+```js
+//Use below example to create a new WebFragmentlet todoMvcPage: TodoMvcPage = createFragment(    TodoMvcPage,    TodoMvcPageProps()  );
+```
 <a name="createFragment"></a>
 
  createFragment ⇒
@@ -1338,6 +1993,10 @@ A method called to initialize the PlaywrightPage with given page</p>
 | --- | --- |
 | ClassObject | <p>The ClassObject that will use WebFragment actions</p> |
 
+**Example**  
+```js
+//Use below example to create a new WebFragmentlet actions: TodoMvcPageActions = createFragmentActions(    TodoMvcPageActions  );
+```
 <a name="PlaywrightExpect"></a>
 
  PlaywrightExpect ⇒
@@ -1366,6 +2025,10 @@ To use the playwright expect with Proxy traps</p>
 | --- | --- |
 | webElementProps | <p>WebElementType</p> |
 
+**Example**  
+```js
+//Just like below one can simply create a WebElement using the below exampleconst newTodoTextBox = (text?: string): WebElement =>  useWebElement({    locator: '.new-todo',    text,  });
+```
 
 * [WebElement](#WebElement) ⇒
     * [.waitForNetworkResponseAfter(urlPath, [status])](#WebElement+waitForNetworkResponseAfter) ⇒
@@ -1601,6 +2264,131 @@ To use the playwright expect with Proxy traps</p>
 | actionable | <code>Actionable</code> | <p>Actionable</p> |
 | options |  | <p>LocatorOptions - Interface</p> |
 
+<a name="WebFragment"></a>
+
+ WebFragment
+<p>This class is a base class for all page objects. It contains functions that return a new instance of the LocatorFragment class.
+Use this class to pawn of the actions thats can be done in a web page, primary building actions of the available DOM nodes in a web fragment
+This is almost similar to how WebFragment works except this class will not have any actions one can see on page like goBack(), reload(), etc</p>
+
+**Kind**: global variable  
+**Example**  
+```js
+//Create a simple class and make sure the class extends WebFragment to avail all the below functionalitiesexport class TodoMvcPageActions extends WebFragmentActions {  constructor() {    super();  }  ...//This can be later called in a class that extends WebFragment to link the actions available in WebFragment like belowexport class TodoMvcPage extends WebFragment {  actions: TodoMvcPageActions;  constructor(urlProps?: URLProps) {    super(urlProps);    this.actions = createFragmentActions(TodoMvcPageActions);  }  ...
+```
+
+* [WebFragment](#WebFragment)
+    * [.open(urlProps)](#WebFragment+open)
+    * [.reload(options)](#WebFragment+reload)
+    * [.goBack(options)](#WebFragment+goBack)
+    * [.getTitle()](#WebFragment+getTitle) ⇒
+    * [.waitForPageLoad(timeout, state)](#WebFragment+waitForPageLoad)
+    * [.waitForWebElement(locator, [actionable], [baseLocator], [options])](#WebFragment+waitForWebElement) ⇒
+    * [.waitForNthWebElement(locator, nth, [actionable], [options])](#WebFragment+waitForNthWebElement) ⇒
+
+<a name="WebFragment+open"></a>
+
+# webFragment.open(urlProps)
+<p>open</p>
+<ul>
+<li>To open the webpage with url</li>
+</ul>
+
+**Kind**: instance method of [<code>WebFragment</code>](#WebFragment)  
+
+| Param | Description |
+| --- | --- |
+| urlProps | <p>URLProps Interface</p> |
+
+<a name="WebFragment+reload"></a>
+
+# webFragment.reload(options)
+<p>reload</p>
+<ul>
+<li>A method that is being called on the playwrightPage object.</li>
+</ul>
+
+**Kind**: instance method of [<code>WebFragment</code>](#WebFragment)  
+
+| Param | Description |
+| --- | --- |
+| options | <p>PageOptions Interface</p> |
+
+<a name="WebFragment+goBack"></a>
+
+# webFragment.goBack(options)
+<p>goBack</p>
+<ul>
+<li>A method that is used to go back to the previous page.</li>
+</ul>
+
+**Kind**: instance method of [<code>WebFragment</code>](#WebFragment)  
+
+| Param | Description |
+| --- | --- |
+| options | <p>PageOptions Interface</p> |
+
+<a name="WebFragment+getTitle"></a>
+
+# webFragment.getTitle() ⇒
+<p>getTitle</p>
+<ul>
+<li>To get a title of a page as a promise</li>
+</ul>
+
+**Kind**: instance method of [<code>WebFragment</code>](#WebFragment)  
+**Returns**: <p>Title of the page as a promise</p>  
+<a name="WebFragment+waitForPageLoad"></a>
+
+# webFragment.waitForPageLoad(timeout, state)
+<p>waitForPageLoad</p>
+<ul>
+<li>Waiting for the page to load.</li>
+</ul>
+
+**Kind**: instance method of [<code>WebFragment</code>](#WebFragment)  
+
+| Param | Description |
+| --- | --- |
+| timeout | <p>timeout in milliseconds</p> |
+| state | <p>state to achieve upon load</p> |
+
+<a name="WebFragment+waitForWebElement"></a>
+
+# webFragment.waitForWebElement(locator, [actionable], [baseLocator], [options]) ⇒
+<p>waitForWebElement</p>
+<ul>
+<li>Wait for a web element to be present, then return a new LocatorFragment object.</li>
+</ul>
+
+**Kind**: instance method of [<code>WebFragment</code>](#WebFragment)  
+**Returns**: <p>A LocatorFragment object.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| locator | <code>string</code> | <p>string - the locator to find</p> |
+| [actionable] | <code>Actionable</code> \| <code>Array.&lt;Actionable&gt;</code> | <p>Actionable | Actionable[]</p> |
+| [baseLocator] | <code>Locator</code> | <p>The base locator to use for the find.</p> |
+| [options] | <code>FindOptions</code> | <p>FindOptions = {</p> |
+
+<a name="WebFragment+waitForNthWebElement"></a>
+
+# webFragment.waitForNthWebElement(locator, nth, [actionable], [options]) ⇒
+<p>waitForNthWebElement</p>
+<ul>
+<li>Wait for the nth element to be visible, then return a new LocatorFragment object.</li>
+</ul>
+
+**Kind**: instance method of [<code>WebFragment</code>](#WebFragment)  
+**Returns**: <p>A new instance of the LocatorFragment class.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| locator | <code>string</code> | <p>string - the locator to find</p> |
+| nth | <code>number</code> | <p>number - the nth element to find</p> |
+| [actionable] | <code>Actionable</code> \| <code>Array.&lt;Actionable&gt;</code> | <p>Actionable | Actionable[]</p> |
+| [options] | <code>FindOptions</code> | <p>FindOptions = {</p> |
+
 <a name="WebFragmentActions"></a>
 
  WebFragmentActions
@@ -1617,7 +2405,7 @@ To use the playwright expect with Proxy traps</p>
 | locator | <code>string</code> |  | <p>string - the locator of the element</p> |
 | actionable | <code>Actionable</code> |  | <p>Actionable - This is an enum that I created that has the following values:</p> |
 | [negative] | <code>boolean</code> | <code>false</code> | <p>boolean = false,</p> |
-| [options] | <code>LocatorOptions</code> |  | <p>LocatorOptions = {</p> |
+| [options] | <code>LocatorOptions</code> |  | <p>LocatorOptions</p> |
 
 
 * [WebFragmentActions](#WebFragmentActions)
@@ -1710,4 +2498,30 @@ To use the playwright expect with Proxy traps</p>
 | Param | Description |
 | --- | --- |
 | url | <p>The base URL string</p> |
+
+<a name="waitForPageNetworkResponse"></a>
+
+ waitForPageNetworkResponse()
+<p>If the WAIT_FOR_NETWORK_RESPONSE property is set, wait for a network response with the specified URL
+and status.</p>
+
+**Kind**: global function  
+<a name="waitForLocatorNetworkResponse"></a>
+
+ waitForLocatorNetworkResponse()
+<p>If the LocatorCoreCalls.WAIT_FOR_NETWORK_RESPONSE property is set, wait for a network response with
+the specified URL and status.</p>
+
+**Kind**: global function  
+<a name="waitForNetworkIdle"></a>
+
+ waitForNetworkIdle(options) ⇒
+<p>This function waits for the network to be idle for a certain amount of time before continuing.</p>
+
+**Kind**: global function  
+**Returns**: <p>A promise.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>WaitForNetworkIdleProps</code> | <p>WaitForNetworkIdleProps = {</p> |
 

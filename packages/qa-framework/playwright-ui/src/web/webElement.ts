@@ -4,6 +4,7 @@ import { PageLocatorExpect } from '../utils/uiAssertions';
 import { ElementOrFragmentProps } from './generic';
 import { checkPageActionable } from './webFragment';
 
+/* Defining the interface for the props that will be passed into the WebElement class. */
 export interface TypeWebElement {
   locator: string;
   text?: string;
@@ -12,6 +13,17 @@ export interface TypeWebElement {
   options?: LocatorOptions;
 }
 
+/**
+ * This class can be used to create a WebElement for Dom Nodes and interact with them using the functions in this class
+ * The class is a wrapper for the playwrightPageLocator object. The class is used to create a fluent interface for the playwrightPageLocator object.
+ * @example
+ * //Just like below one can simply create a WebElement using the below example
+ * const newTodoTextBox = (text?: string): WebElement =>
+ *   useWebElement({
+ *     locator: '.new-todo',
+ *     text,
+ *   });
+ */
 export class WebElement {
   public webElementProps: TypeWebElement;
   public assert: PageLocatorExpect;
@@ -256,6 +268,13 @@ export class WebElement {
  * * To create a WebElement for the given props
  * @param webElementProps WebElementType
  * @returns WebElement
+ * @example
+ * //Just like below one can simply create a WebElement using the below example
+ * const newTodoTextBox = (text?: string): WebElement =>
+ *   useWebElement({
+ *     locator: '.new-todo',
+ *     text,
+ *   });
  */
 export const useWebElement = (webElementProps: TypeWebElement): WebElement => {
   const returnObject: WebElement = new WebElement(webElementProps);

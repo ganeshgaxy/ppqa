@@ -5,6 +5,8 @@ import { LocatorExpectProps, PageExpectProps } from '../web/generic';
 import { URLProps } from '../web/webFragment';
 import { waitForNetworkIdle, WaitForNetworkIdleProps } from './waitActions';
 
+/* A TypeScript interface that is used to define the properties and methods of the PlaywrightPage
+class. */
 export interface PlaywrightPageProps extends PageExpectProps<void> {
   page: Page;
 
@@ -187,6 +189,7 @@ export interface PlaywrightPageProps extends PageExpectProps<void> {
   not(): PlaywrightPageProps;
 }
 
+/* Defining an enum. */
 export enum Actionable {
   ToBeChecked,
   ToBeDisabled,
@@ -196,16 +199,19 @@ export enum Actionable {
   ToBeVisible,
 }
 
+/* Defining an interface for a function called PageOptions. */
 export interface PageOptions {
   timeout?: number;
   state?: 'networkidle' | 'load' | 'domcontentloaded' | 'commit';
 }
 
+/* Defining an interface called FindOptions. */
 export interface FindOptions {
   has?: Locator;
   hasText?: string | RegExp;
 }
 
+/* Defining an interface for LocatorOptions. */
 export interface LocatorOptions {
   button?: 'left' | 'right' | 'middle';
   clickCount?: number;
@@ -222,6 +228,8 @@ export interface LocatorOptions {
   trial?: boolean;
 }
 
+/* It's a wrapper around the Playwright Page object, with some additional methods that make it easier
+to write tests */
 export class PlaywrightPage implements PlaywrightPageProps {
   public page: Page;
   constructor(page: Page) {
@@ -641,6 +649,7 @@ export const usePlaywrightPage = (page: Page): PlaywrightPageProps => {
   return new Proxy(returnObject, handler) as PlaywrightPageProps;
 };
 
+/* A TypeScript interface that is used to define the properties and methods of a class. */
 export interface PlaywrightPageLocatorProps extends LocatorExpectProps<void> {
   locator: Locator;
   options: LocatorOptions | undefined;
@@ -753,6 +762,8 @@ export interface PlaywrightPageLocatorProps extends LocatorExpectProps<void> {
   not(): void;
 }
 
+/* This class is used to create a locator object that can be used to perform actions on the web element
+and also to perform assertions on the web element */
 export class PlaywrightPageLocator implements PlaywrightPageLocatorProps {
   public locator: Locator;
   public options: LocatorOptions | undefined;
@@ -1078,6 +1089,12 @@ export const usePlaywrightPageLocator = (
  * @param ClassObject The ClassObject that will use WebFragment
  * @param urlProps The URLProps
  * @returns The WebFragment with Proxy traps
+ * @example
+ * //Use below example to create a new WebFragment
+ * let todoMvcPage: TodoMvcPage = createFragment(
+ *     TodoMvcPage,
+ *     TodoMvcPageProps()
+ *   );
  */
 export const createFragment = <T extends object>(
   ClassObject: { new (urlProps?: URLProps): T },
@@ -1120,6 +1137,11 @@ export const createFragment = <T extends object>(
  * * To create a web fragment actions object with proxy traps
  * @param ClassObject The ClassObject that will use WebFragment actions
  * @returns The WebFragment actions with Proxy traps
+ * @example
+ * //Use below example to create a new WebFragment
+ * let actions: TodoMvcPageActions = createFragmentActions(
+ *     TodoMvcPageActions
+ *   );
  */
 export const createFragmentActions = <T extends object>(
   ClassObject: { new (args?: any): T },
