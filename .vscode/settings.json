@@ -41,6 +41,7 @@
   "cSpell.words": [
     "actionables",
     "cdylib",
+    "clippy",
     "codespaces",
     "deps",
     "domcontentloaded",
@@ -58,6 +59,7 @@
     "postbuild",
     "ppqa",
     "reduxjs",
+    "rustfmt",
     "tabler",
     "tauri",
     "tauriapp",
