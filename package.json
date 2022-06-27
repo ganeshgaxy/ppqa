@@ -8,8 +8,7 @@
     "packages/qa-framework/*"
   ],
   "scripts": {
-    "predevsetup": "yarn config set workspaces-experimental true && npx playwright install --with-deps",
-    "devsetup": "yarn global add lerna && yarn global add playwright && yarn run build",
+    "dev-setup": "yarn config set workspaces-experimental true && npx playwright install --with-deps && yarn run build",
     "prebuild": "npx lerna run build --scope=@qa-framework/performance-rust",
     "build": "npx lerna run build --scope={@qa-framework/performance,@qa-framework/playwright-ui}",
     "postbuild": "yarn link '@qa-framework/playwright-ui' && yarn link '@qa-framework/performance' && yarn install"
@@ -18,6 +17,10 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@playwright/test": "^1.22.0"
+    "@playwright/test": "^1.22.0",
+    "lerna": "^4.0.0"
+  },
+  "dependencies": {
+    "playwright": "^1.22.1"
   }
 }
