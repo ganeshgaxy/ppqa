@@ -9,13 +9,13 @@ let libPath = '',
 var type = os.type();
 switch (type) {
   case 'Darwin':
-    libForOS = './performance-rust/target/release/performance_rust.dylib';
+    libForOS = './performance-rust/target/release/libperformance_rust.dylib';
     libPath = path.resolve(
       path.join(__dirname.split('/performance/dist')[0], libForOS)
     );
     break;
   case 'Linux':
-    libForOS = './performance-rust/target/release/performance_rust.so';
+    libForOS = './performance-rust/target/release/libperformance_rust.so';
     libPath = path.resolve(
       path.join(__dirname.split('/performance/dist')[0], libForOS)
     );
