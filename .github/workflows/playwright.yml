@@ -10,11 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up GCC
-        uses: egor-tensin/setup-gcc@v1
-        with:
-          version: latest
-          platform: x64
+      - name: Install Build Essentials
+        run: sudo apt-get update && sudo apt install build-essential && sudo apt-get install manpages-dev
       - name: Set up Node
         uses: actions/setup-node@v2
         with:
