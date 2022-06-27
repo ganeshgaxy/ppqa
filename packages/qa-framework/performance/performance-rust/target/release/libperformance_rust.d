@@ -1,0 +1,1 @@
+/Users/ganesh/qaframework/packages/qa-framework/performance/performance-rust/target/release/libperformance_rust.dylib: /Users/ganesh/qaframework/packages/qa-framework/performance/performance-rust/src/lib.rs

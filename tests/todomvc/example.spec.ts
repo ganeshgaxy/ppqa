@@ -1,5 +1,6 @@
 import { test, expect, Page } from '@playwright/test';
 import QAFramework, { createFragment } from '@qa-framework/playwright-ui';
+import { add } from '@qa-framework/performance';
 import { TodoMvcPage } from '../../project/todomvc/ui/pages/TodoMvc/TodoMvcPage';
 import { TodoMvcPageProps } from '../../project/todomvc/ui/pages/TodoMvc/TodoMvcPage.vars';
 
@@ -17,6 +18,7 @@ const TODO_ITEMS = [
 
 test.describe('New Todo', () => {
   test('should allow me to add todo items', async ({ page }) => {
+    console.log('Sum is ' + add(40, 50));
     let todoMvcPage: TodoMvcPage = createFragment(
       TodoMvcPage,
       TodoMvcPageProps()
