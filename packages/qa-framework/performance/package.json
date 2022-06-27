@@ -6,7 +6,6 @@
   "author": "Ganeshan Manickam",
   "license": "MIT",
   "scripts": {
-    "prebuild": "cd performance-rust && cargo build --release && cd ..",
     "build": "yarn install && npx tsc && yarn link"
   },
   "dependencies": {

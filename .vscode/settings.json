@@ -40,6 +40,7 @@
   "docwriter.style": "JSDoc",
   "cSpell.words": [
     "actionables",
+    "cdylib",
     "codespaces",
     "deps",
     "domcontentloaded",
@@ -54,6 +55,7 @@
     "mantine",
     "napi",
     "networkidle",
+    "postbuild",
     "ppqa",
     "reduxjs",
     "tabler",
