@@ -9,27 +9,13 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install Build Essentials
         run: sudo apt-get update && sudo apt install build-essential && sudo apt-get install manpages-dev
       - name: Set up Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '16.x'
-      - name: Install latest nightly for Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly
-          override: true
-          components: rustfmt, clippy
-      - uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
-          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
-      - name: Install Lerna and Playwright globally
-        run: yarn global add lerna && yarn global add playwright
       - name: Enable workspaces in Yarn
         run: yarn config set workspaces-experimental true
       - name: Install Playwright Browsers
