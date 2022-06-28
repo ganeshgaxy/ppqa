@@ -1,5 +1,5 @@
 [package]
-name = "performance-rust"
+name = "performance"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,6 +7,7 @@ edition = "2021"
 
 [lib]
 name="performance_rust"
+path = "src-tauri/lib.rs"
 crate-type = ["cdylib"]
 bench = false
 
