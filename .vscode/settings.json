@@ -63,6 +63,7 @@
     "ppqa",
     "predevsetup",
     "reduxjs",
+    "reqwest",
     "rustfmt",
     "tabler",
     "tauri",
@@ -72,5 +73,8 @@
     "Todos",
     "unchecking",
     "xvfbrun"
-  ]
+  ],
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
+  }
 }
