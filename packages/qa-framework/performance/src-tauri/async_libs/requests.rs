@@ -1,6 +1,8 @@
-use std::{str::FromStr, time::Instant};
+use std::{str::FromStr};
 
-use reqwest::{Client, header::{HeaderMap, HeaderValue, HeaderName}, Response};
+use reqwest::{Client, header::{HeaderMap, HeaderValue, HeaderName}};
+
+use super::get_module::{prepare_get_request, ReturnResponseProps, config_and_process_get};
 
 pub struct HeaderProps{
   pub key:HeaderName, pub value:HeaderValue
@@ -29,9 +31,14 @@ pub fn get_client()->Client{
   return client;
 }
 
-pub async fn get_request(client: Client, headers: HeaderMap, url: &str)->Result<Response, reqwest::Error>{
-  let now = Instant::now();
-  let resp = client.get(url).headers(headers).send().await;
-  print!("Elapsed: {:?} Milliseconds", now.elapsed().as_millis());
-  return resp;
+pub async fn get_request(client: Client, headers: HeaderMap, url: String, requests_count: i32, max_rps: i32) -> ReturnResponseProps{
+  let url = url;
+  let mut handles= Vec::new();
+  for _i in 0..requests_count{
+    let handle = prepare_get_request(&client, &url, &headers).await;
+    handles.push(handle);
+  }
+  let native_responses = config_and_process_get(handles, max_rps).await;
+  let return_response = ReturnResponseProps{data: native_responses};
+  return return_response;
 }

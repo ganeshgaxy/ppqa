@@ -6,15 +6,21 @@
   "author": "Ganeshan Manickam",
   "license": "MIT",
   "scripts": {
-    "prebuild": "cargo build --release",
-    "build": "yarn install && npx tsc && yarn link"
+    "prebuild": "npx napi build --release",
+    "build": "yarn install && npx tsc && yarn link",
+    "nextdev": "next dev",
+    "nextbuild": "next build",
+    "nextstart": "next start",
+    "nextlint": "next lint"
+  },
+  "napi": {
+    "name": "index"
   },
   "dependencies": {
-    "ffi-napi": "^4.0.3",
     "tsc": "^2.0.4",
     "typescript": "^4.7.4"
   },
   "devDependencies": {
-    "@types/ffi-napi": "^4.0.5"
+    "@napi-rs/cli": "^2.10.0"
   }
 }

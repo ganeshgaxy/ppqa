@@ -41,6 +41,7 @@
   "cSpell.words": [
     "actionables",
     "cdylib",
+    "chrono",
     "clippy",
     "codespaces",
     "deps",
@@ -57,8 +58,13 @@
     "Manickam",
     "manpages",
     "mantine",
+    "msedge",
     "napi",
     "networkidle",
+    "nextbuild",
+    "nextdev",
+    "nextlint",
+    "nextstart",
     "postbuild",
     "ppqa",
     "predevsetup",
@@ -72,6 +78,8 @@
     "todomvc",
     "Todos",
     "unchecking",
+    "Unstyled",
+    "viewports",
     "xvfbrun"
   ],
   "[rust]": {

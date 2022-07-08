@@ -1,33 +1,26 @@
-import ffi from 'ffi-napi';
 import path from 'path';
-
 import os from 'os';
 
-// Printing os.type() value
-let libPath = '',
-  libForOS = '';
+let nativePath = './native';
+
+
 var type = os.type();
 switch (type) {
   case 'Darwin':
-    libForOS = './target/release/libperformance_rust.dylib';
-    libPath = path.resolve(path.join(__dirname.split('/dist')[0], libForOS));
+    nativePath = path.resolve(path.join(__dirname.split('/dist')[0], './index.node'));
     break;
   case 'Linux':
-    libForOS = './target/release/libperformance_rust.so';
-    libPath = path.resolve(path.join(__dirname.split('/dist')[0], libForOS));
+    nativePath = path.resolve(path.join(__dirname.split('/dist')[0], './index.node'));
     break;
   case 'Windows_NT':
-    libForOS = './target/release/performance_rust.dll';
-    libPath = path.resolve(path.join(__dirname.split('\\dist')[0], libForOS));
+    nativePath = path.resolve(path.join(__dirname.split('\\dist')[0], './index.node'));
     break;
   default:
-    libPath = path.resolve(
-      path.join(__dirname.split('\\performance\\dist')[0], libForOS)
-    );
+    nativePath = path.resolve(path.join(__dirname.split('/dist')[0], './index.node'));
 }
 
-const libWeb = ffi.Library(libPath, {
-  add: ['int32', ['int32', 'int32']],
-});
-
-export const { add } = libWeb;
+let nativeAddon = require(nativePath)
+export const getRequestLoad = async(url: string, request:number = 1, max_rps: number = 1) =>{
+  const value = await nativeAddon.getRequestLoad(url, request, max_rps);
+  return JSON.parse(value)
+}

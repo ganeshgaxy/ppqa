@@ -11,6 +11,11 @@
     "mintlify.document",
     "dbaeumer.vscode-eslint",
     "streetsidesoftware.code-spell-checker",
-    "ms-playwright.playwright"
+    "ms-playwright.playwright",
+    "vadimcn.vscode-lldb",
+    "bungcip.better-toml",
+    "rust-lang.rust-analyzer",
+    "usernamehw.errorlens",
+    "serayuzgur.crates"
   ]
 }

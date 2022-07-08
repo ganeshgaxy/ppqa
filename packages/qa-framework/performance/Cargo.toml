@@ -4,20 +4,27 @@ version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-#[lib]
-#name="performance_rust"
-#path = "src-tauri/lib.rs"
-#crate-type = ["cdylib"]
-#bench = false
+[lib]
+name="performance"
+path = "src-tauri/lib.rs"
+crate-type = ["cdylib"]
+bench = false
 
 [[bin]]
-name="performance_rust"
+name="performance"
 path = "src-tauri/main.rs"
 
 [dependencies]
 reqwest = "0.11.11"
 futures = "0.3.21"
+async-ffi = "0.4.0"
 tokio = { version = "1.19.2", features = ["full"] }
-serde = "1.0.137"
+serde = {version="1.0.137", features = ["derive"]}
 serde_json = "1.0.82"
+libc = "0.2"
+napi = {version="2.5.0", features=["async"]}
+napi-derive = "2.5.0"
+chrono = "0.4"
+
+[build-dependencies]
+napi-build = "2.0.1"
