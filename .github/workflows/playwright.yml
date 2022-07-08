@@ -18,10 +18,10 @@ jobs:
           node-version: '16.x'
       - name: Enable workspaces in Yarn
         run: yarn config set workspaces-experimental true
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
       - name: Build Packages and Install dependencies
         run: yarn run build
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
       - name: Run Playwright tests
         run: export HEADLESS=true && npx playwright test
       - uses: actions/upload-artifact@v2
