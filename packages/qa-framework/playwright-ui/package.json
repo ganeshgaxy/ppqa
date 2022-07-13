@@ -21,7 +21,6 @@
     "@babel/preset-typescript": "^7.17.12",
     "jsdoc-babel": "^0.5.0",
     "jsdoc-to-markdown": "^7.1.1",
-    "playwright": "^1.22.1",
     "tsc": "^2.0.4",
     "typescript": "^4.6.4"
   }

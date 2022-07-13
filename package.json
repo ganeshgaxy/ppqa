@@ -19,8 +19,5 @@
   "devDependencies": {
     "@playwright/test": "^1.22.0",
     "lerna": "^4.0.0"
-  },
-  "dependencies": {
-    "playwright": "^1.22.1"
   }
 }
